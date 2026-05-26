@@ -16,16 +16,7 @@ namespace ChepuPizza.DAL.Repositories
 
         public async Task<List<Pizza>> GetAllAsync()
         {
-            List<Pizza> pizzas = await _context.Pizzas
-                .ToListAsync();
-
-
-            foreach (Pizza pizza in pizzas)
-            {
-                Console.WriteLine($"Pizze: {pizza.Name}, ImageUrl: {pizza.ImageUrl}");
-            }
-
-
+            List<Pizza> pizzas = await _context.Pizzas.ToListAsync();
             return pizzas;
         }
     }

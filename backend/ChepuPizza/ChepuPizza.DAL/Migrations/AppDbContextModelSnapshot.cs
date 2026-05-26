@@ -57,8 +57,7 @@ namespace ChepuPizza.DAL.Migrations
 
                     b.Property<string>("ImageUrl")
                         .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("ImageUrl");
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .IsRequired()

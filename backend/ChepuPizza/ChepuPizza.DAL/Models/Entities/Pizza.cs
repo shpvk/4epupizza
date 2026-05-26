@@ -9,18 +9,17 @@
             CheeseId = cheeseId;
             Name = name;
             Price = price;
-            ImageUrl = imageUrl;
         }
 
-        public int Id { get; private set; }
-        public Cheese? Cheese { get; private set; }
-        public int? CheeseId { get; private set; }
+        public int Id { get; set; }
+        public Cheese? Cheese { get; set; }
+        public int? CheeseId { get; set; }
 
-        public string Name { get; private set; } = null!;
-        public decimal Price { get; private set; } = 0;
+        public string Name { get; set; } = null!;
+        public decimal Price { get; set; } = 0;
 
-        public string ImageUrl { get; private set; } = string.Empty;
-         
+        public string ImageUrl { get; set; } = string.Empty;
+
         public static (Pizza? pizza, string? error) Create(int id, int cheeseId, string name, decimal price, string imageUrl)
         {
             if(price < 0)

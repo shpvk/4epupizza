@@ -4,13 +4,8 @@ import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'
 import './App.css'
 import Header from './components/header/header'
-import SecretPepperoni from './pages/SecretPepperoni/SecretPepperoni'
 
 function App() {
-  if (window.location.pathname === '/secretpepperoni') {
-    return <SecretPepperoni />
-  }
-
   return (
     <>
       <Header />
