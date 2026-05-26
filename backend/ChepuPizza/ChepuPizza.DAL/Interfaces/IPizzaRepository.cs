@@ -1,0 +1,9 @@
+﻿using ChepuPizza.DAL.Models.Entities;
+
+namespace ChepuPizza.DAL.Interfaces
+{
+    public interface IPizzaRepository
+    {
+        Task<List<Pizza>> GetAllAsync();
+    }
+}

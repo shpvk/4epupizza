@@ -1,3 +1,8 @@
+using ChepuPizza.BLL.Interfaces;
+using ChepuPizza.BLL.Services;
+using ChepuPizza.DAL;
+using ChepuPizza.DAL.Interfaces;
+using ChepuPizza.DAL.Repositories;
 
 namespace ChepuPizza.API
 {
@@ -11,15 +16,22 @@ namespace ChepuPizza.API
 
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-            builder.Services.AddOpenApi();
+
+            builder.Services.AddScoped<IPizzaService, PizzaService>();
+            builder.Services.AddScoped<IPizzaRepository, PizzaRepository>();
+
+            builder.Services.AddDatabase(builder.Configuration);
+
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.MapOpenApi();
-            }
+            app.UseSwagger();
+            app.UseSwaggerUI();
+
+            //app.MapGet("/", () => Results.Redirect("/swagger"));
 
             app.UseHttpsRedirection();
 
