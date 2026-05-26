@@ -5,7 +5,7 @@ using System.Net.WebSockets;
 namespace ChepuPizza.API.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/pizzas")]
     public class PizzaController : ControllerBase
     {
         public readonly IPizzaService _pizzaService;

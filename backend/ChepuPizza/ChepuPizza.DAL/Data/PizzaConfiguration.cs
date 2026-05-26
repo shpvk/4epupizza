@@ -23,9 +23,8 @@ namespace ChepuPizza.DAL.Data
                 .WithMany(c => c.Pizzas)
                 .HasForeignKey(p => p.CheeseId);
 
-            builder.HasOne(p => p.Cheese)
-                .WithMany(c => c.Pizzas)
-                .HasForeignKey(p => p.CheeseId);
+            builder.Property(x => x.ImageUrl)
+                .IsRequired();
         }
     }
 
