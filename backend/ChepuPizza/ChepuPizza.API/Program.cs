@@ -1,4 +1,7 @@
 
+using ChepuPizza.BLL.Interfaces;
+using ChepuPizza.BLL.Services;
+
 namespace ChepuPizza.API
 {
     public class Program
@@ -12,6 +15,8 @@ namespace ChepuPizza.API
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
+
+            builder.Services.AddScoped<IPizzaService, PizzaService>();
 
             var app = builder.Build();
 

@@ -3,7 +3,7 @@
     public class Pizza
     {
 
-        private public Pizza(int id, Cheese? cheese, string name, int price)
+        private Pizza(int id, Cheese? cheese, string name, int price)
         {
             Id = id;
             Cheese = cheese;
@@ -15,9 +15,9 @@
         public Cheese? Cheese { get; set; }
 
         public string Name { get; set; } = null!;
-        public int Price { get; set; } = 0;
+        public decimal Price { get; set; } = 0;
 
-        public (Pizza? pizza, string? error) Create(int id, Cheese? cheese, string name, int price)
+        public static (Pizza? pizza, string? error) Create(int id, Cheese? cheese, string name, int price)
         {
             if(price < 0)
             {
