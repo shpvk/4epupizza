@@ -27,6 +27,7 @@ namespace ChepuPizza.BLL.Services
                 pizzaResponse.Price = pizza.Price;
                 pizzaResponse.CheeseId = pizza.CheeseId;
                 pizzaResponse.Name = pizza.Name;
+                pizzaResponse.ImageUrl = pizza.ImageUrl;
                 pizzasDto.Add(pizzaResponse);
             }
             return pizzasDto;
