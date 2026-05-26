@@ -31,6 +31,8 @@ namespace ChepuPizza.API
             app.UseSwagger();
             app.UseSwaggerUI();
 
+            //app.MapGet("/", () => Results.Redirect("/swagger"));
+
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
