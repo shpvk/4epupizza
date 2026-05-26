@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ChepuPizza.DAL\ChepuPizza.DAL.csproj" />
+  </ItemGroup>
+
 </Project>

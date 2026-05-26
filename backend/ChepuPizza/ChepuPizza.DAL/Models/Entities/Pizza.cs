@@ -1,30 +1,32 @@
-﻿namespace ChepuPizza.DAL.Entities
+﻿namespace ChepuPizza.DAL.Models.Entities
 {
     public class Pizza
     {
 
-        private Pizza(int id, Cheese? cheese, string name, int price)
+        private Pizza(int id, int? cheeseId, string name, decimal price)
         {
             Id = id;
-            Cheese = cheese;
+            CheeseId = cheeseId;
             Name = name;
             Price = price;
         }
 
         public int Id { get; set; }
         public Cheese? Cheese { get; set; }
+        public int? CheeseId { get; set; }
 
         public string Name { get; set; } = null!;
         public decimal Price { get; set; } = 0;
 
-        public static (Pizza? pizza, string? error) Create(int id, Cheese? cheese, string name, int price)
+
+        public static (Pizza? pizza, string? error) Create(int id, int cheeseId, string name, decimal price)
         {
             if(price < 0)
             {
                 return (null, "Price cannot be lower than zero");
             }
 
-            Pizza pizza = new Pizza(id, cheese, name, price);
+            Pizza pizza = new Pizza(id, cheeseId, name, price);
             return (pizza, null);
 
         }
