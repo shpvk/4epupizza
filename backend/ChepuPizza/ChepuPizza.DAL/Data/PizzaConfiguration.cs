@@ -24,6 +24,7 @@ namespace ChepuPizza.DAL.Data
                 .HasForeignKey(p => p.CheeseId);
 
             builder.Property(x => x.ImageUrl)
+                .HasColumnName("ImageUrl")
                 .IsRequired();
         }
     }
