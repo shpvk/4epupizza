@@ -1,14 +1,24 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
 import './App.css'
 import Header from './components/header/header'
+<<<<<<< Updated upstream
+=======
+import Footer from './components/footer/footer'
+import CheckoutPage from './components/checkout/CheckoutPage'
+>>>>>>> Stashed changes
 
 function App() {
+  const isCheckoutPage = window.location.pathname === '/checkout'
+
   return (
     <>
       <Header />
+<<<<<<< Updated upstream
+=======
+      <main>
+        {isCheckoutPage && <CheckoutPage />}
+      </main>
+      <Footer />
+>>>>>>> Stashed changes
     </>
   )
 }
