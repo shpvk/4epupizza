@@ -36,6 +36,7 @@ namespace ChepuPizza.BLL.Services
         public async Task<PizzaResponse> GetByIdAsync(int pizzaId)
         {
             Pizza pizza = await _pizzaRepository.GetByIdAsync(pizzaId);
+
             PizzaResponse pizzaDto = new PizzaResponse();
             pizzaDto.ImageUrl = pizza.ImageUrl;
             pizzaDto.Id = pizza.Id;
