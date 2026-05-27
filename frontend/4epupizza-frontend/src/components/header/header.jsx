@@ -4,21 +4,22 @@ import CartButton from '../cart/CartButton'
 function Header() {
     return (
         <header className="header">
-            <div className='header_logo'>
-            <a href="/"><img src="/img/4epupizza.png" /></a>
+            <div className="header_logo">
+                <a href="/"><img src="/img/4epupizza.png" alt="4epupizza" /></a>
             </div>
 
-            <div className='nav_bar'>
+            <div className="nav_bar">
                 <nav>
                     <ul>
                         <li>Пицца</li>
-                        <li>Конструктор</li>
+                        <li><a href="/constructor">Конструктор</a></li>
                         <li>Акции</li>
                         <li>Про нас</li>
                     </ul>
                 </nav>
             </div>
-            <div className='header_actions'>
+
+            <div className="header_actions">
                 <button className="btn--login">Login</button>
                 <CartButton />
             </div>

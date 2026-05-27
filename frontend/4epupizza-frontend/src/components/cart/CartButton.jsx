@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import './CartButton.css'
 import { CART_STORAGE_KEY, fallbackCartItems } from './cartData'
+import { formatPrice } from '../../utils/priceFormatter'
 
 const API_URL = 'https://localhost:7067/api/pizzas'
 
@@ -94,7 +95,7 @@ function CartButton() {
                     <h3>{item.name}</h3>
                     <span>{item.quantity} шт.</span>
                   </div>
-                  <strong>${(item.price * item.quantity).toFixed(2)}</strong>
+                  <strong>{formatPrice(item.price * item.quantity)}</strong>
                 </article>
               ))
             )}
@@ -102,7 +103,7 @@ function CartButton() {
 
           <div className="cart__footer">
             <span>Итого</span>
-            <strong>${totalPrice.toFixed(2)}</strong>
+            <strong>{formatPrice(totalPrice)}</strong>
           </div>
 
           <button className="cart__order" type="button" onClick={handleOrderClick}>
