@@ -1,6 +1,6 @@
 ﻿using ChepuPizza.BLL.Interfaces;
+using ChepuPizza.DAL.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
-using System.Net.WebSockets;
 
 namespace ChepuPizza.API.Controllers
 {
@@ -18,10 +18,15 @@ namespace ChepuPizza.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            {
-                var pizzas = await _pizzaService.GetAllAsync();
-                return Ok(pizzas);
-            }
+            var pizzas = await _pizzaService.GetAllAsync();
+            return Ok(pizzas);
+        }
+
+        [HttpGet("{pizzaId:int}")]
+        public async Task<IActionResult> GetById(int pizzaId)
+        {
+            var pizza = await _pizzaService.GetByIdAsync(pizzaId);
+            return Ok(pizza);
         }
     }
 }

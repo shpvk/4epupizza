@@ -19,5 +19,17 @@ namespace ChepuPizza.DAL.Repositories
             List<Pizza> pizzas = await _context.Pizzas.ToListAsync();
             return pizzas;
         }
+
+        public async Task<Pizza?> GetByIdAsync(int pizzaId)
+        {
+            Pizza? pizza = await _context.Pizzas
+                    .FirstOrDefaultAsync(p => p.Id == pizzaId);
+
+            if (pizza == null)
+            {
+                return null;
+            }
+            return pizza;
+        }
     }
 }
