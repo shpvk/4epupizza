@@ -32,5 +32,17 @@ namespace ChepuPizza.BLL.Services
             }
             return pizzasDto;
         }
+
+        public async Task<PizzaResponse> GetByIdAsync(int pizzaId)
+        {
+            Pizza pizza = await _pizzaRepository.GetByIdAsync(pizzaId);
+            PizzaResponse pizzaDto = new PizzaResponse();
+            pizzaDto.ImageUrl = pizza.ImageUrl;
+            pizzaDto.Id = pizza.Id;
+            pizzaDto.CheeseId = pizza.CheeseId;
+            pizzaDto.Name = pizza.Name;
+
+            return pizzaDto;
+        }
     }
 }
