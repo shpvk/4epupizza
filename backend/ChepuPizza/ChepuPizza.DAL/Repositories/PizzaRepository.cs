@@ -23,7 +23,6 @@ namespace ChepuPizza.DAL.Repositories
         public async Task<Pizza?> GetByIdAsync(int pizzaId)
         {
             Pizza? pizza = await _context.Pizzas
-                    .Include(p => p.Cheese)
                     .FirstOrDefaultAsync(p => p.Id == pizzaId);
 
             if (pizza == null)

@@ -2,35 +2,53 @@
 {
     public class Pizza
     {
-
-        private Pizza(int id, int? cheeseId, string name, decimal price, string imageUrl)
+        private Pizza()
         {
-            Id = id;
-            CheeseId = cheeseId;
-            Name = name;
-            Price = price;
+            // For EF Core
         }
 
-        public int Id { get; set; }
-        public Cheese? Cheese { get; set; }
-        public int? CheeseId { get; set; }
-
-        public string Name { get; set; } = null!;
-        public decimal Price { get; set; } = 0;
-
-        public string ImageUrl { get; set; } = string.Empty;
-
-        public static (Pizza? pizza, string? error) Create(int id, int cheeseId, string name, decimal price, string imageUrl)
+        private Pizza(int id, string name, decimal price, string imageUrl)
         {
-            if(price < 0)
+            Id = id;
+            Name = name;
+            Price = price;
+            ImageUrl = imageUrl;
+        }
+
+        public int Id { get; private set; }
+
+        public string Name { get; private set; } = string.Empty;
+
+        public decimal Price { get; private set; }
+
+        public string ImageUrl { get; private set; } = string.Empty;
+
+        public bool IsAvailable { get; private set; } = true;
+
+        public static (Pizza? pizza, string? error) Create(
+            int id,
+            string name,
+            decimal price,
+            string imageUrl)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                return (null, "Name cannot be empty");
+            }
+
+            if (price < 0)
             {
                 return (null, "Price cannot be lower than zero");
             }
 
-            Pizza pizza = new Pizza(id, cheeseId, name, price, imageUrl);
+            if (string.IsNullOrWhiteSpace(imageUrl))
+            {
+                return (null, "ImageUrl cannot be empty");
+            }
+
+            Pizza pizza = new Pizza(id, name, price, imageUrl);
+
             return (pizza, null);
-
         }
-
     }
 }
