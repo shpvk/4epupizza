@@ -1,10 +1,9 @@
 import './App.css'
 import Header from './components/header/header'
-<<<<<<< Updated upstream
-=======
 import Footer from './components/footer/footer'
 import CheckoutPage from './components/checkout/CheckoutPage'
->>>>>>> Stashed changes
+=======
+import Footer from './components/footer/footer'
 
 function App() {
   const isCheckoutPage = window.location.pathname === '/checkout'
@@ -12,13 +11,14 @@ function App() {
   return (
     <>
       <Header />
-<<<<<<< Updated upstream
-=======
       <main>
         {isCheckoutPage && <CheckoutPage />}
       </main>
       <Footer />
->>>>>>> Stashed changes
+      <main>
+        {/* Main content will go here */}
+      </main>
+      <Footer />
     </>
   )
 }
