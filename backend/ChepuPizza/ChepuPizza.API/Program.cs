@@ -18,7 +18,10 @@ namespace ChepuPizza.API
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 
             builder.Services.AddScoped<IPizzaService, PizzaService>();
+            builder.Services.AddScoped<ICheeseService, CheeseService>();
+
             builder.Services.AddScoped<IPizzaRepository, PizzaRepository>();
+            builder.Services.AddScoped<ICheeseRepository, CheeseRepository>();
 
             builder.Services.AddDatabase(builder.Configuration);
 

@@ -5,6 +5,6 @@ namespace ChepuPizza.DAL.Interfaces
     public interface IPizzaRepository
     {
         Task<List<Pizza>> GetAllAsync();
-        Task<Pizza> GetByIdAsync(int pizzaId);
+        Task<Pizza?> GetByIdAsync(int pizzaId);
     }
 }
