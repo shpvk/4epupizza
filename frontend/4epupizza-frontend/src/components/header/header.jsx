@@ -14,7 +14,7 @@ function Header() {
                         <li>Пицца</li>
                         <li>Конструктор</li>
                         <li>Акции</li>
-                        <li><a href="/about" style={{ color: 'inherit', textDecoration: 'none' }}>Про нас</a></li>
+                        <li>Про нас</li>
                     </ul>
                 </nav>
             </div>
