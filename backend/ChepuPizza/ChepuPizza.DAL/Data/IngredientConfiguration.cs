@@ -4,11 +4,12 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ChepuPizza.DAL.Data
 {
-    public class PizzaConfiguration : IEntityTypeConfiguration<Pizza>
+    public class IngredientConfiguration : IEntityTypeConfiguration<Ingredient>
     {
-        public void Configure(EntityTypeBuilder<Pizza> builder)
+        public void Configure(EntityTypeBuilder<Ingredient> builder)
         {
-            builder.ToTable("Pizzas");
+            builder.ToTable("Ingredients");
+
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.Name)
@@ -20,6 +21,13 @@ namespace ChepuPizza.DAL.Data
                 .HasColumnType("decimal(10,2)");
 
             builder.Property(x => x.ImageUrl)
+                .IsRequired();
+
+            builder.Property(x => x.ImageUrl)
+                .IsRequired();
+
+            builder.Property(x => x.Category)
+                .HasConversion<string>()
                 .IsRequired();
         }
     }
