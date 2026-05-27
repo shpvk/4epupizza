@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import './CheckoutPage.css'
 import { CART_STORAGE_KEY, fallbackCartItems } from '../cart/cartData'
+import { formatPrice } from '../../utils/priceFormatter'
 
 function getInitialCartItems() {
   const savedItems = localStorage.getItem(CART_STORAGE_KEY)
@@ -88,14 +89,14 @@ function CheckoutPage() {
                     <h3>{item.name}</h3>
                     <span>{item.quantity} шт.</span>
                   </div>
-                  <strong>${(item.price * item.quantity).toFixed(2)}</strong>
+                  <strong>{formatPrice(item.price * item.quantity)}</strong>
                 </article>
               ))}
             </div>
 
             <div className="checkout__summary-total">
               <span>Итого</span>
-              <strong>${totalPrice.toFixed(2)}</strong>
+              <strong>{formatPrice(totalPrice)}</strong>
             </div>
           </aside>
         </div>

@@ -72,6 +72,11 @@
 
   text-align: center;
 }
+.nav_bar ul li a
+{
+  color: inherit;
+  text-decoration: none;
+}
 .header_actions
 {
   display: flex;
