@@ -8,29 +8,29 @@ using System.Text;
 
 namespace ChepuPizza.DAL.Repositories
 {
-    public class CheeseRepository : ICheeseRepository
+    public class IngredientRepository : IIngredientRepository
     {
         private readonly AppDbContext _context;
 
-        public CheeseRepository(AppDbContext context)
+        public IngredientRepository(AppDbContext context)
         {
             _context = context;
         }
 
-        public async Task<List<Cheese>> GetAllAsync()
+        public async Task<List<Ingredient>> GetAllAsync()
         {
-            List<Cheese> cheeses = await _context.Cheeses.ToListAsync();
+            List<Ingredient> cheeses = await _context.Ingredients.ToListAsync();
             return cheeses;
         }
 
-        public async Task<Cheese?> GetByIdAsync(int cheeseId)
+        public async Task<Ingredient?> GetByIdAsync(int ingredientId)
         {
-            Cheese? cheese = await _context.Cheeses.FindAsync(cheeseId);
-            if(cheese == null)
+            Ingredient? ingredient = await _context.Ingredients.FindAsync(ingredientId);
+            if(ingredient == null)
             {
                 return null;
             }
-            return cheese;
+            return ingredient;
         }
     }
 }

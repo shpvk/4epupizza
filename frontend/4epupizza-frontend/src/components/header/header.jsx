@@ -1,4 +1,3 @@
-import React from 'react'
 import './header.css'
 
 function Header() {
@@ -13,15 +12,16 @@ function Header() {
                 <nav>
                     <ul>
                         <li>Пицца</li>
-                        <li>Конструктор</li>
+                        <li><a href="/constructor">Конструктор</a></li>
                         <li>Акции</li>
                         <li>Про нас</li>
                     </ul>
                 </nav>
             </div>
-            <div className='header_actions'>
+
+            <div className="header_actions">
                 <button className="btn--login">Login</button>
-                <button className="btn--cart"><img src='/img/Group 3.png'></img></button>
+                <button className="btn--cart"><img src="/img/Group 3.png" alt="" /></button>
             </div>
         </header>
     )
