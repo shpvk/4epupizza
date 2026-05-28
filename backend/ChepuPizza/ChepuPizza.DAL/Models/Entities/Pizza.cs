@@ -25,6 +25,8 @@
 
         public bool IsAvailable { get; private set; } = true;
 
+        public List<Ingredient> Ingredients { get; private set; } = new();
+
         public static (Pizza? pizza, string? error) Create(
             int id,
             string name,
