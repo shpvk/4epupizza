@@ -1,7 +1,6 @@
 ﻿import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import './PizzaConstructorPage.css'
 import { formatPrice } from '../../utils/priceFormatter'
-import { CART_STORAGE_KEY } from '../cart/cartData'
 
 const INGREDIENTS_API_URL = '/api/ingredients'
 const API_FALLBACK_IMAGE_URL = '/img/cart.png'
@@ -351,29 +350,6 @@ function PizzaConstructorPage() {
     event.currentTarget.style.display = 'none'
   }
 
-  function handleOrderClick() {
-    if (placedParts.length === 0) {
-      return
-    }
-
-    const firstImage = placedParts.find((part) => part.imageUrl)?.imageUrl || API_FALLBACK_IMAGE_URL
-
-    localStorage.setItem(
-      CART_STORAGE_KEY,
-      JSON.stringify([
-        {
-          id: 'custom-pizza',
-          name: 'Custom Pizza',
-          price: totalPrice,
-          imageUrl: firstImage,
-          quantity: 1,
-        },
-      ]),
-    )
-
-    window.location.assign('/checkout')
-  }
-
   return (
     <section className="pizza-constructor">
       <div className="pizza-constructor__inner">
@@ -479,9 +455,6 @@ function PizzaConstructorPage() {
               <span>Итого</span>
               <strong>{formatPrice(totalPrice)}</strong>
             </div>
-            <button type="button" onClick={handleOrderClick} disabled={placedParts.length === 0}>
-              Заказать
-            </button>
           </div>
         </div>
       </div>

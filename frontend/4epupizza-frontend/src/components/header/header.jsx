@@ -1,5 +1,4 @@
 import './header.css'
-import CartButton from '../cart/CartButton'
 
 function Header() {
     return (
@@ -21,7 +20,7 @@ function Header() {
 
             <div className="header_actions">
                 <button className="btn--login">Login</button>
-                <CartButton />
+                <button className="btn--cart"><img src="/img/Group 3.png" alt="" /></button>
             </div>
         </header>
     )
