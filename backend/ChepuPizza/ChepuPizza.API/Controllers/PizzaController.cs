@@ -1,4 +1,5 @@
-﻿using ChepuPizza.BLL.Interfaces;
+﻿using ChepuPizza.BLL.DTO;
+using ChepuPizza.BLL.Interfaces;
 using ChepuPizza.DAL.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,6 +28,13 @@ namespace ChepuPizza.API.Controllers
         {
             var pizza = await _pizzaService.GetByIdAsync(pizzaId);
             return Ok(pizza);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(PizzaRequest pizzaRequest)
+        {
+            var createdPizza = await _pizzaService.CreateAsync(PizzaRequest pizzaRequest);
+            return Ok(createdPizza);
         }
     }
 }
