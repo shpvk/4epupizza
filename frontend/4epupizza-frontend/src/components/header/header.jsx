@@ -3,11 +3,12 @@ import './header.css'
 function Header() {
     return (
         <header className="header">
-            <div className="header_logo">
-                <a href="/"><img src="/img/4epupizza.png" alt="4epupizza" /></a>
+            <div className='header_logo'>
+            <div className='logo-wrapper'>
+                <a><img src="/img/4epupizza.png" /></a>
             </div>
-
-            <div className="nav_bar">
+            </div>
+            <div className='nav_bar'>
                 <nav>
                     <ul>
                         <li>Пицца</li>
