@@ -33,7 +33,7 @@ namespace ChepuPizza.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(PizzaRequest pizzaRequest)
         {
-            var createdPizza = await _pizzaService.CreateAsync(PizzaRequest pizzaRequest);
+            var createdPizza = await _pizzaService.CreateAsync(pizzaRequest);
             return Ok(createdPizza);
         }
     }

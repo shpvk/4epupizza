@@ -31,5 +31,12 @@ namespace ChepuPizza.DAL.Repositories
             }
             return pizza;
         }
+
+        public async Task<Pizza> AddAsync(Pizza pizza)
+        {
+            await _context.Pizzas.AddAsync(pizza);
+            await _context.SaveChangesAsync();
+            return pizza;
+        }
     }
 }

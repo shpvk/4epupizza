@@ -25,7 +25,7 @@
 
         public bool IsAvailable { get; private set; } = true;
 
-        public List<Ingredient> Ingredients { get; private set; } = new();
+        public List<PizzaIngridient> PizzaIngredients { get; private set; } = new();
 
         public static (Pizza? pizza, string? error) Create(
             int id,
@@ -52,5 +52,21 @@
 
             return (pizza, null);
         }
+        public void AddIngredientById(int ingredientId)
+        {
+            PizzaIngredients.Add(new PizzaIngridient
+            {
+                IngredientId = ingredientId,
+                Pizza = this
+            });
+        }
+    }
+
+    public class PizzaIngridient
+    { 
+        public int PizzaId { get; set; }
+        public Pizza Pizza { get; set; } = null!;
+        public int IngredientId { get; set; }
+        public Ingredient Ingredient { get; set; } = null!;
     }
 }

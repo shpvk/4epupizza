@@ -43,5 +43,33 @@ namespace ChepuPizza.BLL.Services
 
             return pizzaDto;
         }
+
+        public async Task<PizzaResponse> CreateAsync(PizzaRequest pizzaRequest)
+        {
+            (Pizza? pizza, string? error) = Pizza.Create(pizzaRequest.Name, pizzaRequest.Price);
+            if(error != null)
+            {
+                throw new Exception(error);
+            }
+            if(pizza == null)
+            {
+                throw new Exception("Pizza creation failed");
+            }
+
+            foreach(int ingredientId in pizzaRequest.IngredientIds)
+            {
+                pizza.AddIngredientById(ingredientId);
+            }
+
+
+            Pizza responsePizza = await _pizzaRepository.AddAsync(pizza);
+            PizzaResponse pizzaDto = new PizzaResponse();
+            pizzaDto.Id = responsePizza.Id;
+            pizzaDto.Name = responsePizza.Name;
+            pizzaDto.Price = responsePizza.Price;
+            pizzaDto.ImageUrl = responsePizza.ImageUrl;
+
+            return pizzaDto;
+        }
     }
 }
