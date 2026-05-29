@@ -17,7 +17,7 @@ namespace ChepuPizza.BLL.Services
 
         public async Task<List<PizzaResponse>> GetAllAsync()
         {
-            List<Pizza> pizzas = await _pizzaRepository.GetAllAsync();
+            List<Pizza?> pizzas = await _pizzaRepository.GetAllAsync();
             List<PizzaResponse> pizzasDto = new List<PizzaResponse>();
 
             foreach(Pizza pizza in pizzas)
@@ -26,7 +26,6 @@ namespace ChepuPizza.BLL.Services
                 pizzaResponse.Id = pizza.Id;
                 pizzaResponse.Price = pizza.Price;
                 pizzaResponse.Name = pizza.Name;
-                pizzaResponse.ImageUrl = pizza.ImageUrl;
                 pizzasDto.Add(pizzaResponse);
             }
             return pizzasDto;
@@ -34,18 +33,25 @@ namespace ChepuPizza.BLL.Services
 
         public async Task<PizzaResponse> GetByIdAsync(int pizzaId)
         {
-            Pizza pizza = await _pizzaRepository.GetByIdAsync(pizzaId);
+            Pizza? pizza = await _pizzaRepository.GetByIdAsync(pizzaId);
 
             PizzaResponse pizzaDto = new PizzaResponse();
-            pizzaDto.ImageUrl = pizza.ImageUrl;
             pizzaDto.Id = pizza.Id;
             pizzaDto.Name = pizza.Name;
-
+            foreach(PizzaIngredient pizzaIngredient in pizza.PizzaIngredients)
+            {
+                pizzaDto.IngredientIds.Add(pizzaIngredient.IngredientId);
+            }
             return pizzaDto;
         }
 
         public async Task<PizzaResponse> CreateAsync(PizzaRequest pizzaRequest)
         {
+            if (pizzaRequest.IngredientIds == null || pizzaRequest.IngredientIds.Count <= 0)
+            {
+                throw new ArgumentException("Pizza must have at least one ingredient");
+            }
+
             (Pizza? pizza, string? error) = Pizza.Create(pizzaRequest.Name, pizzaRequest.Price);
             if(error != null)
             {
@@ -55,6 +61,8 @@ namespace ChepuPizza.BLL.Services
             {
                 throw new Exception("Pizza creation failed");
             }
+
+
 
             foreach(int ingredientId in pizzaRequest.IngredientIds)
             {
@@ -67,7 +75,6 @@ namespace ChepuPizza.BLL.Services
             pizzaDto.Id = responsePizza.Id;
             pizzaDto.Name = responsePizza.Name;
             pizzaDto.Price = responsePizza.Price;
-            pizzaDto.ImageUrl = responsePizza.ImageUrl;
 
             return pizzaDto;
         }

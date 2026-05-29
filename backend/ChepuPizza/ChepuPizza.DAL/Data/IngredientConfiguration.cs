@@ -20,7 +20,7 @@ namespace ChepuPizza.DAL.Data
                 .IsRequired()
                 .HasColumnType("decimal(10,2)");
 
-            builder.Property(x => x.ImageUrl)
+            builder.Property(x => x.IsAvailable)
                 .IsRequired();
 
             builder.Property(x => x.ImageUrl)
@@ -31,6 +31,4 @@ namespace ChepuPizza.DAL.Data
                 .IsRequired();
         }
     }
-
-
 }

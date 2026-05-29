@@ -7,12 +7,10 @@
             // For EF Core
         }
 
-        private Pizza(int id, string name, decimal price, string imageUrl)
+        private Pizza(string name, decimal price)
         {
-            Id = id;
             Name = name;
             Price = price;
-            ImageUrl = imageUrl;
         }
 
         public int Id { get; private set; }
@@ -21,17 +19,13 @@
 
         public decimal Price { get; private set; }
 
-        public string ImageUrl { get; private set; } = string.Empty;
-
         public bool IsAvailable { get; private set; } = true;
 
-        public List<PizzaIngridient> PizzaIngredients { get; private set; } = new();
+        public List<PizzaIngredient>? PizzaIngredients { get; private set; } = new();
 
         public static (Pizza? pizza, string? error) Create(
-            int id,
             string name,
-            decimal price,
-            string imageUrl)
+            decimal price)
         {
             if (string.IsNullOrWhiteSpace(name))
             {
@@ -43,18 +37,13 @@
                 return (null, "Price cannot be lower than zero");
             }
 
-            if (string.IsNullOrWhiteSpace(imageUrl))
-            {
-                return (null, "ImageUrl cannot be empty");
-            }
-
-            Pizza pizza = new Pizza(id, name, price, imageUrl);
+            Pizza pizza = new Pizza(name, price);
 
             return (pizza, null);
         }
         public void AddIngredientById(int ingredientId)
         {
-            PizzaIngredients.Add(new PizzaIngridient
+            PizzaIngredients.Add(new PizzaIngredient
             {
                 IngredientId = ingredientId,
                 Pizza = this
@@ -62,7 +51,7 @@
         }
     }
 
-    public class PizzaIngridient
+    public class PizzaIngredient
     { 
         public int PizzaId { get; set; }
         public Pizza Pizza { get; set; } = null!;

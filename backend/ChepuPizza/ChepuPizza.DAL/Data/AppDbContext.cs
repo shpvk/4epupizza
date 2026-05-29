@@ -14,6 +14,7 @@ namespace ChepuPizza.DAL.Data
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfiguration(new PizzaConfiguration());
             modelBuilder.ApplyConfiguration(new IngredientConfiguration());
+            modelBuilder.ApplyConfiguration(new PizzaIngredientConfiguration());
 
             base.OnModelCreating(modelBuilder);
         }
