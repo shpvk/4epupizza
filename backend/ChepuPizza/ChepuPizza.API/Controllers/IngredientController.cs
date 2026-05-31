@@ -25,6 +25,12 @@ namespace ChepuPizza.API.Controllers
         public async Task<IActionResult> GetById(int ingredientId)
         {
             var ingredient = await _ingredientService.GetByIdAsync(ingredientId);
+
+            if(ingredient == null)
+            {
+                return NotFound();
+            }
+
             return Ok(ingredient);
         }
     }

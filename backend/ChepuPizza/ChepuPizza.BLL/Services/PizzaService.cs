@@ -17,17 +17,29 @@ namespace ChepuPizza.BLL.Services
 
         public async Task<List<PizzaResponse>> GetAllAsync()
         {
-            List<Pizza?> pizzas = await _pizzaRepository.GetAllAsync();
+            List<Pizza> pizzas = await _pizzaRepository.GetAllAsync();
             List<PizzaResponse> pizzasDto = new List<PizzaResponse>();
 
             foreach(Pizza pizza in pizzas)
             {
-                PizzaResponse pizzaResponse = new PizzaResponse();
-                pizzaResponse.Id = pizza.Id;
-                pizzaResponse.Price = pizza.Price;
-                pizzaResponse.Name = pizza.Name;
-                pizzasDto.Add(pizzaResponse);
+                PizzaResponse pizzaDto = new PizzaResponse
+                {
+                    Id = pizza.Id,
+                    Name = pizza.Name,
+                    Price = pizza.Price,
+                    Ingredients = pizza.PizzaIngredients.Select(pizzaIngredient => new IngredientResponse
+                    {
+                        Id = pizzaIngredient.Ingredient.Id,
+                        Name = pizzaIngredient.Ingredient.Name,
+                        Price = pizzaIngredient.Ingredient.Price,
+                        IsAvailable = pizzaIngredient.Ingredient.IsAvailable,
+                        Category = pizzaIngredient.Ingredient.Category.ToString(),
+                        ImageUrl = pizzaIngredient.Ingredient.ImageUrl
+                    }).ToList()
+                };
+                pizzasDto.Add(pizzaDto);
             }
+
             return pizzasDto;
         }
 
@@ -35,13 +47,26 @@ namespace ChepuPizza.BLL.Services
         {
             Pizza? pizza = await _pizzaRepository.GetByIdAsync(pizzaId);
 
-            PizzaResponse pizzaDto = new PizzaResponse();
-            pizzaDto.Id = pizza.Id;
-            pizzaDto.Name = pizza.Name;
-            foreach(PizzaIngredient pizzaIngredient in pizza.PizzaIngredients)
+            if (pizza == null)
             {
-                pizzaDto.IngredientIds.Add(pizzaIngredient.IngredientId);
+                throw new Exception("Pizza not found");
             }
+
+            PizzaResponse pizzaDto = new PizzaResponse
+            {
+                Id = pizza.Id,
+                Name = pizza.Name,
+                Price = pizza.Price,
+                Ingredients = pizza.PizzaIngredients.Select(pizzaIngredient => new IngredientResponse
+                {
+                    Id = pizzaIngredient.Ingredient.Id,
+                    Name = pizzaIngredient.Ingredient.Name,
+                    Price = pizzaIngredient.Ingredient.Price,
+                    IsAvailable = pizzaIngredient.Ingredient.IsAvailable,
+                    Category = pizzaIngredient.Ingredient.Category.ToString(),
+                    ImageUrl = pizzaIngredient.Ingredient.ImageUrl
+                }).ToList()
+            };
             return pizzaDto;
         }
 

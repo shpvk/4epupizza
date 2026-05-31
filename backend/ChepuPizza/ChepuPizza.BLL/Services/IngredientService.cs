@@ -16,37 +16,43 @@ namespace ChepuPizza.BLL.Interfaces
 
         public async Task<List<IngredientResponse>> GetAllAsync()
         {
-            List<Ingredient> ingredient = await _ingredientRepository.GetAllAsync();
-            List<IngredientResponse> cheesesDto = new List<IngredientResponse>();
+            List<Ingredient> ingredients = await _ingredientRepository.GetAllAsync();
+            List<IngredientResponse> ingredientDtos = new();
 
-            foreach(Ingredient cheese in ingredient)
+            foreach(Ingredient ingredient in ingredients)
             {
-                IngredientResponse ingredientDto = new IngredientResponse();
+                IngredientResponse ingredientDto = new IngredientResponse
+                {
+                    Id = ingredient.Id,
+                    Name = ingredient.Name,
+                    Price = ingredient.Price,
+                    IsAvailable = ingredient.IsAvailable,
+                    Category = ingredient.Category.ToString(),
+                    ImageUrl = ingredient.ImageUrl
+                };
 
-                ingredientDto.Id = cheese.Id;
-                ingredientDto.Name = cheese.Name;
-                ingredientDto.Price = cheese.Price;
-                ingredientDto.IsAvailable = cheese.IsAvailable;
-                ingredientDto.Category = cheese.Category;
-                ingredientDto.ImageUrl = cheese.ImageUrl;
-                
-
-                cheesesDto.Add(ingredientDto);
+                ingredientDtos.Add(ingredientDto);
             }
-            return cheesesDto;
+            return ingredientDtos;
         }
-        public async Task<IngredientResponse> GetByIdAsync(int ingredientId)
+        public async Task<IngredientResponse?> GetByIdAsync(int ingredientId)
         {
-            Ingredient cheese = await _ingredientRepository.GetByIdAsync(ingredientId);
-            IngredientResponse ingredientDto = new IngredientResponse();
+            Ingredient ingredient = await _ingredientRepository.GetByIdAsync(ingredientId);
 
-            ingredientDto.Id = cheese.Id;
-            ingredientDto.Name = cheese.Name;
-            ingredientDto.Price = cheese.Price;
-            ingredientDto.IsAvailable = cheese.IsAvailable;
-            ingredientDto.Category = cheese.Category;
-            ingredientDto.ImageUrl = cheese.ImageUrl;
+            if(ingredient == null)
+            {
+                return null;
+            }
 
+            IngredientResponse ingredientDto = new IngredientResponse
+            {
+                Id = ingredient.Id,
+                Name = ingredient.Name,
+                Price = ingredient.Price,
+                IsAvailable = ingredient.IsAvailable,
+                Category = ingredient.Category.ToString(),
+                ImageUrl = ingredient.ImageUrl
+            };
             return ingredientDto;
         }
     }
