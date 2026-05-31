@@ -9,6 +9,6 @@ namespace ChepuPizza.BLL.DTO
         public decimal Price { get; set; }
         public bool IsAvailable { get; set; } = true;
         public string ImageUrl { get; set; } = string.Empty;
-        public IngredientCategory Category { get; set; }
+        public string Category { get; set; } = string.Empty;
     }
 }

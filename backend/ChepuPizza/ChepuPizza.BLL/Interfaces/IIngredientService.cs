@@ -6,6 +6,6 @@ namespace ChepuPizza.BLL.Interfaces
     public interface IIngredientService
     {
         Task<List<IngredientResponse>> GetAllAsync();
-        Task<IngredientResponse> GetByIdAsync(int cheeseId);
+        Task<IngredientResponse?> GetByIdAsync(int cheeseId);
     }
 }

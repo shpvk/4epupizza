@@ -16,14 +16,20 @@ namespace ChepuPizza.DAL.Repositories
 
         public async Task<List<Pizza>> GetAllAsync()
         {
-            List<Pizza> pizzas = await _context.Pizzas.ToListAsync();
+            List<Pizza> pizzas = await _context.Pizzas
+                .Include(p => p.PizzaIngredients)
+                    .ThenInclude(pi => pi.Ingredient)
+                .ToListAsync();
+
             return pizzas;
         }
 
         public async Task<Pizza?> GetByIdAsync(int pizzaId)
         {
             Pizza? pizza = await _context.Pizzas
-                    .FirstOrDefaultAsync(p => p.Id == pizzaId);
+                .Include(p => p.PizzaIngredients)
+                    .ThenInclude(pi => pi.Ingredient)
+                 .FirstOrDefaultAsync(p => p.Id == pizzaId);
 
             if (pizza == null)
             {

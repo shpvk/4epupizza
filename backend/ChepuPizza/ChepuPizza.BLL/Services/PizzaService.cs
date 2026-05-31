@@ -29,6 +29,7 @@ namespace ChepuPizza.BLL.Services
                 pizzaResponse.ImageUrl = pizza.ImageUrl;
                 pizzasDto.Add(pizzaResponse);
             }
+
             return pizzasDto;
         }
 
