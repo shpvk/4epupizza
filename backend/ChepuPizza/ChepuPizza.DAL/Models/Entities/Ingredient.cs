@@ -14,7 +14,6 @@
         Sausage = 1,
         Mushroom = 2,
         Cheese = 3,
-        Sauce = 4,
-        Dough = 5
+        Sauce = 4
     }
 }
