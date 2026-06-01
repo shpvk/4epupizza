@@ -1,11 +1,9 @@
 ﻿namespace ChepuPizza.BLL.DTO
 {
-    public class PizzaResponse
+    public class PizzaRequest
     {
-        public int Id { get; set; }
         public string Name { get; set; } = null!;
         public decimal Price { get; set; } = 0;
-        public string ImageUrl { get; set; } = string.Empty;
+        public List<int> IngredientIds { get; set; } = new();
     }
 }
-
