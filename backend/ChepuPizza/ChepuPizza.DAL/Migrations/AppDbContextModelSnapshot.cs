@@ -61,6 +61,10 @@ namespace ChepuPizza.DAL.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<bool>("IsAvailable")
                         .HasColumnType("boolean");
 
@@ -75,45 +79,6 @@ namespace ChepuPizza.DAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Pizzas", (string)null);
-                });
-
-            modelBuilder.Entity("ChepuPizza.DAL.Models.Entities.PizzaIngredient", b =>
-                {
-                    b.Property<int>("PizzaId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("IngredientId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("PizzaId", "IngredientId");
-
-                    b.HasIndex("IngredientId");
-
-                    b.ToTable("PizzaIngredients", (string)null);
-                });
-
-            modelBuilder.Entity("ChepuPizza.DAL.Models.Entities.PizzaIngredient", b =>
-                {
-                    b.HasOne("ChepuPizza.DAL.Models.Entities.Ingredient", "Ingredient")
-                        .WithMany()
-                        .HasForeignKey("IngredientId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("ChepuPizza.DAL.Models.Entities.Pizza", "Pizza")
-                        .WithMany("PizzaIngredients")
-                        .HasForeignKey("PizzaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Ingredient");
-
-                    b.Navigation("Pizza");
-                });
-
-            modelBuilder.Entity("ChepuPizza.DAL.Models.Entities.Pizza", b =>
-                {
-                    b.Navigation("PizzaIngredients");
                 });
 #pragma warning restore 612, 618
         }
