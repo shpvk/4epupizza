@@ -22,22 +22,12 @@ namespace ChepuPizza.BLL.Services
 
             foreach(Pizza pizza in pizzas)
             {
-                PizzaResponse pizzaDto = new PizzaResponse
-                {
-                    Id = pizza.Id,
-                    Name = pizza.Name,
-                    Price = pizza.Price,
-                    Ingredients = pizza.PizzaIngredients.Select(pizzaIngredient => new IngredientResponse
-                    {
-                        Id = pizzaIngredient.Ingredient.Id,
-                        Name = pizzaIngredient.Ingredient.Name,
-                        Price = pizzaIngredient.Ingredient.Price,
-                        IsAvailable = pizzaIngredient.Ingredient.IsAvailable,
-                        Category = pizzaIngredient.Ingredient.Category.ToString(),
-                        ImageUrl = pizzaIngredient.Ingredient.ImageUrl
-                    }).ToList()
-                };
-                pizzasDto.Add(pizzaDto);
+                PizzaResponse pizzaResponse = new PizzaResponse();
+                pizzaResponse.Id = pizza.Id;
+                pizzaResponse.Price = pizza.Price;
+                pizzaResponse.Name = pizza.Name;
+                pizzaResponse.ImageUrl = pizza.ImageUrl;
+                pizzasDto.Add(pizzaResponse);
             }
 
             return pizzasDto;
@@ -45,38 +35,18 @@ namespace ChepuPizza.BLL.Services
 
         public async Task<PizzaResponse> GetByIdAsync(int pizzaId)
         {
-            Pizza? pizza = await _pizzaRepository.GetByIdAsync(pizzaId);
+            Pizza pizza = await _pizzaRepository.GetByIdAsync(pizzaId);
 
-            if (pizza == null)
-            {
-                throw new Exception("Pizza not found");
-            }
+            PizzaResponse pizzaDto = new PizzaResponse();
+            pizzaDto.ImageUrl = pizza.ImageUrl;
+            pizzaDto.Id = pizza.Id;
+            pizzaDto.Name = pizza.Name;
 
-            PizzaResponse pizzaDto = new PizzaResponse
-            {
-                Id = pizza.Id,
-                Name = pizza.Name,
-                Price = pizza.Price,
-                Ingredients = pizza.PizzaIngredients.Select(pizzaIngredient => new IngredientResponse
-                {
-                    Id = pizzaIngredient.Ingredient.Id,
-                    Name = pizzaIngredient.Ingredient.Name,
-                    Price = pizzaIngredient.Ingredient.Price,
-                    IsAvailable = pizzaIngredient.Ingredient.IsAvailable,
-                    Category = pizzaIngredient.Ingredient.Category.ToString(),
-                    ImageUrl = pizzaIngredient.Ingredient.ImageUrl
-                }).ToList()
-            };
             return pizzaDto;
         }
 
         public async Task<PizzaResponse> CreateAsync(PizzaRequest pizzaRequest)
         {
-            if (pizzaRequest.IngredientIds == null || pizzaRequest.IngredientIds.Count <= 0)
-            {
-                throw new ArgumentException("Pizza must have at least one ingredient");
-            }
-
             (Pizza? pizza, string? error) = Pizza.Create(pizzaRequest.Name, pizzaRequest.Price);
             if(error != null)
             {
@@ -86,8 +56,6 @@ namespace ChepuPizza.BLL.Services
             {
                 throw new Exception("Pizza creation failed");
             }
-
-
 
             foreach(int ingredientId in pizzaRequest.IngredientIds)
             {
@@ -100,6 +68,7 @@ namespace ChepuPizza.BLL.Services
             pizzaDto.Id = responsePizza.Id;
             pizzaDto.Name = responsePizza.Name;
             pizzaDto.Price = responsePizza.Price;
+            pizzaDto.ImageUrl = responsePizza.ImageUrl;
 
             return pizzaDto;
         }
