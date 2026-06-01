@@ -23,6 +23,8 @@ namespace ChepuPizza.API
             builder.Services.AddScoped<IPizzaRepository, PizzaRepository>();
             builder.Services.AddScoped<IIngredientRepository, IngredientRepository>();
 
+            builder.Services.AddScoped<IPizzaBuilderService, PizzaBuilderService>();
+
             builder.Services.AddDatabase(builder.Configuration);
 
             builder.Services.AddEndpointsApiExplorer();

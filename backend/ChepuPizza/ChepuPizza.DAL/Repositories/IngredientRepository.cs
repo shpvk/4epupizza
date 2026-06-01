@@ -2,9 +2,6 @@
 using ChepuPizza.DAL.Interfaces;
 using ChepuPizza.DAL.Models.Entities;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ChepuPizza.DAL.Repositories
 {
@@ -31,6 +28,17 @@ namespace ChepuPizza.DAL.Repositories
                 return null;
             }
             return ingredient;
+        }
+        public async Task<List<Ingredient>> GetByIdsAsync(List<int> ingredientIds)
+        {
+            
+
+            List<Ingredient> ingredients = await _context.Ingredients
+                .AsNoTracking()
+                .Where(i => ingredientIds.Contains(i.Id) && i.IsAvailable)
+                .ToListAsync();
+
+            return ingredients;
         }
     }
 }

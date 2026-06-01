@@ -17,6 +17,7 @@ namespace ChepuPizza.DAL.Repositories
         public async Task<List<Pizza>> GetAllAsync()
         {
             List<Pizza> pizzas = await _context.Pizzas
+                .AsNoTracking()
                 .Include(p => p.PizzaIngredients)
                     .ThenInclude(pi => pi.Ingredient)
                 .ToListAsync();

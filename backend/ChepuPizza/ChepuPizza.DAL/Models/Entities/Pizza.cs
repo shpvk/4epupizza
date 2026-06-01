@@ -21,7 +21,7 @@
 
         public bool IsAvailable { get; private set; } = true;
 
-        public List<PizzaIngredient>? PizzaIngredients { get; private set; } = new();
+        public List<PizzaIngredient> PizzaIngredients { get; private set; } = new();
 
         public static (Pizza? pizza, string? error) Create(
             string name,
