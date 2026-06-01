@@ -6,5 +6,6 @@ namespace ChepuPizza.DAL.Interfaces
     {
         Task<List<Ingredient>> GetAllAsync();
         Task<Ingredient?> GetByIdAsync(int ingredientId);
+        Task<List<Ingredient>> GetByIdsAsync(List<int> ingredientIds);
     }
 }
