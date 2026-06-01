@@ -40,6 +40,7 @@ namespace ChepuPizza.BLL.Services
                 ingredientResponse.Price = ingredient.Price;
                 totalPrice += ingredientResponse.Price;
 
+                ingredientResponse.Id = ingredient.Id;
                 ingredientResponse.Name = ingredient.Name;
                 ingredientResponse.IsAvailable = ingredient.IsAvailable;
                 ingredientResponse.ImageUrl = ingredient.ImageUrl;
