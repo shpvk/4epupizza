@@ -1,0 +1,77 @@
+import { useState } from 'react'
+import { Link } from 'react-router-dom'
+import './Login.css'
+
+function Login() {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    console.log('Login:', { email, password })
+  }
+
+  return (
+    <div className="login-page">
+      <div className="login-card">
+        <div className="login-card__logo">
+          <span className="login-card__logo-text">4epupizza</span>
+        </div>
+        <div className="login-card__body">
+          <h1 className="login-card__title">Welcome back</h1>
+          <p className="login-card__subtitle">Sign in to continue ordering.</p>
+
+          <form className="login-form" onSubmit={handleSubmit} noValidate>
+            <div className="login-form__group">
+              <label className="login-form__label" htmlFor="login-email">
+                Email
+              </label>
+              <input
+                id="login-email"
+                className="login-form__input"
+                type="email"
+                placeholder="your@email.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                autoComplete="email"
+                required
+              />
+            </div>
+            <div className="login-form__group">
+              <div className="login-form__row">
+                <label className="login-form__label" htmlFor="login-password">
+                  Password
+                </label>
+                <span className="login-form__forgot">
+                  Forgot?
+                </span>
+              </div>
+              <input
+                id="login-password"
+                className="login-form__input"
+                type="password"
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                autoComplete="current-password"
+                required
+              />
+            </div>
+            <button id="login-submit" className="login-form__btn" type="submit">
+              Log in →
+            </button>
+          </form>
+          <p className="login-card__signup">
+            Don't have an account?{' '}
+            <span className="login-card__signup-link">
+              Sign up
+            </span>
+          </p>
+        </div>
+      </div>
+    </div>
+  )
+}
+export default Login
+
+
