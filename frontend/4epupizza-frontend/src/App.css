@@ -5,7 +5,8 @@
 }
 body
 {
-  background-image: linear-gradient(31deg, #1F0700 31%, #170A00 69%, #1E0D00 100%);
+  /* background-image: linear-gradient(180deg, #4a1f07 0%, #af4b10 50%, #d9a004 100%); */
+  background-image:radial-gradient(circle, #3a1a03 0%,#180a00 100%);
 }
 main {
   flex: 1;

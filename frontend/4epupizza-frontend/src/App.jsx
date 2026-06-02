@@ -1,20 +1,16 @@
 import './App.css'
-import Header from './components/header/header'
-import Footer from './components/footer/footer'
+import Home from './pages/Home'
 import PizzaConstructorPage from './components/constructor/PizzaConstructorPage'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
 function App() {
-  const currentPath = window.location.pathname
-  const isConstructorPage = currentPath === '/constructor'
-
   return (
-    <>
-      <Header />
-      <main>
-        {isConstructorPage && <PizzaConstructorPage />}
-      </main>
-      <Footer />
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/constructor" element={<PizzaConstructorPage />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
 
