@@ -1,0 +1,48 @@
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+@font-face {
+  font-family: 'Muller';
+  src: url('/fonts/MullerRegular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Muller';
+  src: url('/fonts/MullerMedium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Muller';
+  src: url('/fonts/MullerExtraBold.ttf') format('truetype');
+  font-weight: 800; 
+  font-style: normal;
+}
+.pizza-background
+{
+  font-family: "Alex Brush", cursive;
+  font-weight: 400;
+  font-style: normal;
+  position: absolute;
+  font-size: 16rem;
+  color: transparent; 
+  -webkit-text-stroke: 1.5px rgb(94, 36, 0); 
+  user-select: none;
+  margin: 180px 0px  0px 180px;
+  z-index: -1
+}
+.title-text
+{
+  font-family: Muller;
+font-weight: 800;
+font-style: ExtraBold;
+font-size: 69.17px;
+line-height: 110.00000000000001%;
+letter-spacing: 0%;
+margin: 180px 0px  0px 180px;
+}
