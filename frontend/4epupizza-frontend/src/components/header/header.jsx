@@ -21,7 +21,7 @@ function Header() {
             </div>
 
             <div className="header_actions">
-                <button className="btn--login">Login</button>
+                <Link to="/login" className="btn--login">Login</Link>
                 <button className="btn--cart"><img src="/img/Group 3.png" alt="" /></button>
             </div>
         </header>
