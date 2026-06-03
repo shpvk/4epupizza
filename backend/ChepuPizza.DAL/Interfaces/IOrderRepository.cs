@@ -1,7 +1,9 @@
-﻿namespace ChepuPizza.DAL.Interfaces
+﻿using ChepuPizza.DAL.Models.Entities;
+
+namespace ChepuPizza.DAL.Interfaces
 {
     public interface IOrderRepository
     {
-        Task<> CreateAsync()
+        Task<Order> CreateAsync(Order order);
     }
 }
