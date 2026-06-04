@@ -8,6 +8,8 @@ namespace ChepuPizza.DAL.Data
     {
         public DbSet<Pizza> Pizzas { get; set; }
         public DbSet<Ingredient> Ingredients { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -15,6 +17,7 @@ namespace ChepuPizza.DAL.Data
             modelBuilder.ApplyConfiguration(new PizzaConfiguration());
             modelBuilder.ApplyConfiguration(new IngredientConfiguration());
             modelBuilder.ApplyConfiguration(new PizzaIngredientConfiguration());
+            modelBuilder.ApplyConfiguration(new OrderConfiguration());
 
             base.OnModelCreating(modelBuilder);
         }
