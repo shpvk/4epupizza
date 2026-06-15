@@ -12,16 +12,16 @@ function Header() {
             <div className='nav_bar'>
                 <nav>
                     <ul>
-                        <li><Link to="/">Пицца</Link></li>
+                        <li><Link to="/">Піца</Link></li>
                         <li><Link to="/constructor">Конструктор</Link></li>
-                        <li>Акции</li>
+                        <li>Акції</li>
                         <li>Про нас</li>
                     </ul>
                 </nav>
             </div>
 
             <div className="header_actions">
-                <Link to="/login" className="btn--login">Login</Link>
+                <Link to="/login" className="btn--login">Увійти</Link>
                 <button className="btn--cart"><img src="/img/Group 3.png" alt="" /></button>
             </div>
         </header>
