@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import Header from '../../components/header/header'
 import './Login.css'
 
 function Login() {
@@ -13,18 +14,16 @@ function Login() {
 
   return (
     <div className="login-page">
+      <Header />
       <div className="login-card">
-        <div className="login-card__logo">
-          <span className="login-card__logo-text">4epupizza</span>
-        </div>
         <div className="login-card__body">
-          <h1 className="login-card__title">Welcome back</h1>
-          <p className="login-card__subtitle">Sign in to continue ordering.</p>
+          <h1 className="login-card__title">З поверненням</h1>
+          <p className="login-card__subtitle">Увійдіть, щоб продовжити замовлення.</p>
 
           <form className="login-form" onSubmit={handleSubmit} noValidate>
             <div className="login-form__group">
               <label className="login-form__label" htmlFor="login-email">
-                Email
+                Електронна пошта
               </label>
               <input
                 id="login-email"
@@ -40,11 +39,11 @@ function Login() {
             <div className="login-form__group">
               <div className="login-form__row">
                 <label className="login-form__label" htmlFor="login-password">
-                  Password
+                  Пароль
                 </label>
-                <span className="login-form__forgot">
-                  Forgot?
-                </span>
+                <Link className="login-form__forgot" to="/forgot-password">
+                  Забули пароль?
+                </Link>
               </div>
               <input
                 id="login-password"
@@ -58,20 +57,19 @@ function Login() {
               />
             </div>
             <button id="login-submit" className="login-form__btn" type="submit">
-              Log in →
+              Увійти →
             </button>
           </form>
           <p className="login-card__signup">
-            Don't have an account?{' '}
-            <span className="login-card__signup-link">
-              Sign up
-            </span>
+            Немає акаунта?{' '}
+            <Link className="login-card__signup-link" to="/signup">
+              Зареєструватися
+            </Link>
           </p>
         </div>
       </div>
     </div>
   )
 }
+
 export default Login
-
-
