@@ -3,6 +3,7 @@ import Home from './pages/Home'
 import Login from './pages/Login/Login'
 import ForgotPassword from './pages/Login/ForgotPassword'
 import SignUp from './pages/Login/SignUp'
+import Promotions from './pages/Promotions'
 import PizzaConstructorPage from './components/constructor/PizzaConstructorPage'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
@@ -15,6 +16,7 @@ function App() {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/constructor" element={<PizzaConstructorPage />} />
+        <Route path="/promotions" element={<Promotions />} />
       </Routes>
     </BrowserRouter>
   )
