@@ -103,6 +103,7 @@
 }
 .btn--cart
 {
+  position: relative;
   background: linear-gradient(261.69deg, #FF5D29 12.12%, #FE9C1C 86.72%);
   border: none;
   cursor: pointer;
@@ -111,9 +112,39 @@
   align-items: center;
   justify-content: center;
   border-radius: 50%;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.btn--cart:hover {
+  transform: scale(1.08);
+  box-shadow: 0 6px 18px rgba(255, 93, 41, 0.35);
 }
 .btn--cart img
 {
   display: block;
   max-height: 100%;
+}
+.cart-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  min-width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  padding: 0 5px;
+  background: #ff2d2d;
+  color: #ffffff;
+  font-family: Muller, "Segoe UI", Arial, sans-serif;
+  font-size: 0.68rem;
+  font-weight: 800;
+  line-height: 20px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(255, 45, 45, 0.45);
+  animation: badgePop 0.3s ease;
+  pointer-events: none;
+}
+@keyframes badgePop {
+  0% { transform: scale(0); }
+  60% { transform: scale(1.25); }
+  100% { transform: scale(1); }
 }

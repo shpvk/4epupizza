@@ -304,6 +304,48 @@
   font-weight: 800;
 }
 
+.pizza-constructor__add-to-cart {
+  width: 100%;
+  border: 0;
+  border-radius: 10px;
+  padding: 16px 24px;
+  color: #ffffff;
+  background: linear-gradient(261.69deg, #ff5d29 12.12%, #fe9c1c 86.72%);
+  cursor: pointer;
+  font: inherit;
+  font-family: Muller, "Segoe UI", Arial, sans-serif;
+  font-size: 1.05rem;
+  font-weight: 800;
+  box-shadow: 0 14px 28px rgba(255, 93, 41, 0.28);
+  transition: all 0.25s ease;
+}
+
+.pizza-constructor__add-to-cart:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 36px rgba(255, 93, 41, 0.38);
+}
+
+.pizza-constructor__add-to-cart:active {
+  transform: translateY(0);
+}
+
+.pizza-constructor__toast {
+  text-align: center;
+  padding: 14px 18px;
+  border-radius: 8px;
+  background: rgba(78, 207, 114, 0.18);
+  border: 1px solid rgba(78, 207, 114, 0.4);
+  color: #4ecf72;
+  font-weight: 800;
+  font-size: 0.95rem;
+  animation: toastSlide 0.35s ease;
+}
+
+@keyframes toastSlide {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 .pizza-constructor .is-hidden {
   display: none;
 }
