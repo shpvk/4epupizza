@@ -1,8 +1,10 @@
+import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Header from '../../components/header/header'
 import Footer from '../../components/footer/footer'
 import { useCart } from '../../context/CartContext'
 import { READY_PIZZA_IMAGE_URL } from '../../components/constructor/constructorData'
+import { calculatePromotionDiscount, findPromotionByCode } from '../../data/promotions'
 import './Cart.css'
 
 function formatPrice(price) {
@@ -69,7 +71,7 @@ function CartItem({ item, onIncrement, onDecrement, onRemove }) {
             aria-label="Зменшити кількість"
             className="cart-item__counter-btn"
           >
-            −
+            -
           </button>
           <span className="cart-item__count">{item.quantity}</span>
           <button
@@ -104,9 +106,41 @@ function CartItem({ item, onIncrement, onDecrement, onRemove }) {
 
 function Cart() {
   const { items, totalItems, totalPrice, incrementItem, decrementItem, removeItem, clearCart } = useCart()
+  const [promoCode, setPromoCode] = useState('')
+  const [activePromotion, setActivePromotion] = useState(null)
+  const [promoMessage, setPromoMessage] = useState('')
+
+  const promotionDiscount = useMemo(
+    () => calculatePromotionDiscount(activePromotion, items, totalPrice),
+    [activePromotion, items, totalPrice],
+  )
 
   const deliveryPrice = totalPrice >= 500 ? 0 : 59
-  const finalPrice = totalPrice + deliveryPrice
+  const discountAmount = promotionDiscount.isApplicable ? promotionDiscount.amount : 0
+  const discountedPrice = Math.max(totalPrice - discountAmount, 0)
+  const finalPrice = discountedPrice + deliveryPrice
+
+  function handleApplyPromo() {
+    const promotion = findPromotionByCode(promoCode)
+
+    if (!promotion) {
+      setActivePromotion(null)
+      setPromoMessage('Промокод не знайдено.')
+      return
+    }
+
+    const discount = calculatePromotionDiscount(promotion, items, totalPrice)
+
+    setActivePromotion(promotion)
+    setPromoCode(promotion.code)
+    setPromoMessage(discount.message)
+  }
+
+  function handleRemovePromo() {
+    setActivePromotion(null)
+    setPromoCode('')
+    setPromoMessage('')
+  }
 
   return (
     <div className="cart-page">
@@ -164,6 +198,14 @@ function Cart() {
                       {deliveryPrice === 0 ? 'Безкоштовно' : formatPrice(deliveryPrice)}
                     </strong>
                   </div>
+                  {activePromotion && (
+                    <div className="cart-summary__row">
+                      <span>Промокод {activePromotion.code}</span>
+                      <strong className={discountAmount > 0 ? 'cart-summary__discount' : ''}>
+                        {discountAmount > 0 ? `-${formatPrice(discountAmount)}` : formatPrice(0)}
+                      </strong>
+                    </div>
+                  )}
                   {deliveryPrice > 0 && (
                     <p className="cart-summary__hint">
                       Безкоштовна доставка від 500 грн
@@ -197,11 +239,32 @@ function Cart() {
                     placeholder="Введіть промокод"
                     className="cart-promo__input"
                     id="promo-input"
+                    value={promoCode}
+                    onChange={(event) => {
+                      setPromoCode(event.target.value.toUpperCase())
+                      setPromoMessage('')
+                    }}
+                    onKeyDown={(event) => {
+                      if (event.key === 'Enter') {
+                        event.preventDefault()
+                        handleApplyPromo()
+                      }
+                    }}
                   />
-                  <button type="button" className="cart-promo__apply" id="promo-apply">
+                  <button type="button" className="cart-promo__apply" id="promo-apply" onClick={handleApplyPromo}>
                     Застосувати
                   </button>
                 </div>
+                {activePromotion && (
+                  <button type="button" className="cart-promo__remove" onClick={handleRemovePromo}>
+                    Скасувати {activePromotion.code}
+                  </button>
+                )}
+                {(promoMessage || (activePromotion && promotionDiscount.message)) && (
+                  <p className={discountAmount > 0 ? 'cart-promo__message is-success' : 'cart-promo__message'}>
+                    {promoMessage || promotionDiscount.message}
+                  </p>
+                )}
               </div>
             </aside>
           </div>
