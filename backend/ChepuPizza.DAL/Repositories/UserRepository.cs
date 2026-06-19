@@ -1,6 +1,7 @@
 ﻿using ChepuPizza.DAL.Data;
 using ChepuPizza.DAL.Interfaces;
 using ChepuPizza.DAL.Models.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace ChepuPizza.DAL.Repositories
 {
@@ -18,6 +19,12 @@ namespace ChepuPizza.DAL.Repositories
             await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
             return user;
+        }
+
+        public async Task<User?> GetByUsernameAsync(string username)
+        {
+            return await _context.Users
+                .FirstOrDefaultAsync(x => x.Username == username);
         }
     }
 }

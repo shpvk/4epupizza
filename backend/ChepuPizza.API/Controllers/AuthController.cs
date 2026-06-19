@@ -21,5 +21,18 @@ namespace ChepuPizza.API.Controllers
             var response = await _authService.RegisterAsync(request);
             return Ok(response);
         }
+
+        [HttpPost("login")]
+        public async Task<ActionResult<AuthResponse>> Register(LoginUserRequest request)
+        {
+            var response = await _authService.LoginAsync(request);
+
+            if(response == null)
+            {
+                return BadRequest("Invalid username or password");
+            }
+
+            return Ok(response);
+        }
     }
 }
