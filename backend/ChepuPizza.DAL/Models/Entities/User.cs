@@ -4,7 +4,6 @@ namespace ChepuPizza.DAL.Models.Entities
 {
     public class User
     {
-
         private User(string username, string passwordHash)
         {
             Username = username;
@@ -15,7 +14,7 @@ namespace ChepuPizza.DAL.Models.Entities
         {
             // Ef Core
         }
-
+        public int Id { get; private set; }
         public string Username { get; private set; } = string.Empty;
 
         public string PasswordHash { get; private set; } = string.Empty;
@@ -34,6 +33,11 @@ namespace ChepuPizza.DAL.Models.Entities
 
             User user = new User(username, passwordHash);
             return (user, null);
+        }
+
+        public void SetPasswordHash(string passwordHash)
+        {
+            PasswordHash = passwordHash;
         }
     }
 }
