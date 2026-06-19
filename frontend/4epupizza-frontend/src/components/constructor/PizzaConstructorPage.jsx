@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import Header from '../header/header'
 import {
   BASE_PIZZA_PRICE,
+  READY_PIZZA_IMAGE_URL,
   categoryDescriptions,
   categoryLabels,
   categoryOrder,
@@ -86,6 +87,10 @@ function PizzaConstructorPage() {
 
   function handleAddToCart() {
     const ingredientNames = selectedIngredients.map((i) => i.label)
+    const ingredientIds = selectedIngredients.flatMap((ingredient) =>
+      Array.from({ length: ingredient.count }, () => Number(ingredient.id)),
+    )
+
     addItem({
       id: 'custom-pizza-' + Date.now(),
       name: 'Піца з конструктора',
@@ -93,6 +98,8 @@ function PizzaConstructorPage() {
       price: totalPrice,
       quantity: 1,
       ingredients: ingredientNames,
+      ingredientIds,
+      imageUrl: READY_PIZZA_IMAGE_URL,
     })
     setSelectedCounts({})
     setAddedToCart(true)

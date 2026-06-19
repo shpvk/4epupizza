@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import Header from '../../components/header/header'
 import Footer from '../../components/footer/footer'
 import { useCart } from '../../context/CartContext'
+import { READY_PIZZA_IMAGE_URL } from '../../components/constructor/constructorData'
 import './Cart.css'
 
 function formatPrice(price) {
@@ -33,11 +34,13 @@ function EmptyCart() {
 }
 
 function CartItem({ item, onIncrement, onDecrement, onRemove }) {
+  const imageUrl = item.imageUrl || (String(item.id).startsWith('custom-pizza-') ? READY_PIZZA_IMAGE_URL : '')
+
   return (
     <article className="cart-item" id={`cart-item-${item.id}`}>
       <div className="cart-item__image">
-        {item.imageUrl ? (
-          <img src={item.imageUrl} alt={item.name} />
+        {imageUrl ? (
+          <img src={imageUrl} alt={item.name} />
         ) : (
           <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
             <circle cx="12" cy="12" r="10" />
@@ -173,13 +176,13 @@ function Cart() {
                   <strong>{formatPrice(finalPrice)}</strong>
                 </div>
 
-                <button
-                  type="button"
+                <Link
+                  to="/order"
                   className="cart-summary__checkout"
                   id="checkout-button"
                 >
                   Оформити замовлення
-                </button>
+                </Link>
 
                 <Link to="/" className="cart-summary__continue">
                   Продовжити покупки
