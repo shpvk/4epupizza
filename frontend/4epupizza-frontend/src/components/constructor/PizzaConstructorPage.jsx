@@ -7,6 +7,7 @@ import {
   categoryOrder,
 } from './constructorData'
 import { useIngredients } from './useIngredients'
+import { useCart } from '../../context/CartContext'
 import './PizzaConstructorPage.css'
 
 function formatConstructorPrice(price) {
@@ -27,6 +28,8 @@ function groupIngredientsByCategory(ingredients) {
 function PizzaConstructorPage() {
   const { ingredients, isLoading, loadError } = useIngredients()
   const [selectedCounts, setSelectedCounts] = useState({})
+  const [addedToCart, setAddedToCart] = useState(false)
+  const { addItem } = useCart()
 
   const groupedIngredients = useMemo(() => groupIngredientsByCategory(ingredients), [ingredients])
   const dynamicCategoryOrder = useMemo(() => {
@@ -79,6 +82,21 @@ function PizzaConstructorPage() {
 
   function clearPizza() {
     setSelectedCounts({})
+  }
+
+  function handleAddToCart() {
+    const ingredientNames = selectedIngredients.map((i) => i.label)
+    addItem({
+      id: 'custom-pizza-' + Date.now(),
+      name: 'Піца з конструктора',
+      description: ingredientNames.length > 0 ? ingredientNames.join(', ') : 'Класична основа',
+      price: totalPrice,
+      quantity: 1,
+      ingredients: ingredientNames,
+    })
+    setSelectedCounts({})
+    setAddedToCart(true)
+    setTimeout(() => setAddedToCart(false), 2500)
   }
 
   function handleImageError(event) {
@@ -211,6 +229,21 @@ function PizzaConstructorPage() {
                 ))}
               </ul>
             </section>
+
+            <button
+              type="button"
+              className="pizza-constructor__add-to-cart"
+              onClick={handleAddToCart}
+              id="add-custom-pizza-to-cart"
+            >
+              Додати до кошика — {formatConstructorPrice(totalPrice)}
+            </button>
+
+            {addedToCart && (
+              <div className="pizza-constructor__toast">
+                ✓ Піцу додано до кошика!
+              </div>
+            )}
           </aside>
         </div>
       </section>

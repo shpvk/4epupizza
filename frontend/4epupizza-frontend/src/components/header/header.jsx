@@ -1,7 +1,10 @@
 import './header.css'
 import { Link } from 'react-router-dom'
+import { useCart } from '../../context/CartContext'
 
 function Header() {
+    const { totalItems } = useCart()
+
     return (
         <header className="header">
             <div className='header_logo'>
@@ -22,7 +25,12 @@ function Header() {
 
             <div className="header_actions">
                 <Link to="/login" className="btn--login">Увійти</Link>
-                <button className="btn--cart"><img src="/img/Group 3.png" alt="" /></button>
+                <Link to="/cart" className="btn--cart" id="header-cart-button">
+                    <img src="/img/Group 3.png" alt="Кошик" />
+                    {totalItems > 0 && (
+                        <span className="cart-badge">{totalItems > 99 ? '99+' : totalItems}</span>
+                    )}
+                </Link>
             </div>
         </header>
     )
