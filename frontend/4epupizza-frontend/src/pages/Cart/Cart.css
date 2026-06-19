@@ -320,6 +320,10 @@
   color: #4ecf72 !important;
 }
 
+.cart-summary__discount {
+  color: #4ecf72 !important;
+}
+
 .cart-summary__hint {
   margin: 0;
   color: #a3a3a3;
@@ -466,6 +470,35 @@
 .cart-promo__apply:hover {
   background: rgba(255, 93, 41, 0.32);
   border-color: rgba(255, 93, 41, 0.75);
+}
+
+.cart-promo__remove {
+  width: 100%;
+  margin-top: 10px;
+  border: 0;
+  padding: 0;
+  color: #ff8a7a;
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 800;
+  text-align: left;
+}
+
+.cart-promo__remove:hover {
+  color: #fe9c1c;
+}
+
+.cart-promo__message {
+  margin: 10px 0 0;
+  color: #ffc6c6;
+  font-size: 0.82rem;
+  line-height: 1.35;
+}
+
+.cart-promo__message.is-success {
+  color: #b8f5c7;
 }
 
 /* ---- Empty Cart ---- */
