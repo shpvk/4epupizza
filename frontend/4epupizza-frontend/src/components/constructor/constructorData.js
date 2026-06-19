@@ -1,5 +1,6 @@
 export const INGREDIENTS_API_URL = '/api/ingredients'
 export const BASE_PIZZA_PRICE = 149
+export const READY_PIZZA_IMAGE_URL = 'https://zcncvckglgttnjwrwuuc.supabase.co/storage/v1/object/public/pizza-images/pizzas/readyPizza.png'
 
 export const categoryLabels = {
   Cheese: 'Сири',
