@@ -7,7 +7,9 @@ import Promotions from './pages/Promotions'
 import Cart from './pages/Cart/Cart'
 import Order from './pages/Order/Order'
 import PizzaConstructorPage from './components/constructor/PizzaConstructorPage'
+import RequireAuth from './components/RequireAuth'
 import { preloadIngredients } from './components/constructor/useIngredients'
+import { AuthProvider } from './context/AuthContext'
 import { CartProvider } from './context/CartContext'
 import { useEffect } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
@@ -20,20 +22,29 @@ function App() {
   }, [])
 
   return (
-    <CartProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/constructor" element={<PizzaConstructorPage />} />
-          <Route path="/promotions" element={<Promotions />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/order" element={<Order />} />
-        </Routes>
-      </BrowserRouter>
-    </CartProvider>
+    <AuthProvider>
+      <CartProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/constructor" element={<PizzaConstructorPage />} />
+            <Route path="/promotions" element={<Promotions />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route
+              path="/order"
+              element={
+                <RequireAuth>
+                  <Order />
+                </RequireAuth>
+              }
+            />
+          </Routes>
+        </BrowserRouter>
+      </CartProvider>
+    </AuthProvider>
   )
 }
 

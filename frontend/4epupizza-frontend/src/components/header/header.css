@@ -101,6 +101,35 @@
  display: inline-block;
  text-decoration: none;
 }
+.header-user
+{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.header-user__name
+{
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: Muller, "Segoe UI", Arial, sans-serif;
+  font-weight: 500;
+  font-size: 0.95rem;
+  color: #FFFFFF;
+}
+.btn--logout
+{
+ font-family: Muller, "Segoe UI", Arial, sans-serif;
+ font-weight: 500;
+ font-size: 0.95rem;
+ color: #FFFFFF;
+ background: #2a1a0d;
+ border-radius: 10px;
+ padding: 10px 18px;
+ border: 1px solid #FF5D29;
+ cursor: pointer;
+}
 .btn--cart
 {
   position: relative;

@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import Header from '../../components/header/header'
 import Footer from '../../components/footer/footer'
 import { useCart } from '../../context/CartContext'
+import { getAuthHeader } from '../../services/authApi'
 import './Order.css'
 
 const ORDER_API_URL = '/api/order'
@@ -76,6 +77,7 @@ function Order() {
         headers: {
           'Content-Type': 'application/json',
           accept: 'application/json',
+          ...getAuthHeader(),
         },
         body: JSON.stringify({
           customerName: form.customerName.trim(),
