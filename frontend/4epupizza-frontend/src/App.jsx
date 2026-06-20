@@ -6,6 +6,7 @@ import SignUp from './pages/Login/SignUp'
 import Promotions from './pages/Promotions'
 import Cart from './pages/Cart/Cart'
 import Order from './pages/Order/Order'
+import Profile from './pages/Profile/Profile'
 import PizzaConstructorPage from './components/constructor/PizzaConstructorPage'
 import RequireAuth from './components/RequireAuth'
 import { preloadIngredients } from './components/constructor/useIngredients'
@@ -33,6 +34,14 @@ function App() {
             <Route path="/constructor" element={<PizzaConstructorPage />} />
             <Route path="/promotions" element={<Promotions />} />
             <Route path="/cart" element={<Cart />} />
+            <Route
+              path="/profile"
+              element={
+                <RequireAuth>
+                  <Profile />
+                </RequireAuth>
+              }
+            />
             <Route
               path="/order"
               element={

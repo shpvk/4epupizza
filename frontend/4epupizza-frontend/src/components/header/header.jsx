@@ -6,6 +6,7 @@ import { useCart } from '../../context/CartContext'
 function Header() {
     const { totalItems } = useCart()
     const { isAuthenticated, logout, user } = useAuth()
+    const userInitial = user?.username?.trim()?.charAt(0)?.toUpperCase() || 'U'
 
     return (
         <header className="header">
@@ -28,7 +29,10 @@ function Header() {
             <div className="header_actions">
                 {isAuthenticated ? (
                     <div className="header-user">
-                        <span className="header-user__name">{user.username}</span>
+                        <Link to="/profile" className="header-user__profile" aria-label="Відкрити профіль">
+                            <span className="header-user__avatar" aria-hidden="true">{userInitial}</span>
+                            <span className="header-user__name">{user.username}</span>
+                        </Link>
                         <button className="btn--logout" type="button" onClick={logout}>
                             Вийти
                         </button>

@@ -2,8 +2,10 @@ import { useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Header from '../../components/header/header'
 import Footer from '../../components/footer/footer'
+import { useAuth } from '../../context/useAuth'
 import { useCart } from '../../context/CartContext'
 import { getAuthHeader } from '../../services/authApi'
+import { saveOrderToHistory } from '../../services/orderHistory'
 import './Order.css'
 
 const ORDER_API_URL = '/api/order'
@@ -41,6 +43,7 @@ function buildOrderItems(items) {
 
 function Order() {
   const navigate = useNavigate()
+  const { user } = useAuth()
   const { items, totalItems, totalPrice, clearCart } = useCart()
   const [form, setForm] = useState({
     customerName: '',
@@ -92,9 +95,28 @@ function Order() {
         throw new Error('Order request failed')
       }
 
+      saveOrderToHistory(user, {
+        customerName: form.customerName.trim(),
+        phone: form.phone.trim(),
+        address: form.address.trim(),
+        comment: form.comment.trim(),
+        items: items.map((item) => ({
+          id: item.id,
+          name: item.name,
+          description: item.description || '',
+          ingredients: item.ingredients || [],
+          imageUrl: item.imageUrl || '',
+          price: item.price,
+          quantity: item.quantity,
+        })),
+        totalItems,
+        subtotal: totalPrice,
+        deliveryPrice,
+        totalPrice: finalPrice,
+      })
       clearCart()
       setStatus({ type: 'success', message: 'Замовлення прийнято. Дякуємо!' })
-      setTimeout(() => navigate('/'), 1500)
+      setTimeout(() => navigate('/profile'), 1500)
     } catch {
       setStatus({
         type: 'error',

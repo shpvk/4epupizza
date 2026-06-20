@@ -107,9 +107,44 @@
   align-items: center;
   gap: 12px;
 }
+.header-user__profile
+{
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  max-width: 190px;
+  border: 1px solid rgba(246, 221, 212, 0.18);
+  border-radius: 999px;
+  padding: 5px 12px 5px 5px;
+  color: #FFFFFF;
+  background: rgba(246, 221, 212, 0.08);
+  text-decoration: none;
+  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+.header-user__profile:hover
+{
+  transform: translateY(-1px);
+  border-color: rgba(255, 93, 41, 0.55);
+  background: rgba(255, 93, 41, 0.14);
+}
+.header-user__avatar
+{
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  color: #FFFFFF;
+  background: linear-gradient(261.69deg, #FF5D29 12.12%, #FE9C1C 86.72%);
+  font-family: Muller, "Segoe UI", Arial, sans-serif;
+  font-weight: 800;
+  font-size: 0.9rem;
+}
 .header-user__name
 {
-  max-width: 140px;
+  min-width: 0;
+  max-width: 120px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
