@@ -21,7 +21,7 @@ function Header() {
                         <li><Link to="/">Піца</Link></li>
                         <li><Link to="/constructor">Конструктор</Link></li>
                         <li><Link to="/promotions">Акції</Link></li>
-                        <li>Про нас</li>
+                        <li><Link to="/about">Про нас</Link></li>
                     </ul>
                 </nav>
             </div>
