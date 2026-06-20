@@ -3,16 +3,17 @@ using ChepuPizza.BLL.Interfaces;
 using ChepuPizza.DAL.Interfaces;
 using ChepuPizza.DAL.Models.Entities;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore.Storage.Json;
 
 namespace ChepuPizza.BLL.Services
 {
     public class AuthService : IAuthService
     {
         private readonly IUserRepository _userRepository;
-        public AuthService(IUserRepository userRepository)
+        private readonly IJwtService _jwtService;
+        public AuthService(IUserRepository userRepository, IJwtService jwtService)
         {
             _userRepository = userRepository;
+            _jwtService = jwtService;
         }
 
         public async Task<AuthResponse> RegisterAsync(RegisterUserRequest request)
@@ -29,9 +30,15 @@ namespace ChepuPizza.BLL.Services
             user.SetPasswordHash(hashedPassword);
             user = await _userRepository.CreateAsync(user);
 
-            AuthResponse response = new AuthResponse();
-            response.Username = user.Username;
-            response.Id = user.Id;
+            string token = _jwtService.CreateToken(user);
+
+            AuthResponse response = new AuthResponse
+            {
+                Username = user.Username,
+                Id = user.Id,
+                Token = token
+            };
+
             return response;
         }
 
@@ -49,10 +56,13 @@ namespace ChepuPizza.BLL.Services
                 return null;
             }
 
+            string token = _jwtService.CreateToken(user);
+
             AuthResponse response = new AuthResponse
             {
                 Id = user.Id,
-                Username = user.Username
+                Username = user.Username,
+                Token = token
             };
 
             return response;
