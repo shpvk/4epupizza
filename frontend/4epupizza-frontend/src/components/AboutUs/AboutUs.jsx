@@ -1,29 +1,56 @@
 import './AboutUs.css'
 
-const MELLSTROY_PHOTO_URL =
-  'https://icdn.lenta.ru/images/2025/02/18/13/20250218135014332/detail_b8b65bfc921c242ee9c94e9a7d7c4fe2.jpg'
+const creators = [
+  {
+    username: 'shpvk',
+    name: 'shpvk',
+    role: 'Засновник та головний піцайоло',
+  },
+  {
+    username: 'KapibaraUa',
+    name: 'KapibaraUa',
+    role: 'Big Boss of engineering',
+  },
+  {
+    username: 'Xamilio',
+    name: 'Oleksandr',
+    role: 'Frontend та смак',
+  },
+]
 
 function AboutUs() {
   return (
     <section className="about-us-page">
       <div className="about-us-hero">
-        <div className="about-us-copy">
-          <span className="about-us-kicker">О нас</span>
-          <h1>Самая крутая пицца в Одессе</h1>
-          <p>
-            4epupizza - это горячее тесто, честная начинка и вкус, который
-            хочется заказывать снова. Мы делаем пиццу для тех, кто любит
-            мощный сыр, хрустящий борт и нормальные порции без скучной экономии.
-          </p>
-          <p className="about-us-quote">
-            Меллстрой советует: если брать пиццу в Одессе, то брать здесь.
-          </p>
-        </div>
+        <span className="about-us-kicker">Команда 4epupizza</span>
+        <h1>Про нас</h1>
+        <p>
+          Ми — невелика команда, яка зібрала цей сайт від тіста до коду. Любимо
+          мощний сир, хрусткий борт та чистий пул-реквест. Нижче — ті, хто варить
+          цю піцу: тисни на фото, щоб залетіти до нас у GitHub.
+        </p>
+      </div>
 
-        <figure className="about-us-photo">
-          <img src={MELLSTROY_PHOTO_URL} alt="Меллстрой" />
-          <figcaption>Mellstroy approved mood</figcaption>
-        </figure>
+      <div className="about-us-team">
+        {creators.map((creator) => (
+          <a
+            key={creator.username}
+            className="creator-card"
+            href={`https://github.com/${creator.username}`}
+            target="_blank"
+            rel="noreferrer"
+          >
+            <img
+              className="creator-card__photo"
+              src={`https://github.com/${creator.username}.png?size=240`}
+              alt={creator.name}
+              loading="lazy"
+            />
+            <h2 className="creator-card__name">{creator.name}</h2>
+            <span className="creator-card__role">{creator.role}</span>
+            <span className="creator-card__link">@{creator.username}</span>
+          </a>
+        ))}
       </div>
     </section>
   )

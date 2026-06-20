@@ -4,6 +4,7 @@ import Login from './pages/Login/Login'
 import ForgotPassword from './pages/Login/ForgotPassword'
 import SignUp from './pages/Login/SignUp'
 import Promotions from './pages/Promotions'
+import About from './pages/About'
 import Cart from './pages/Cart/Cart'
 import Order from './pages/Order/Order'
 import Profile from './pages/Profile/Profile'
@@ -33,6 +34,7 @@ function App() {
             <Route path="/signup" element={<SignUp />} />
             <Route path="/constructor" element={<PizzaConstructorPage />} />
             <Route path="/promotions" element={<Promotions />} />
+            <Route path="/about" element={<About />} />
             <Route path="/cart" element={<Cart />} />
             <Route
               path="/profile"
