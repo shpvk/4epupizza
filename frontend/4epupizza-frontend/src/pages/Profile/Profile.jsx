@@ -104,7 +104,6 @@ function Profile() {
                 <span className="profile-history__eyebrow">Історія</span>
                 <h2 id="history-title">Ваші замовлення</h2>
               </div>
-              {orders.length > 0 && <span className="profile-history__count">{orders.length}</span>}
             </div>
 
             {orders.length === 0 ? (
