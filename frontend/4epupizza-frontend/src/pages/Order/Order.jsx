@@ -5,6 +5,7 @@ import Footer from '../../components/footer/footer'
 import { useAuth } from '../../context/useAuth'
 import { useCart } from '../../context/CartContext'
 import { getAuthHeader } from '../../services/authApi'
+import { getCustomerDraft, saveCustomerDraft } from '../../services/orderCustomerDraft'
 import { saveOrderToHistory } from '../../services/orderHistory'
 import './Order.css'
 
@@ -45,12 +46,7 @@ function Order() {
   const navigate = useNavigate()
   const { user } = useAuth()
   const { items, totalItems, totalPrice, clearCart } = useCart()
-  const [form, setForm] = useState({
-    customerName: '',
-    phone: '',
-    address: '',
-    comment: '',
-  })
+  const [form, setForm] = useState(() => getCustomerDraft(user))
   const [status, setStatus] = useState({ type: '', message: '' })
   const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -60,7 +56,11 @@ function Order() {
 
   function updateField(event) {
     const { name, value } = event.target
-    setForm((current) => ({ ...current, [name]: value }))
+    setForm((current) => {
+      const nextForm = { ...current, [name]: value }
+      saveCustomerDraft(user, nextForm)
+      return nextForm
+    })
   }
 
   async function handleSubmit(event) {
@@ -95,6 +95,7 @@ function Order() {
         throw new Error('Order request failed')
       }
 
+      saveCustomerDraft(user, form)
       saveOrderToHistory(user, {
         customerName: form.customerName.trim(),
         phone: form.phone.trim(),
