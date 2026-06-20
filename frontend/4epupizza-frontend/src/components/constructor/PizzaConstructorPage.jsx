@@ -30,6 +30,7 @@ function PizzaConstructorPage() {
   const { ingredients, isLoading, loadError } = useIngredients()
   const [selectedCounts, setSelectedCounts] = useState({})
   const [addedToCart, setAddedToCart] = useState(false)
+  const [constructorMessage, setConstructorMessage] = useState('')
   const { addItem } = useCart()
 
   const groupedIngredients = useMemo(() => groupIngredientsByCategory(ingredients), [ingredients])
@@ -58,6 +59,7 @@ function PizzaConstructorPage() {
   const selectedTotal = selectedIngredients.reduce((sum, ingredient) => sum + ingredient.count, 0)
 
   function addIngredient(ingredientId) {
+    setConstructorMessage('')
     setSelectedCounts((current) => ({
       ...current,
       [ingredientId]: (current[ingredientId] || 0) + 1,
@@ -83,9 +85,15 @@ function PizzaConstructorPage() {
 
   function clearPizza() {
     setSelectedCounts({})
+    setConstructorMessage('')
   }
 
   function handleAddToCart() {
+    if (selectedTotal === 0) {
+      setConstructorMessage('Оберіть хоча б один продукт для піци.')
+      return
+    }
+
     const ingredientNames = selectedIngredients.map((i) => i.label)
     const ingredientIds = selectedIngredients.flatMap((ingredient) =>
       Array.from({ length: ingredient.count }, () => Number(ingredient.id)),
@@ -103,6 +111,7 @@ function PizzaConstructorPage() {
     })
     setSelectedCounts({})
     setAddedToCart(true)
+    setConstructorMessage('')
     setTimeout(() => setAddedToCart(false), 2500)
   }
 
@@ -241,10 +250,17 @@ function PizzaConstructorPage() {
               type="button"
               className="pizza-constructor__add-to-cart"
               onClick={handleAddToCart}
+              disabled={selectedTotal === 0}
               id="add-custom-pizza-to-cart"
             >
               Додати до кошика — {formatConstructorPrice(totalPrice)}
             </button>
+
+            {(constructorMessage || selectedTotal === 0) && (
+              <div className="pizza-constructor__notice" role="status">
+                {constructorMessage || 'Оберіть хоча б один продукт для піци.'}
+              </div>
+            )}
 
             {addedToCart && (
               <div className="pizza-constructor__toast">

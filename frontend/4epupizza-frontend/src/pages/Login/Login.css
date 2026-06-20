@@ -134,9 +134,35 @@
   transition: opacity 0.2s, transform 0.2s;
 }
 
+.login-form__btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+  transform: none;
+}
+
 .login-form__btn:hover {
   opacity: 0.88;
   transform: translateY(-1px);
+}
+
+.login-form__btn:disabled:hover {
+  opacity: 0.65;
+  transform: none;
+}
+
+.login-form__status {
+  margin: -4px 0 0;
+  font-size: 0.875rem;
+  line-height: 1.35;
+  text-align: center;
+}
+
+.login-form__status--error {
+  color: #ff9b7c;
+}
+
+.login-form__status--success {
+  color: #9fed9b;
 }
 
 .login-card__signup {
