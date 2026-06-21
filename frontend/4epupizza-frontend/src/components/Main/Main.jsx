@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import "./Main.css";
 
 function Main() {
@@ -24,6 +25,14 @@ function Main() {
             <img src="/img/pizza-frame.png" className="preview-image" />
             <img src="/img/Ellipse2.png" className="play-button" />
           </div>
+          <div>
+            <Link to="/catalog" className="catalog-button">
+              Каталог
+            </Link>
+          </div>
+        </div>
+        <div className="photo-section">
+          <img src="./img/stepizza.jpeg" />
         </div>
       </div>
 

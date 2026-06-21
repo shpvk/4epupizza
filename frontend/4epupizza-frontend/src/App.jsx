@@ -1,8 +1,9 @@
-import './App.css'
-import Home from './pages/Home'
-import Login from './pages/Login/Login'
-import PizzaConstructorPage from './components/constructor/PizzaConstructorPage'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import "./App.css";
+import Home from "./pages/Home";
+import Login from "./pages/Login/Login";
+import PizzaConstructorPage from "./components/constructor/PizzaConstructorPage";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Catalog from "./pages/catalog/catalog";
 
 function App() {
   return (
@@ -11,9 +12,10 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/constructor" element={<PizzaConstructorPage />} />
+        <Route path="/catalog" element={<Catalog />} />
       </Routes>
     </BrowserRouter>
-  )
+  );
 }
 
-export default App
+export default App;
