@@ -137,8 +137,67 @@ color: white;
   padding: 0;
   margin-right: 10px;
 }
-.close-button button img 
+.close-button button img
 {
   width: 35px;
   height: 35px;
+}
+
+/* ===== Адаптив ===== */
+@media (max-width: 1100px)
+{
+  .main-cont {
+    width: auto;
+    margin: 0 auto;
+    padding: 0 clamp(16px, 5vw, 48px);
+  }
+  .text-section {
+    width: min(560px, 100%);
+    margin-top: 80px;
+  }
+  .text-section h1 {
+    font-size: clamp(2.4rem, 7vw, 69.17px);
+  }
+  .pizza-background {
+    font-size: clamp(5rem, 14vw, 16rem);
+    margin: clamp(110px, 18vw, 180px) 0 0 clamp(12px, 6vw, 180px);
+  }
+  .video-content {
+    width: 80%;
+  }
+}
+
+@media (max-width: 560px)
+{
+  .text-section {
+    width: 100%;
+    margin-top: 48px;
+  }
+  .text-section h1 {
+    font-size: clamp(2rem, 9vw, 2.8rem);
+  }
+  .text-section p br {
+    display: none;
+  }
+  .text-section p,
+  .freepizz {
+    font-size: 1rem;
+  }
+  .pizza-background {
+    font-size: 4.5rem;
+    margin-top: 100px;
+  }
+  .video-preview {
+    width: 100%;
+    max-width: 320px;
+    height: auto;
+    aspect-ratio: 3 / 2;
+  }
+  .video-content {
+    width: 92%;
+  }
+  .play-button {
+    width: 70px;
+    height: 70px;
+  }
 }
