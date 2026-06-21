@@ -1,0 +1,11 @@
+.catalog-page-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Занимает как минимум всю высоту экрана */
+}
+
+.catalog-content {
+  flex: 1; /* Этот блок будет растягиваться и "выталкивать" футер вниз */
+  /* Здесь можно задать отступы для будущего контента */
+  padding: 2rem 0;
+}
