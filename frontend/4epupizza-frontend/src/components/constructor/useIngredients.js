@@ -1,34 +1,7 @@
 import { useEffect, useState } from 'react'
 import { INGREDIENTS_API_URL, normalizeIngredient } from './constructorData'
 
-const INGREDIENTS_CACHE_KEY = '4epupizza_ingredients_cache'
-
-let ingredientsCache = readIngredientsCache()
 let ingredientsRequest = null
-
-function readIngredientsCache() {
-  try {
-    const stored = localStorage.getItem(INGREDIENTS_CACHE_KEY)
-    if (!stored) return []
-
-    const parsed = JSON.parse(stored)
-    if (Array.isArray(parsed)) return parsed
-  } catch {
-    // ignore
-  }
-
-  return []
-}
-
-function saveIngredientsCache(ingredients) {
-  ingredientsCache = ingredients
-
-  try {
-    localStorage.setItem(INGREDIENTS_CACHE_KEY, JSON.stringify(ingredients))
-  } catch {
-    // ignore
-  }
-}
 
 function preloadIngredientImages(ingredients) {
   ingredients.forEach((ingredient) => {
@@ -56,7 +29,6 @@ async function fetchIngredients(signal) {
     .filter((ingredient) => ingredient.isAvailable !== false)
     .map(normalizeIngredient)
 
-  saveIngredientsCache(ingredients)
   preloadIngredientImages(ingredients)
 
   return ingredients
@@ -75,8 +47,8 @@ export function preloadIngredients() {
 }
 
 export function useIngredients() {
-  const [ingredients, setIngredients] = useState(ingredientsCache)
-  const [isLoading, setIsLoading] = useState(ingredientsCache.length === 0)
+  const [ingredients, setIngredients] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
   const [loadError, setLoadError] = useState('')
 
   useEffect(() => {
@@ -86,7 +58,7 @@ export function useIngredients() {
     async function loadIngredients() {
       try {
         setLoadError('')
-        setIsLoading(ingredientsCache.length === 0)
+        setIsLoading(true)
 
         const freshIngredients = ingredientsRequest
           ? await ingredientsRequest
@@ -97,12 +69,8 @@ export function useIngredients() {
         }
       } catch (error) {
         if (error.name !== 'AbortError' && isMounted) {
-          if (ingredientsCache.length > 0) {
-            setIngredients(ingredientsCache)
-          } else {
-            setIngredients([])
-            setLoadError('Не вдалося завантажити інгредієнти.')
-          }
+          setIngredients([])
+          setLoadError('Не вдалося завантажити інгредієнти з API.')
         }
       } finally {
         if (!controller.signal.aborted && isMounted) {

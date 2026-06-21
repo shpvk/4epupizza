@@ -4,12 +4,13 @@ import Header from '../../components/header/header'
 import Footer from '../../components/footer/footer'
 import { useAuth } from '../../context/useAuth'
 import { useCart } from '../../context/CartContext'
+import { buildApiUrl } from '../../services/apiConfig'
 import { getAuthHeader } from '../../services/authApi'
 import { getCustomerDraft, saveCustomerDraft } from '../../services/orderCustomerDraft'
 import { saveOrderToHistory } from '../../services/orderHistory'
 import './Order.css'
 
-const ORDER_API_URL = '/api/order'
+const ORDER_API_URL = buildApiUrl('/api/order')
 
 function formatPrice(price) {
   return `${Math.round(Number(price) || 0)} грн`
