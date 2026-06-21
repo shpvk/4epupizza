@@ -16,6 +16,11 @@ const creators = [
     name: 'Oleksandr',
     role: 'Frontend та смак',
   },
+  {
+    username: 'borzikpPlus',
+    name: 'leha',
+    role: "ШІ-контриб'ютор піцайоло",
+  },
 ]
 
 function AboutUs() {
