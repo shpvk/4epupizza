@@ -1,50 +1,74 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import Header from '../../components/header/header'
+import { useAuth } from '../../context/useAuth'
 import './Login.css'
 
 function Login() {
-  const [email, setEmail] = useState('')
+  const navigate = useNavigate()
+  const location = useLocation()
+  const { login } = useAuth()
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const [status, setStatus] = useState({ type: '', message: '' })
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const handleSubmit = (e) => {
+  async function handleSubmit(e) {
     e.preventDefault()
-    console.log('Login:', { email, password })
+
+    if (!username.trim() || !password) {
+      setStatus({ type: 'error', message: 'Вкажіть логін і пароль.' })
+      return
+    }
+
+    setIsSubmitting(true)
+    setStatus({ type: '', message: '' })
+
+    try {
+      await login({
+        username: username.trim(),
+        password,
+      })
+      navigate(location.state?.from || '/', { replace: true })
+    } catch {
+      setStatus({ type: 'error', message: 'Не вдалося увійти. Перевірте логін і пароль.' })
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
     <div className="login-page">
+      <Header />
       <div className="login-card">
-        <div className="login-card__logo">
-          <span className="login-card__logo-text">4epupizza</span>
-        </div>
         <div className="login-card__body">
-          <h1 className="login-card__title">Welcome back</h1>
-          <p className="login-card__subtitle">Sign in to continue ordering.</p>
+          <h1 className="login-card__title">З поверненням</h1>
+          <p className="login-card__subtitle">Увійдіть, щоб продовжити замовлення.</p>
 
           <form className="login-form" onSubmit={handleSubmit} noValidate>
             <div className="login-form__group">
-              <label className="login-form__label" htmlFor="login-email">
-                Email
+              <label className="login-form__label" htmlFor="login-username">
+                Логін
               </label>
               <input
-                id="login-email"
+                id="login-username"
                 className="login-form__input"
-                type="email"
-                placeholder="your@email.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                autoComplete="email"
+                type="text"
+                placeholder="username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                autoComplete="username"
                 required
               />
             </div>
             <div className="login-form__group">
               <div className="login-form__row">
                 <label className="login-form__label" htmlFor="login-password">
-                  Password
+                  Пароль
                 </label>
-                <span className="login-form__forgot">
-                  Forgot?
-                </span>
+                <Link className="login-form__forgot" to="/forgot-password">
+                  Забули пароль?
+                </Link>
               </div>
               <input
                 id="login-password"
@@ -57,21 +81,27 @@ function Login() {
                 required
               />
             </div>
-            <button id="login-submit" className="login-form__btn" type="submit">
-              Log in →
+
+            {status.message && (
+              <p className={`login-form__status login-form__status--${status.type}`} role="status">
+                {status.message}
+              </p>
+            )}
+
+            <button id="login-submit" className="login-form__btn" type="submit" disabled={isSubmitting}>
+              {isSubmitting ? 'Входимо...' : 'Увійти →'}
             </button>
           </form>
           <p className="login-card__signup">
-            Don't have an account?{' '}
-            <span className="login-card__signup-link">
-              Sign up
-            </span>
+            Немає акаунта?{' '}
+            <Link className="login-card__signup-link" to="/signup">
+              Зареєструватися
+            </Link>
           </p>
         </div>
       </div>
     </div>
   )
 }
+
 export default Login
-
-

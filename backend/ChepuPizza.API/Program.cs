@@ -25,6 +25,15 @@ namespace ChepuPizza.API
 
             builder.Services.AddScoped<IPizzaBuilderService, PizzaBuilderService>();
 
+            builder.Services.AddScoped<IOrderService, OrderService>();
+            builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+
+            builder.Services.AddScoped<IAuthService, AuthService>();
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+            builder.Services.AddScoped<IJwtService, JwtService>();
+
+
             builder.Services.AddDatabase(builder.Configuration);
 
             builder.Services.AddEndpointsApiExplorer();

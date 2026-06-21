@@ -157,50 +157,67 @@ color: white;
   padding: 0;
   margin-right: 10px;
 }
-.close-button button img 
+.close-button button img
 {
   width: 35px;
   height: 35px;
 }
-.catalog-button
+
+/* ===== Адаптив ===== */
+@media (max-width: 1100px)
 {
-  display: inline-block;
-  font-family: Muller;
-  font-weight: 500;
-  font-style: Medium;
-  font-size: 1.2rem;
-  line-height: 124%;
-  letter-spacing: 0%;
-  text-decoration: none;
-  color: white;
-  background: linear-gradient(261.69deg, #FF5D29 12.12%, #FE9C1C 86.72%);
-  border-radius: 100px;
-  padding: 15px 60px;
-  margin-top: clamp(40px, 8vw, 110px);
+  .main-cont {
+    width: auto;
+    margin: 0 auto;
+    padding: 0 clamp(16px, 5vw, 48px);
+  }
+  .text-section {
+    width: min(560px, 100%);
+    margin-top: 80px;
+  }
+  .text-section h1 {
+    font-size: clamp(2.4rem, 7vw, 69.17px);
+  }
+  .pizza-background {
+    font-size: clamp(5rem, 14vw, 16rem);
+    margin: clamp(110px, 18vw, 180px) 0 0 clamp(12px, 6vw, 180px);
+  }
+  .video-content {
+    width: 80%;
+  }
 }
 
-/* --- АДАПТИВНОСТЬ ДЛЯ ТЕЛЕФОНОВ И ПЛАНШЕТОВ --- */
-@media (max-width: 900px) {
-  .main-cont {
-    flex-direction: column-reverse; /* Ставим фото сверху, а текст снизу */
-    width: 90%;
-    margin: 0 auto; /* Центрируем контейнер */
+@media (max-width: 560px)
+{
+  .text-section {
+    width: 100%;
+    margin-top: 48px;
   }
-  
-  .text-section, .photo-section {
-    width: 100%; /* Блоки на мобильных занимают всю ширину */
-    margin-top: 40px;
-    align-items: center; /* Центрируем текст внутри */
-    text-align: center;
+  .text-section h1 {
+    font-size: clamp(2rem, 9vw, 2.8rem);
   }
-  
-  .photo-section img {
-    width: 90%;
-    margin-left: auto;
-    margin-right: auto;
+  .text-section p br {
+    display: none;
   }
-
+  .text-section p,
+  .freepizz {
+    font-size: 1rem;
+  }
   .pizza-background {
-    display: none; /* Скрываем большую фоновую надпись Pizza на мобильных, чтобы не мешала */
+    font-size: 4.5rem;
+    margin-top: 100px;
+  }
+  .video-preview {
+    width: 100%;
+    max-width: 320px;
+    height: auto;
+    aspect-ratio: 3 / 2;
+  }
+  .video-content {
+    width: 92%;
+  }
+  .play-button {
+    width: 70px;
+    height: 70px;
   }
 }

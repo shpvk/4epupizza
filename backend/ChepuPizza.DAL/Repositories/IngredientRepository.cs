@@ -34,7 +34,6 @@ namespace ChepuPizza.DAL.Repositories
             
 
             List<Ingredient> ingredients = await _context.Ingredients
-                .AsNoTracking()
                 .Where(i => ingredientIds.Contains(i.Id) && i.IsAvailable)
                 .ToListAsync();
 
