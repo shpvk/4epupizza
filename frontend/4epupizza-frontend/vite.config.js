@@ -7,9 +7,8 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://localhost:7067',
+        target: 'https://fourepupizza.onrender.com',
         changeOrigin: true,
-        secure: false,
       },
     },
   },

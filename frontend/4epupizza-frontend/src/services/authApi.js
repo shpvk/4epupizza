@@ -1,5 +1,7 @@
+import { buildApiUrl } from './apiConfig'
+
 const AUTH_STORAGE_KEY = '4epupizza_auth'
-const AUTH_API_URL = '/api/Auth'
+const AUTH_API_URL = buildApiUrl('/api/Auth')
 
 function getStoredAuth() {
   try {

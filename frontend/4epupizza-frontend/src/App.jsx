@@ -18,9 +18,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
 function App() {
   useEffect(() => {
-    preloadIngredients().catch(() => {
-      // The constructor page will show an error if there is no cached data.
-    })
+    preloadIngredients().catch(() => {})
   }, [])
 
   return (
