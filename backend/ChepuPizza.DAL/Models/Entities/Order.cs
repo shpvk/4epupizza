@@ -15,6 +15,9 @@
             Address = address;
             Comment = comment;
             OrderItems = orderItems;
+            TotalPrice = orderItems.Sum(orderItem => orderItem.TotalPrice);
+            Status = OrderStatus.Created;
+            CreatedAt = DateTime.UtcNow;
         }
 
         public int Id { get; private set; }
