@@ -7,54 +7,34 @@ function Footer() {
             <div className="footer-top">
                 <div className="footer-inner">
                     <div className="footer-logo">
-                        <img src="https://zcncvckglgttnjwrwuuc.supabase.co/storage/v1/object/public/pizza-images/important/logo.png" alt="4epupizza" />
+                        <Link to="/">
+                            <img src="https://zcncvckglgttnjwrwuuc.supabase.co/storage/v1/object/public/pizza-images/important/logo.png" alt="4epupizza" />
+                        </Link>
                     </div>
 
-                    <div className="footer-links">
-                        <div className="footer-column">
-                            <a href="#" className="footer-column-title">Главная</a>
-                            <Link to="/cart">К заказу</Link>
-                            <a href="#">О нас</a>
-                            <a href="#">Мероприятия</a>
-                            <a href="#">Меню</a>
-                        </div>
-
-                        <div className="footer-column footer-column-mt">
-                            <a href="#">3 Пиццы + 1 Кофе в подарок</a>
-                            <a href="#">2 Пиццы по цене 1</a>
-                            <a href="#">Экскурсия по кухне</a>
-                        </div>
-
-                        <div className="footer-column">
-                            <span className="footer-column-title">Меню</span>
-                            <a href="#">Показать все</a>
-                            <a href="#">Морепродукты</a>
-                            <a href="#">Веган</a>
-                            <a href="#">Мясо</a>
-                        </div>
-
-                        <div className="footer-column">
-                            <span className="footer-column-title">О нас</span>
-                            <a href="#">Наша история</a>
-                            <a href="#">Почему мы?</a>
-                        </div>
-                    </div>
+                    <nav className="footer-nav">
+                        <Link to="/">Главная</Link>
+                        <Link to="/constructor">Конструктор</Link>
+                        <Link to="/promotions">Акции</Link>
+                        <Link to="/about">О нас</Link>
+                        <Link to="/cart">Корзина</Link>
+                    </nav>
                 </div>
             </div>
 
             <div className="footer-bottom">
                 <div className="footer-phone">
-                    +380 67 315 27 24
+                    <a href="tel:+380673152724">+380 67 315 27 24</a>
                 </div>
 
                 <div className="footer-socials">
-                    <a href="#" aria-label="Instagram">
+                    <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
                         <img src="https://zcncvckglgttnjwrwuuc.supabase.co/storage/v1/object/public/pizza-images/important/instagram.svg" alt="" />
                     </a>
-                    <a href="#" aria-label="Twitter">
+                    <a href="https://x.com" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
                         <img src="https://zcncvckglgttnjwrwuuc.supabase.co/storage/v1/object/public/pizza-images/important/x.svg" alt="" />
                     </a>
-                    <a href="#" aria-label="Facebook">
+                    <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
                         <img src="https://zcncvckglgttnjwrwuuc.supabase.co/storage/v1/object/public/pizza-images/important/facebook.svg" alt="" />
                     </a>
                 </div>
