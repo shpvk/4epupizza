@@ -2,26 +2,73 @@ import "./Recomend.css";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Card from "../pizzacard/pizzacard";
-import { buildApiUrl } from "../../services/apiConfig";
+const dummyPizzas = [
+  {
+    name: "Meat Pizza",
+    price: 210,
+    imageUrl:
+      "https://zcncvckglgttnjwrwuuc.supabase.co/storage/v1/object/public/pizza-images/pizzas/pizza_default.png",
+    categoryId: 1,
+    ingredients: [{ name: "onion" }, { name: "meat" }],
+  },
+  {
+    name: "Veggie Pizza",
+    price: 190,
+    imageUrl:
+      "https://zcncvckglgttnjwrwuuc.supabase.co/storage/v1/object/public/pizza-images/pizzas/Veggie.png",
+    categoryId: 2,
+    ingredients: [{ name: "onion" }, { name: "tomato" }],
+  },
+  {
+    name: "Seafood Pizza",
+    price: 300,
+    imageUrl:
+      "https://zcncvckglgttnjwrwuuc.supabase.co/storage/v1/object/public/pizza-images/pizzas/sea_pizza.png",
+    categoryId: 3,
+    ingredients: [{ name: "prawns" }],
+  },
+  {
+    name: "Mushroom Pizza",
+    price: 250,
+    imageUrl:
+      "https://zcncvckglgttnjwrwuuc.supabase.co/storage/v1/object/public/pizza-images/pizzas/mushrooms_pizza.png",
+    categoryId: 4,
+    ingredients: [{ name: "mushrooms" }],
+  },
+  {
+    name: "Meat Pizza1",
+    price: 290,
+    imageUrl:
+      "https://zcncvckglgttnjwrwuuc.supabase.co/storage/v1/object/public/pizza-images/pizzas/meat_pizza.png",
+    categoryId: 3,
+    ingredients: [{ name: "onion" }, { name: "meat" }],
+  },
+];
 
 function Recomend() {
   const [pizzas, setPizzas] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState(null); // null означает "Все"
 
   useEffect(() => {
-    fetch(buildApiUrl("/api/pizzas"))
+    // Отправляем запрос на порт бэкенда (5286)
+    fetch("http://localhost:5286/api/pizzas")
       .then((res) => res.json())
       .then((data) => {
         setPizzas(data); // Сохраняем полученные из БД пиццы
+        setLoading(false); // Выключаем индикатор загрузки
       })
       .catch((err) => {
         console.error("Ошибка при загрузке пицц:", err);
+        setLoading(false);
       });
   }, []);
 
+  const displayPizzas = pizzas.length > 0 ? pizzas : dummyPizzas;
+
   const filteredPizzas = selectedCategory
-    ? pizzas.filter((pizza) => pizza.categoryId === selectedCategory)
-    : pizzas;
+    ? displayPizzas.filter((pizza) => pizza.categoryId === selectedCategory)
+    : displayPizzas;
 
   return (
     <main>

@@ -94,18 +94,29 @@ letter-spacing: 0%;
   border-radius: 30px;
   padding: 10px 50px;
   font-family: Muller;
-font-weight: 400;
-font-style: Regular;
-font-size: 16.08px;
+  font-weight: 400;
+  font-style: Regular;
+  font-size: 16.08px;
   background: linear-gradient(261.69deg, #FF5924 12.12%, #FFA229 86.72%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   /* color: transparent; — альтернативный вариант */
 
+  line-height: 110.00000000000001%;
+  letter-spacing: 0%;
+  
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.2s ease;
+}
 
-line-height: 110.00000000000001%;
-letter-spacing: 0%;
+.ingredients-btn:hover {
+  transform: scale(1.03);
+  box-shadow: 0 4px 10px rgba(255, 89, 36, 0.2);
+}
 
+.ingredients-btn:active {
+  transform: scale(0.95);
+  box-shadow: 0 2px 5px rgba(255, 89, 36, 0.2);
 }
 
 .pizza-footer
@@ -124,7 +135,7 @@ font-weight: 400;
 font-style: Regular;
 font-size: 22.82px;
 color: rgba(163, 163, 163, 1);
-
+user-select: none;
 line-height: 110.00000000000001%;
 letter-spacing: 0%;
 }
@@ -136,7 +147,18 @@ letter-spacing: 0%;
   width: 28px;        
   height: 28px;
   color:rgba(163, 163, 163, 1);
+  cursor: pointer;
+  transition: transform 0.1s ease, background-color 0.2s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
 }
+
+.counter-btn:active {
+  transform: scale(0.85);
+}
+
 .pizza-counter
 {
   display: flex;
@@ -167,12 +189,23 @@ letter-spacing: 0%;
   border-radius: 84px;
   width:195px;
   height:45px;
-font-family: Muller;
-font-weight: 500;
-font-style: Medium;
-font-size: 17.45px;
-color:white;
-line-height: 110.00000000000001%;
-letter-spacing: 0%;
+  font-family: Muller;
+  font-weight: 500;
+  font-style: Medium;
+  font-size: 17.45px;
+  color:white;
+  line-height: 110.00000000000001%;
+  letter-spacing: 0%;
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.2s ease;
+}
 
+.order-btn:hover {
+  transform: scale(1.03);
+  box-shadow: 0 4px 10px rgba(255, 89, 36, 0.4);
+}
+
+.order-btn:active {
+  transform: scale(0.95);
+  box-shadow: 0 2px 5px rgba(255, 89, 36, 0.4);
 }
