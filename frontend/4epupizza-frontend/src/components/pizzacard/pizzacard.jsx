@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./Pizzacard.css";
 import { useCart } from "../../context/CartContext";
 import IngredientsDrawer from "./IngredientsDrawer";
+import { getPizzaFallbackId } from "../../data/pizzaFallbackIds";
 
 function PizzaCard({ pizza }) {
   const [selectedSize, setSelectedSize] = useState(28);
@@ -32,11 +33,15 @@ function PizzaCard({ pizza }) {
   }
 
   const handleOrder = () => {
+    const pizzaId = Number(pizza.id) || getPizzaFallbackId(pizza.name);
     const extrasId = Object.entries(extraIngredients)
-      .filter(([id, count]) => count > 0)
+      .filter(([, count]) => count > 0)
       .map(([id, count]) => `${id}x${count}`)
       .sort()
       .join("-");
+    const ingredientIds = Object.entries(extraIngredients)
+      .filter(([id, count]) => Number(id) > 0 && count > 0)
+      .flatMap(([id, count]) => Array.from({ length: count }, () => Number(id)));
 
     let finalDescription =
       pizza.ingredients && pizza.ingredients.length > 0
@@ -49,6 +54,7 @@ function PizzaCard({ pizza }) {
 
     addItem({
       id: `${pizza.id || pizza.name}-${selectedSize}${extrasId ? `-${extrasId}` : ""}`,
+      pizzaId: Number.isInteger(pizzaId) && pizzaId > 0 ? pizzaId : undefined,
       name: pizza.name,
       description: finalDescription,
       price: currentPrice,
@@ -56,6 +62,7 @@ function PizzaCard({ pizza }) {
       imageUrl: pizza.imageUrl || "/img/pizza-italian.png",
       quantity: quantity,
       extraIngredients: extraIngredients,
+      ingredientIds: ingredientIds,
     });
   };
 

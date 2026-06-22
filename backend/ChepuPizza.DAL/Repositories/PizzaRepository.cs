@@ -41,6 +41,12 @@ namespace ChepuPizza.DAL.Repositories
             return pizza;
         }
 
+        public async Task<Pizza?> GetByIdForOrderAsync(int pizzaId)
+        {
+            return await _context.Pizzas
+                .FirstOrDefaultAsync(p => p.Id == pizzaId && p.IsAvailable);
+        }
+
         public async Task<Pizza> AddAsync(Pizza pizza)
         {
             await _context.Pizzas.AddAsync(pizza);
