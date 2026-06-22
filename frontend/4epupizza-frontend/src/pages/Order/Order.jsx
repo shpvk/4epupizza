@@ -11,7 +11,7 @@ import { saveOrderToHistory } from '../../services/orderHistory'
 import './Order.css'
 
 const ORDER_API_URL = buildApiUrl('/api/order')
-const ORDER_REQUEST_TIMEOUT_MS = 18000
+const ORDER_REQUEST_TIMEOUT_MS = 60000
 const ORDER_RETRY_DELAY_MS = 700
 
 function formatPrice(price) {
@@ -26,11 +26,25 @@ function getPizzaId(item) {
   return Number(item.id) || 0
 }
 
+function isCustomPizza(item) {
+  return String(item.id).startsWith('custom-pizza-')
+}
+
+function getIngredientIds(item) {
+  return (item.ingredientIds || []).map((id) => Number(id)).filter(Number.isFinite)
+}
+
+function getInvalidCustomPizza(items) {
+  return items.find((item) => {
+    return isCustomPizza(item) && getIngredientIds(item).length === 0
+  })
+}
+
 function buildOrderItems(items) {
   return items.map((item) => {
-    const ingredientIds = (item.ingredientIds || []).map((id) => Number(id)).filter(Number.isFinite)
+    const ingredientIds = getIngredientIds(item)
 
-    if (String(item.id).startsWith('custom-pizza-')) {
+    if (isCustomPizza(item)) {
       return {
         ingredientIds,
         quantity: item.quantity,
@@ -76,7 +90,23 @@ async function postOrder(payload) {
         return response
       }
 
-      const error = new Error('Order request failed')
+      let errorMessage = 'Order request failed'
+
+      try {
+        const text = await response.text()
+        if (text) {
+          try {
+            const data = JSON.parse(text)
+            errorMessage = data?.message || data?.title || text
+          } catch {
+            errorMessage = text
+          }
+        }
+      } catch {
+        // Keep the generic message when the API returns an unreadable error.
+      }
+
+      const error = new Error(errorMessage)
       error.status = response.status
       throw error
     } catch (error) {
@@ -133,6 +163,15 @@ function Order() {
       return
     }
 
+    const invalidCustomPizza = getInvalidCustomPizza(items)
+    if (invalidCustomPizza) {
+      setStatus({
+        type: 'error',
+        message: `У піці "${invalidCustomPizza.name}" немає інгредієнтів. Видаліть її з кошика та зберіть у конструкторі ще раз.`,
+      })
+      return
+    }
+
     submitLockRef.current = true
     setIsSubmitting(true)
     setStatus({ type: '', message: '' })
@@ -169,10 +208,13 @@ function Order() {
       clearCart()
       setStatus({ type: 'success', message: 'Замовлення прийнято. Дякуємо!' })
       setTimeout(() => navigate('/profile'), 1500)
-    } catch {
+    } catch (error) {
+      const isTimeout = error.name === 'AbortError'
       setStatus({
         type: 'error',
-        message: 'Не вдалося оформити замовлення. Перевірте дані та спробуйте ще раз.',
+        message: isTimeout
+          ? 'Сервер довго не відповідає. Спробуйте ще раз за хвилину.'
+          : error.message || 'Не вдалося оформити замовлення. Перевірте дані та спробуйте ще раз.',
       })
     } finally {
       setIsSubmitting(false)
