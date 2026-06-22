@@ -40,10 +40,16 @@ namespace ChepuPizza.BLL.Services
                 throw new ArgumentException("Pizza must have at least one ingredient");
             }
 
+            if (!Enum.TryParse(pizzaRequest.Category, ignoreCase: true, out PizzaCategory category))
+            {
+                throw new ArgumentException("Invalid pizza category");
+            }
+
             (Pizza? pizza, string? error) = Pizza.Create(
                 pizzaRequest.Name,
                 pizzaRequest.Price,
-                pizzaRequest.ImageUrl);
+                pizzaRequest.ImageUrl,
+                category);
 
             if (error != null)
             {

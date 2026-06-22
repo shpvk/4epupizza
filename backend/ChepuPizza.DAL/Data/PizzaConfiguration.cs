@@ -24,6 +24,10 @@ namespace ChepuPizza.DAL.Data
                 .IsRequired()
                 .HasMaxLength(500);
 
+            builder.Property(x => x.Category)
+                .HasConversion<string>()
+                .IsRequired();
+
             builder.Property(x => x.IsAvailable)
                 .IsRequired();
         }

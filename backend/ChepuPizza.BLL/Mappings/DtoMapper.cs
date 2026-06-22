@@ -26,6 +26,7 @@ namespace ChepuPizza.BLL.Mappings
                 Name = pizza.Name,
                 Price = pizza.Price,
                 ImageUrl = pizza.ImageUrl,
+                Category = pizza.Category.ToString(),
                 OrderCount = pizza.OrderCount,
                 Ingredients = pizza.PizzaIngredients
                     .Where(pizzaIngredient => pizzaIngredient.Ingredient != null)
