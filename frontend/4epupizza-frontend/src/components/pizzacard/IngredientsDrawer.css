@@ -90,35 +90,34 @@
   border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.ing-img-container {
+.ingredient-img {
   width: 48px;
   height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  object-fit: contain;
   background: rgba(255, 255, 255, 0.05);
   border-radius: 12px;
+  padding: 4px;
 }
 
-.ing-img {
-  width: 36px;
-  height: 36px;
-  object-fit: contain;
-}
-
-.ing-info {
+.ingredient-info {
   flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ingredient-details {
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
 
-.ing-name {
+.ingredient-name {
   font-size: 16px;
   font-weight: 500;
 }
 
-.ing-price {
+.ingredient-price {
   font-size: 14px;
   color: #FF5924;
 }

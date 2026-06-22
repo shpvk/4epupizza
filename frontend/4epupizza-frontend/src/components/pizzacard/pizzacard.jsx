@@ -7,50 +7,62 @@ function PizzaCard({ pizza }) {
   const [selectedSize, setSelectedSize] = useState(28);
   const [quantity, setQuantity] = useState(1);
   const [isIngredientsMenuOpen, setIsIngredientsMenuOpen] = useState(false);
-  const [extraIngredients, setExtraIngredients] = useState([]);
+  const [extraIngredients, setExtraIngredients] = useState({});
+  const [extraPrice, setExtraPrice] = useState(0);
+  const [extraNames, setExtraNames] = useState([]);
   const { addItem } = useCart();
 
   const basePrice = pizza.price;
   const sizePrices = {
-    22: Number((basePrice - 2.0).toFixed(2)),
+    22: Number((basePrice - (basePrice / 100) * 20).toFixed(2)),
     28: basePrice,
-    33: Number((basePrice + 2.0).toFixed(2)),
+    33: Number((basePrice + (basePrice / 100) * 20).toFixed(2)),
   };
-  const extrasPrice = extraIngredients.reduce((sum, ing) => sum + (ing.price || 0), 0);
-  const currentPrice = Number((sizePrices[selectedSize] + extrasPrice).toFixed(2));
+  const currentPrice = Number(
+    (sizePrices[selectedSize] + extraPrice).toFixed(2),
+  );
 
-  const allIngredients = [
-    ...(pizza.ingredients || []),
-    ...extraIngredients
-  ];
-
-  const ingredientsText =
-    allIngredients.length > 0
-      ? "Состав: " + allIngredients.map((ing) => ing.name).join(", ")
+  let ingredientsText =
+    pizza.ingredients && pizza.ingredients.length > 0
+      ? "Состав: " + pizza.ingredients.map((ing) => ing.name).join(", ")
       : "Состав классический";
 
+  if (extraNames.length > 0) {
+    ingredientsText += " + " + extraNames.join(", ");
+  }
+
   const handleOrder = () => {
-    const extrasId = extraIngredients.map(ing => ing.id).sort().join('-');
-    
-    let finalDescription = pizza.ingredients && pizza.ingredients.length > 0 
-      ? pizza.ingredients.map((ing) => ing.name).join(", ") 
-      : "Классическая";
-    
-    if (extraIngredients.length > 0) {
-      const extraNames = extraIngredients.map(ing => ing.name);
+    const extrasId = Object.entries(extraIngredients)
+      .filter(([id, count]) => count > 0)
+      .map(([id, count]) => `${id}x${count}`)
+      .sort()
+      .join("-");
+
+    let finalDescription =
+      pizza.ingredients && pizza.ingredients.length > 0
+        ? pizza.ingredients.map((ing) => ing.name).join(", ")
+        : "Классическая";
+
+    if (extraNames.length > 0) {
       finalDescription += " | Добавки: " + extraNames.join(", ");
     }
 
     addItem({
-      id: `${pizza.id || pizza.name}-${selectedSize}${extrasId ? `-${extrasId}` : ''}`,
+      id: `${pizza.id || pizza.name}-${selectedSize}${extrasId ? `-${extrasId}` : ""}`,
       name: pizza.name,
       description: finalDescription,
       price: currentPrice,
       size: selectedSize,
       imageUrl: pizza.imageUrl || "/img/pizza-italian.png",
       quantity: quantity,
-      extraIngredients: extraIngredients
+      extraIngredients: extraIngredients,
     });
+  };
+
+  const handleSaveIngredients = (counts, price, names) => {
+    setExtraIngredients(counts);
+    setExtraPrice(price);
+    setExtraNames(names);
   };
 
   return (
@@ -75,8 +87,8 @@ function PizzaCard({ pizza }) {
           </button>
         ))}
       </div>
-      <button 
-        className="ingredients-btn" 
+      <button
+        className="ingredients-btn"
         onClick={() => setIsIngredientsMenuOpen(true)}
       >
         + Ingredients
@@ -104,12 +116,13 @@ function PizzaCard({ pizza }) {
       <button className="order-btn" onClick={handleOrder}>
         Order Now
       </button>
-      
-      <IngredientsDrawer 
+
+      <IngredientsDrawer
         isOpen={isIngredientsMenuOpen}
         onClose={() => setIsIngredientsMenuOpen(false)}
-        onSave={(extras) => setExtraIngredients(extras)}
-        initialExtras={extraIngredients}
+        onSave={handleSaveIngredients}
+        extraIngredients={extraIngredients}
+        pizzaName={pizza.name}
       />
     </div>
   );

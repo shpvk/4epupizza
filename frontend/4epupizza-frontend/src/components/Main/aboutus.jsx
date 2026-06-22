@@ -5,13 +5,13 @@ const AboutUs = () => {
   return (
     <section className="aboutus-dark-section">
       {/* Фоновый водяной знак */}
-      <div className="aboutus-watermark">About us</div>
+      <div className="aboutus-watermark">О нас</div>
 
       <div className="aboutus-container">
         <div className="aboutus-left">
-          <h2 className="aboutus-heading">About us</h2>
+          <h2 className="aboutus-heading">О нас</h2>
           <p className="aboutus-paragraph">
-            In just a couple of years, we have opened 6 outlets in different cities: Kazan, Chelyabinsk, Ufa, Samara, Izhevsk, and in the future we plan to develop the network in other major cities of Russia.
+            Всего за пару лет мы открыли 6 точек в разных городах: Казань, Челябинск, Уфа, Самара, Ижевск, и в будущем планируем развивать сеть в других крупных городах России.
           </p>
 
           <div className="aboutus-pizza-cluster">
@@ -33,7 +33,7 @@ const AboutUs = () => {
           </div>
 
           <p className="aboutus-paragraph">
-            The kitchen of each point is at least: 400-500 sq. m. meters, hundreds of employees, smoothly performing work in order to receive / prepare / form / deliver customer orders on time.
+            Кухня каждой точки — это минимум 400-500 кв. метров, сотни сотрудников, слаженно выполняющих работу, чтобы вовремя принять, приготовить, сформировать и доставить заказы клиентам.
           </p>
         </div>
 

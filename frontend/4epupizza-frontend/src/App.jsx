@@ -15,7 +15,7 @@ import { AuthProvider } from "./context/AuthContext";
 import { CartProvider } from "./context/CartContext";
 import { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
+import Catalog from "./pages/catalog/catalog.jsx";
 function App() {
   useEffect(() => {
     preloadIngredients().catch(() => {});
@@ -34,7 +34,7 @@ function App() {
             <Route path="/promotions" element={<Promotions />} />
             <Route path="/about" element={<About />} />
             <Route path="/cart" element={<Cart />} />
-            <Route path="/catalog" element={<Cart />} />
+            <Route path="/catalog" element={<Catalog />} />
             <Route
               path="/profile"
               element={

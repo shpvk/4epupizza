@@ -3,51 +3,7 @@ import "./catalog.css";
 import Header from "../../components/header/header";
 import Footer from "../../components/footer/footer";
 import Card from "../../components/pizzacard/pizzacard";
-
-const dummyPizzas = [
-  {
-    name: "Meat Pizza",
-    price: 210,
-    imageUrl: "/img/pizzaphoto.png",
-    categoryId: 1,
-    ingredients: [{ name: "onion" }, { name: "meat" }],
-  },
-  {
-    name: "Veggie Pizza",
-    price: 190,
-    imageUrl: "/img/pizzaphoto.png",
-    categoryId: 2,
-    ingredients: [{ name: "onion" }, { name: "tomato" }],
-  },
-  {
-    name: "Seafood Pizza",
-    price: 320,
-    imageUrl: "/img/pizzaphoto.png",
-    categoryId: 3,
-    ingredients: [{ name: "prawns" }],
-  },
-  {
-    name: "Mushroom Pizza",
-    price: 220,
-    imageUrl: "/img/pizzaphoto.png",
-    categoryId: 4,
-    ingredients: [{ name: "mushrooms" }],
-  },
-  {
-    name: "Meat Pizza 2",
-    price: 210,
-    imageUrl: "/img/pizzaphoto.png",
-    categoryId: 1,
-    ingredients: [{ name: "onion" }, { name: "meat" }, { name: "bacon" }],
-  },
-  {
-    name: "Spicy Pizza",
-    price: 400,
-    imageUrl: "/img/pizzaphoto.png",
-    categoryId: 1,
-    ingredients: [{ name: "jalapeno" }, { name: "pepperoni" }],
-  },
-];
+import { dummyPizzas } from "../../data/dummyPizzas";
 
 const categories = [
   { id: null, name: "Все" },

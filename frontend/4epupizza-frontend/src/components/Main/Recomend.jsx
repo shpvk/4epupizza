@@ -2,48 +2,7 @@ import "./Recomend.css";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Card from "../pizzacard/pizzacard";
-const dummyPizzas = [
-  {
-    name: "Meat Pizza",
-    price: 210,
-    imageUrl:
-      "https://zcncvckglgttnjwrwuuc.supabase.co/storage/v1/object/public/pizza-images/pizzas/pizza_default.png",
-    categoryId: 1,
-    ingredients: [{ name: "onion" }, { name: "meat" }],
-  },
-  {
-    name: "Veggie Pizza",
-    price: 190,
-    imageUrl:
-      "https://zcncvckglgttnjwrwuuc.supabase.co/storage/v1/object/public/pizza-images/pizzas/Veggie.png",
-    categoryId: 2,
-    ingredients: [{ name: "onion" }, { name: "tomato" }],
-  },
-  {
-    name: "Seafood Pizza",
-    price: 300,
-    imageUrl:
-      "https://zcncvckglgttnjwrwuuc.supabase.co/storage/v1/object/public/pizza-images/pizzas/sea_pizza.png",
-    categoryId: 3,
-    ingredients: [{ name: "prawns" }],
-  },
-  {
-    name: "Mushroom Pizza",
-    price: 250,
-    imageUrl:
-      "https://zcncvckglgttnjwrwuuc.supabase.co/storage/v1/object/public/pizza-images/pizzas/mushrooms_pizza.png",
-    categoryId: 4,
-    ingredients: [{ name: "mushrooms" }],
-  },
-  {
-    name: "Meat Pizza1",
-    price: 290,
-    imageUrl:
-      "https://zcncvckglgttnjwrwuuc.supabase.co/storage/v1/object/public/pizza-images/pizzas/meat_pizza.png",
-    categoryId: 3,
-    ingredients: [{ name: "onion" }, { name: "meat" }],
-  },
-];
+import { dummyPizzas } from "../../data/dummyPizzas";
 
 function Recomend() {
   const [pizzas, setPizzas] = useState([]);
