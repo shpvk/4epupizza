@@ -38,7 +38,7 @@ namespace ChepuPizza.BLL.Services
                     throw new ArgumentException("Quantity must be more than zero");
                 }
 
-                OrderItem orderItem = itemDto.PizzaId.HasValue
+                OrderItem orderItem = itemDto.PizzaId is > 0
                     ? await CreateMenuPizzaOrderItemAsync(itemDto)
                     : await CreateCustomPizzaOrderItemAsync(itemDto);
 
