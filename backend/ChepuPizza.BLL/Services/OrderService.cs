@@ -89,7 +89,10 @@ namespace ChepuPizza.BLL.Services
 
         private async Task<OrderItem> CreateCustomPizzaOrderItemAsync(OrderItemRequest itemDto)
         {
-            List<int> ingredientIds = itemDto.IngredientIds.Distinct().ToList();
+            List<int> ingredientIds = itemDto.IngredientIds
+                .Where(ingredientId => ingredientId > 0)
+                .Distinct()
+                .ToList();
 
             if (ingredientIds.Count == 0)
             {
