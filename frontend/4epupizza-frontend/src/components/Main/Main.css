@@ -166,6 +166,31 @@ color: white;
   width: 35px;
   height: 35px;
 }
+.catalog-button {
+  display: inline-block;
+  background: linear-gradient(261.69deg, #FF5924 12.12%, #FFA229 86.72%);
+  border: none;
+  border-radius: 84px;
+  padding: 15px 40px;
+  font-family: 'Muller', sans-serif;
+  font-weight: 500;
+  font-size: 18px;
+  color: white;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.2s ease;
+  margin-top: 30px;
+}
+
+.catalog-button:hover {
+  transform: scale(1.03);
+  box-shadow: 0 4px 15px rgba(255, 89, 36, 0.4);
+}
+
+.catalog-button:active {
+  transform: scale(0.95);
+  box-shadow: 0 2px 5px rgba(255, 89, 36, 0.4);
+}
 /* ===== Адаптив ===== */
 @media (max-width: 1100px)
 {
