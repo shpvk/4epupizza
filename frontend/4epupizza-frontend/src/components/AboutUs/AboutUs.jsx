@@ -4,22 +4,22 @@ const creators = [
   {
     username: 'shpvk',
     name: 'Єгор',
-    role: 'придумать описание',
+    role: 'Backend developer',
   },
   {
     username: 'KapibaraUa',
     name: 'Артем',
-    role: 'придумать описание',
+    role: 'Frontend developer, design',
   },
   {
     username: 'Xamilio',
     name: 'Олександр',
-    role: 'придумать описание',
+    role: 'Frontend developer',
   },
   {
     username: 'borzikpPlus',
     name: 'Олексій',
-    role: "придумать описание",
+    role: "Frontend developer",
   },
 ]
 
