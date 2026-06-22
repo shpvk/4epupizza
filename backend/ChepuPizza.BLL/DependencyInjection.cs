@@ -14,12 +14,14 @@ namespace ChepuPizza.BLL
             services.AddScoped<IIngredientService, IngredientService>();
             services.AddScoped<IPizzaBuilderService, PizzaBuilderService>();
             services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IManagerOrdersService, ManagerOrdersService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IJwtService, JwtService>();
 
             services.AddScoped<IPizzaRepository, PizzaRepository>();
             services.AddScoped<IIngredientRepository, IngredientRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<IManagerOrdersRepository, ManagerOrdersRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
 
             return services;

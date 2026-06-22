@@ -40,7 +40,10 @@ namespace ChepuPizza.BLL.Services
                 throw new ArgumentException("Pizza must have at least one ingredient");
             }
 
-            (Pizza? pizza, string? error) = Pizza.Create(pizzaRequest.Name, pizzaRequest.Price);
+            (Pizza? pizza, string? error) = Pizza.Create(
+                pizzaRequest.Name,
+                pizzaRequest.Price,
+                pizzaRequest.ImageUrl);
 
             if (error != null)
             {
