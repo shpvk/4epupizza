@@ -1,11 +1,117 @@
 .catalog-page-wrapper {
   display: flex;
   flex-direction: column;
-  min-height: 100vh; /* Занимает как минимум всю высоту экрана */
+  min-height: 100vh;
 }
 
 .catalog-content {
-  flex: 1; /* Этот блок будет растягиваться и "выталкивать" футер вниз */
-  /* Здесь можно задать отступы для будущего контента */
-  padding: 2rem 0;
+  flex: 1;
+  padding: 3rem 0;
+  
+}
+
+.catalog-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.catalog-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #222;
+  margin-bottom: 2rem;
+  text-align: left;
+}
+
+.catalog-layout {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.catalog-main {
+  flex: 1;
+}
+
+.catalog-sidebar {
+  width: 260px;
+  flex-shrink: 0;
+  background: transparent;
+  padding: 0 1rem 0 0;
+}
+
+.catalog-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.catalog-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.filter-btn {
+  padding: 0.7rem 0.5rem;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  font-weight: 400;
+  font-size: 1rem;
+  color: #333;
+  transition: all 0.2s ease;
+  text-align: left;
+  display: block;
+  width: 100%;
+  border-radius: 4px;
+}
+
+.filter-btn:hover {
+  background-color: #f5f5f5;
+  color: #ff5722;
+}
+
+.filter-btn.active-filter {
+  background-color: transparent;
+  color: #ff5722;
+  font-weight: 600;
+}
+
+.catalog-main-header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1.5rem;
+}
+
+.catalog-sort {
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+  color: #333;
+}
+
+.catalog-sort select {
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  outline: none;
+  font-family: inherit;
+  cursor: pointer;
+  width: auto;
+}
+
+.catalog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.catalog-loading,
+.catalog-empty {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #777;
+  padding: 3rem 0;
 }
