@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Header from '../../components/header/header'
 import Footer from '../../components/footer/footer'
@@ -11,6 +11,8 @@ import { saveOrderToHistory } from '../../services/orderHistory'
 import './Order.css'
 
 const ORDER_API_URL = buildApiUrl('/api/order')
+const ORDER_REQUEST_TIMEOUT_MS = 18000
+const ORDER_RETRY_DELAY_MS = 700
 
 function formatPrice(price) {
   return `${Math.round(Number(price) || 0)} грн`
@@ -43,6 +45,60 @@ function buildOrderItems(items) {
   })
 }
 
+function wait(ms) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms)
+  })
+}
+
+async function postOrder(payload) {
+  let lastError
+
+  for (let attempt = 0; attempt < 2; attempt += 1) {
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => {
+      controller.abort()
+    }, ORDER_REQUEST_TIMEOUT_MS)
+
+    try {
+      const response = await fetch(ORDER_API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          accept: 'application/json',
+          ...getAuthHeader(),
+        },
+        body: JSON.stringify(payload),
+        signal: controller.signal,
+      })
+
+      if (response.ok) {
+        return response
+      }
+
+      const error = new Error('Order request failed')
+      error.status = response.status
+      throw error
+    } catch (error) {
+      lastError = error
+
+      const canRetry =
+        attempt === 0 &&
+        (error.name === 'AbortError' || !error.status || error.status >= 500)
+
+      if (!canRetry) {
+        throw error
+      }
+
+      await wait(ORDER_RETRY_DELAY_MS)
+    } finally {
+      clearTimeout(timeoutId)
+    }
+  }
+
+  throw lastError
+}
+
 function Order() {
   const navigate = useNavigate()
   const { user } = useAuth()
@@ -50,6 +106,7 @@ function Order() {
   const [form, setForm] = useState(() => getCustomerDraft(user))
   const [status, setStatus] = useState({ type: '', message: '' })
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const submitLockRef = useRef(false)
 
   const deliveryPrice = totalPrice >= 500 || totalItems === 0 ? 0 : 59
   const finalPrice = totalPrice + deliveryPrice
@@ -67,34 +124,27 @@ function Order() {
   async function handleSubmit(event) {
     event.preventDefault()
 
+    if (submitLockRef.current) {
+      return
+    }
+
     if (items.length === 0) {
       setStatus({ type: 'error', message: 'Кошик порожній. Додайте піцу перед оформленням.' })
       return
     }
 
+    submitLockRef.current = true
     setIsSubmitting(true)
     setStatus({ type: '', message: '' })
 
     try {
-      const response = await fetch(ORDER_API_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          accept: 'application/json',
-          ...getAuthHeader(),
-        },
-        body: JSON.stringify({
-          customerName: form.customerName.trim(),
-          phone: form.phone.trim(),
-          address: form.address.trim(),
-          comment: form.comment.trim(),
-          items: orderItems,
-        }),
+      await postOrder({
+        customerName: form.customerName.trim(),
+        phone: form.phone.trim(),
+        address: form.address.trim(),
+        comment: form.comment.trim(),
+        items: orderItems,
       })
-
-      if (!response.ok) {
-        throw new Error('Order request failed')
-      }
 
       saveCustomerDraft(user, form)
       saveOrderToHistory(user, {
@@ -126,6 +176,7 @@ function Order() {
       })
     } finally {
       setIsSubmitting(false)
+      submitLockRef.current = false
     }
   }
 
