@@ -39,14 +39,8 @@ function Main() {
       {isVideoOpen && (
         <div className="vide-player" onClick={() => setIsVideoOpen(false)}>
           <div className="video-content" onClick={(e) => e.stopPropagation()}>
-            <div className="close-button">
-              <button onClick={() => setIsVideoOpen(false)}>
-                <img src="https://zcncvckglgttnjwrwuuc.supabase.co/storage/v1/object/public/pizza-images/important/cart.png" alt="Close" />
-              </button>
-            </div>
-
             <video
-              src="./video/0603.mp4"
+              src="https://zcncvckglgttnjwrwuuc.supabase.co/storage/v1/object/public/pizza-images/video/pizza-making-main.mp4"
               controls
               autoPlay
               style={{ width: "100%", borderRadius: "20px" }}
