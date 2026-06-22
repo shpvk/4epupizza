@@ -109,7 +109,26 @@
     object-fit: contain;
     display: block;
 }
-
+.under-footer
+{
+    width:100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+     /* Добавляем саму полоску */
+    border-top: 1px solid rgba(255, 255, 255, 0.1); /* Полупрозрачная белая линия */
+    
+    /* Добавляем отступы */
+    margin-top: 30px; /* Отступ от элементов выше (соцсетей) */
+    padding-top: 20px; /* Отступ от самой линии до контента внутри under-footer */
+}
+.under-footer-col
+{
+    width:100%;
+    height: auto;
+    display: flex;
+    justify-content: space-around;
+}
 @media (max-width: 680px) {
     .footer {
         padding: 30px 20px;
