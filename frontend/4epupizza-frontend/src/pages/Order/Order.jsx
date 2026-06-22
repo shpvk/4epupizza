@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Header from '../../components/header/header'
 import Footer from '../../components/footer/footer'
@@ -8,27 +8,59 @@ import { buildApiUrl } from '../../services/apiConfig'
 import { getAuthHeader } from '../../services/authApi'
 import { getCustomerDraft, saveCustomerDraft } from '../../services/orderCustomerDraft'
 import { saveOrderToHistory } from '../../services/orderHistory'
+import { getPizzaFallbackId } from '../../data/pizzaFallbackIds'
 import './Order.css'
 
 const ORDER_API_URL = buildApiUrl('/api/order')
+const ORDER_REQUEST_TIMEOUT_MS = 60000
+const ORDER_RETRY_DELAY_MS = 700
 
 function formatPrice(price) {
   return `${Math.round(Number(price) || 0)} грн`
 }
 
 function getPizzaId(item) {
+  const itemId = String(item.id)
+
+  if (itemId.startsWith('custom-pizza-')) {
+    return 0
+  }
+
   if (item.pizzaId !== undefined) {
     return Number(item.pizzaId) || 0
   }
 
-  return Number(item.id) || 0
+  const idMatch = itemId.match(/^(\d+)/)
+  return idMatch ? Number(idMatch[1]) : getPizzaFallbackId(item.name)
+}
+
+function isCustomPizza(item) {
+  return String(item.id).startsWith('custom-pizza-')
+}
+
+function getIngredientIds(item) {
+  return (item.ingredientIds || [])
+    .map((id) => Number(id))
+    .filter((id) => Number.isInteger(id) && id > 0)
+}
+
+function getInvalidCustomPizza(items) {
+  return items.find((item) => {
+    return isCustomPizza(item) && getIngredientIds(item).length === 0
+  })
+}
+
+function getInvalidCatalogPizza(items) {
+  return items.find((item) => {
+    return !isCustomPizza(item) && getPizzaId(item) <= 0
+  })
 }
 
 function buildOrderItems(items) {
   return items.map((item) => {
-    const ingredientIds = (item.ingredientIds || []).map((id) => Number(id)).filter(Number.isFinite)
+    const ingredientIds = getIngredientIds(item)
 
-    if (String(item.id).startsWith('custom-pizza-')) {
+    if (isCustomPizza(item)) {
       return {
         ingredientIds,
         quantity: item.quantity,
@@ -43,6 +75,76 @@ function buildOrderItems(items) {
   })
 }
 
+function wait(ms) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms)
+  })
+}
+
+async function postOrder(payload) {
+  let lastError
+
+  for (let attempt = 0; attempt < 2; attempt += 1) {
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => {
+      controller.abort()
+    }, ORDER_REQUEST_TIMEOUT_MS)
+
+    try {
+      const response = await fetch(ORDER_API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          accept: 'application/json',
+          ...getAuthHeader(),
+        },
+        body: JSON.stringify(payload),
+        signal: controller.signal,
+      })
+
+      if (response.ok) {
+        return response
+      }
+
+      let errorMessage = 'Order request failed'
+
+      try {
+        const text = await response.text()
+        if (text) {
+          try {
+            const data = JSON.parse(text)
+            errorMessage = data?.message || data?.title || text
+          } catch {
+            errorMessage = text
+          }
+        }
+      } catch {
+        // Keep the generic message when the API returns an unreadable error.
+      }
+
+      const error = new Error(errorMessage)
+      error.status = response.status
+      throw error
+    } catch (error) {
+      lastError = error
+
+      const canRetry =
+        attempt === 0 &&
+        (error.name === 'AbortError' || !error.status || error.status >= 500)
+
+      if (!canRetry) {
+        throw error
+      }
+
+      await wait(ORDER_RETRY_DELAY_MS)
+    } finally {
+      clearTimeout(timeoutId)
+    }
+  }
+
+  throw lastError
+}
+
 function Order() {
   const navigate = useNavigate()
   const { user } = useAuth()
@@ -50,6 +152,7 @@ function Order() {
   const [form, setForm] = useState(() => getCustomerDraft(user))
   const [status, setStatus] = useState({ type: '', message: '' })
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const submitLockRef = useRef(false)
 
   const deliveryPrice = totalPrice >= 500 || totalItems === 0 ? 0 : 59
   const finalPrice = totalPrice + deliveryPrice
@@ -67,34 +170,45 @@ function Order() {
   async function handleSubmit(event) {
     event.preventDefault()
 
+    if (submitLockRef.current) {
+      return
+    }
+
     if (items.length === 0) {
       setStatus({ type: 'error', message: 'Кошик порожній. Додайте піцу перед оформленням.' })
       return
     }
 
+    const invalidCustomPizza = getInvalidCustomPizza(items)
+    if (invalidCustomPizza) {
+      setStatus({
+        type: 'error',
+        message: `У піці "${invalidCustomPizza.name}" немає інгредієнтів. Видаліть її з кошика та зберіть у конструкторі ще раз.`,
+      })
+      return
+    }
+
+    const invalidCatalogPizza = getInvalidCatalogPizza(items)
+    if (invalidCatalogPizza) {
+      setStatus({
+        type: 'error',
+        message: `Не вдалося визначити id піци "${invalidCatalogPizza.name}". Видаліть її з кошика та додайте з каталогу ще раз.`,
+      })
+      return
+    }
+
+    submitLockRef.current = true
     setIsSubmitting(true)
     setStatus({ type: '', message: '' })
 
     try {
-      const response = await fetch(ORDER_API_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          accept: 'application/json',
-          ...getAuthHeader(),
-        },
-        body: JSON.stringify({
-          customerName: form.customerName.trim(),
-          phone: form.phone.trim(),
-          address: form.address.trim(),
-          comment: form.comment.trim(),
-          items: orderItems,
-        }),
+      await postOrder({
+        customerName: form.customerName.trim(),
+        phone: form.phone.trim(),
+        address: form.address.trim(),
+        comment: form.comment.trim(),
+        items: orderItems,
       })
-
-      if (!response.ok) {
-        throw new Error('Order request failed')
-      }
 
       saveCustomerDraft(user, form)
       saveOrderToHistory(user, {
@@ -119,13 +233,17 @@ function Order() {
       clearCart()
       setStatus({ type: 'success', message: 'Замовлення прийнято. Дякуємо!' })
       setTimeout(() => navigate('/profile'), 1500)
-    } catch {
+    } catch (error) {
+      const isTimeout = error.name === 'AbortError'
       setStatus({
         type: 'error',
-        message: 'Не вдалося оформити замовлення. Перевірте дані та спробуйте ще раз.',
+        message: isTimeout
+          ? 'Сервер довго не відповідає. Спробуйте ще раз за хвилину.'
+          : error.message || 'Не вдалося оформити замовлення. Перевірте дані та спробуйте ще раз.',
       })
     } finally {
       setIsSubmitting(false)
+      submitLockRef.current = false
     }
   }
 

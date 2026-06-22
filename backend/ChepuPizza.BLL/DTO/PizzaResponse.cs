@@ -1,4 +1,4 @@
-namespace ChepuPizza.BLL.DTO
+﻿namespace ChepuPizza.BLL.DTO
 {
     public class PizzaResponse
     {
@@ -8,7 +8,6 @@ namespace ChepuPizza.BLL.DTO
         public string ImageUrl { get; set; } = string.Empty;
         public string Category { get; set; } = string.Empty;
         public int OrderCount { get; set; }
-        public string Category { get; set; } = string.Empty;
         public List<IngredientResponse> Ingredients { get; set; } = new();
     }
 }
