@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Net.NetworkInformation;
-using System.Text;
-
-namespace ChepuPizza.DAL.Models.Entities
+﻿namespace ChepuPizza.DAL.Models.Entities
 {
     public class Order
     {
@@ -65,15 +59,13 @@ namespace ChepuPizza.DAL.Models.Entities
             string pizzaName,
             int? pizzaId,
             int quantity,
-            decimal unitPrice,
-            List<Ingredient> ingredients)
+            decimal unitPrice)
         {
             PizzaName = pizzaName;
             PizzaId = pizzaId;
             Quantity = quantity;
             UnitPrice = unitPrice;
             TotalPrice = unitPrice * quantity;
-            Ingredients = ingredients;
         }
 
         public int Id { get; private set; }
@@ -91,7 +83,6 @@ namespace ChepuPizza.DAL.Models.Entities
 
         public decimal TotalPrice { get; private set; }
 
-        public List<Ingredient> Ingredients { get; private set; } = new();
 
         public static (OrderItem? orderItem, string? error) Create(
             string pizzaName,
@@ -116,8 +107,7 @@ namespace ChepuPizza.DAL.Models.Entities
                 pizzaName,
                 pizzaId,
                 quantity,
-                unitPrice,
-                ingredients);
+                unitPrice);
 
             return (orderItem, null);
         }
