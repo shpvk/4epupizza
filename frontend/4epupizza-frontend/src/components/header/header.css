@@ -187,6 +187,7 @@
   align-items: center;
   justify-content: center;
   border-radius: 50%;
+  overflow: hidden;
   text-decoration: none;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
@@ -197,10 +198,9 @@
 .btn--cart img
 {
   display: block;
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
   object-fit: contain;
-  filter: brightness(0) invert(1);
 }
 .cart-badge {
   position: absolute;

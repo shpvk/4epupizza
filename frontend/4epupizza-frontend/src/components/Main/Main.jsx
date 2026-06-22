@@ -10,16 +10,16 @@ function Main() {
     <main>
       <div className="pizza-background">Pizza</div>
       <div className="main-cont">
-        <div className="text-section fade-in-up">
+        <div className="text-section">
           <h1>
-            <span className="gradient-text">Самая быстрая</span> <br /> доставка пиццы
+            Самая быстрая <br /> доставка пиццы
           </h1>
           <p>
             Мы доставим сочную пиццу для вашей семьи за 30
             <br /> минут, если курьер опоздает -{" "}
             <span className="freepizz">пицца бесплатно!</span>
           </p>
-          <p className="subtitle">Процесс приготовления:</p>
+          <p>Процесс приготовления:</p>
 
           <div className="video-preview" onClick={() => setIsVideoOpen(true)}>
             <img src="https://zcncvckglgttnjwrwuuc.supabase.co/storage/v1/object/public/pizza-images/important/pizza-frame.png" className="preview-image" />
@@ -31,16 +31,8 @@ function Main() {
             </Link>
           </div>
         </div>
-        <div className="photo-section fade-in-scale">
-          <div className="photo-wrapper floating">
-            <div className="badge badge-left">
-              🔥 <span>30 минут</span>
-            </div>
-            <div className="badge badge-right">
-              ⭐ <span>4.9</span>
-            </div>
-            <img src="https://zcncvckglgttnjwrwuuc.supabase.co/storage/v1/object/public/pizza-images/important/stepizza.jpeg" alt="Вкусная пицца" />
-          </div>
+        <div className="photo-section">
+          <img src="https://zcncvckglgttnjwrwuuc.supabase.co/storage/v1/object/public/pizza-images/important/stepizza.jpeg" />
         </div>
       </div>
 
