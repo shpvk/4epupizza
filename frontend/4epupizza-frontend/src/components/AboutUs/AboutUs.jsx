@@ -3,23 +3,23 @@ import './AboutUs.css'
 const creators = [
   {
     username: 'shpvk',
-    name: 'shpvk',
-    role: 'Засновник та головний піцайоло',
+    name: 'Єгор',
+    role: 'придумать описание',
   },
   {
     username: 'KapibaraUa',
-    name: 'KapibaraUa',
-    role: 'Big Boss of engineering',
+    name: 'Артем',
+    role: 'придумать описание',
   },
   {
     username: 'Xamilio',
-    name: 'Oleksandr',
-    role: 'Frontend та смак',
+    name: 'Олександр',
+    role: 'придумать описание',
   },
   {
     username: 'borzikpPlus',
-    name: 'leha',
-    role: "ШІ-контриб'ютор піцайоло",
+    name: 'Олексій',
+    role: "придумать описание",
   },
 ]
 
@@ -27,12 +27,10 @@ function AboutUs() {
   return (
     <section className="about-us-page">
       <div className="about-us-hero">
-        <span className="about-us-kicker">Команда 4epupizza</span>
         <h1>Про нас</h1>
         <p>
-          Ми — невелика команда, яка зібрала цей сайт від тіста до коду. Любимо
-          мощний сир, хрусткий борт та чистий пул-реквест. Нижче — ті, хто варить
-          цю піцу: тисни на фото, щоб залетіти до нас у GitHub.
+          Ми - невелика команда, яка зібрала цей сайт від тіста до коду.
+          Нижче - ті, хто це зробив: тисни на фото, щоб залетіти до нас у GitHub.
         </p>
       </div>
 

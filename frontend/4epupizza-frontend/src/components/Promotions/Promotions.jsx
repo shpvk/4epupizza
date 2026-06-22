@@ -1,7 +1,8 @@
 import React from "react";
-import "./events.css";
 import { Link } from "react-router-dom";
-const eventsData = [
+import "./Promotions.css";
+
+const promotionsData = [
   {
     id: 1,
     title: "Счастливые часы",
@@ -26,54 +27,32 @@ const eventsData = [
       "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&q=80&w=800",
     color: "#ffe66d",
   },
-  {
-    id: 3,
-    title: "Новинка сезона",
-    description: "Попробуйте нашу новую пиццу с трюфельным соусом.",
-    imageUrl:
-      "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&q=80&w=800",
-    color: "#ffe66d",
-  },
-  {
-    id: 3,
-    title: "Новинка сезона",
-    description: "Попробуйте нашу новую пиццу с трюфельным соусом.",
-    imageUrl:
-      "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&q=80&w=800",
-    color: "#ffe66d",
-  },
-  {
-    id: 3,
-    title: "Новинка сезона",
-    description: "Попробуйте нашу новую пиццу с трюфельным соусом.",
-    imageUrl:
-      "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&q=80&w=800",
-    color: "#ffe66d",
-  },
 ];
 
-const Events = () => {
+const Promotions = () => {
   return (
     <section className="events-section">
       <h2 className="events-title">Акции и события</h2>
       <div className="events-container">
-        {eventsData.map((event) => (
-          <div key={event.id} className="event-card">
+        {promotionsData.map((promotion) => (
+          <div key={promotion.id} className="event-card">
             <div className="event-image-wrapper">
               <img
-                src={event.imageUrl}
-                alt={event.title}
+                src={promotion.imageUrl}
+                alt={promotion.title}
                 className="event-image"
               />
               <div
                 className="event-overlay"
-                style={{ backgroundColor: event.color }}
+                style={{ backgroundColor: promotion.color }}
               ></div>
             </div>
             <div className="event-content">
-              <h3 className="event-card-title">{event.title}</h3>
-              <p className="event-card-description">{event.description}</p>
-              <Link className="event-button">Подробнее</Link>
+              <h3 className="event-card-title">{promotion.title}</h3>
+              <p className="event-card-description">{promotion.description}</p>
+              <Link to="/promotions" className="event-button">
+                Подробнее
+              </Link>
             </div>
           </div>
         ))}
@@ -82,4 +61,4 @@ const Events = () => {
   );
 };
 
-export default Events;
+export default Promotions;
