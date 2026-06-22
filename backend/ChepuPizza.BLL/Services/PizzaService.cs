@@ -27,6 +27,7 @@ namespace ChepuPizza.BLL.Services
                     Id = pizza.Id,
                     Name = pizza.Name,
                     Price = pizza.Price,
+                    OrderCount = pizza.OrderCount,
                     Ingredients = pizza.PizzaIngredients.Select(pizzaIngredient => new IngredientResponse
                     {
                         Id = pizzaIngredient.Ingredient.Id,
@@ -57,6 +58,7 @@ namespace ChepuPizza.BLL.Services
                 Id = pizza.Id,
                 Name = pizza.Name,
                 Price = pizza.Price,
+                OrderCount = pizza.OrderCount,
                 Ingredients = pizza.PizzaIngredients.Select(pizzaIngredient => new IngredientResponse
                 {
                     Id = pizzaIngredient.Ingredient.Id,

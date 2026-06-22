@@ -47,6 +47,9 @@ namespace ChepuPizza.BLL.Services
                     {
                         throw new Exception(error);
                     }
+
+                    pizza.IncreaseOrderCount(itemDto.Quantity);
+
                     orderItems.Add(orderItem);
                 }
                 if(itemDto.PizzaId == null) // Custom pizza

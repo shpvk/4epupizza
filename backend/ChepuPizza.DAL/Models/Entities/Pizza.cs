@@ -13,6 +13,8 @@
             Price = price;
         }
 
+        public int OrderCount { get; private set; }
+
         public int Id { get; private set; }
 
         public string Name { get; private set; } = string.Empty;
@@ -48,6 +50,11 @@
                 IngredientId = ingredientId,
                 Pizza = this
             });
+        }
+
+        public void IncreaseOrderCount(int quantity)
+        {
+            OrderCount += quantity;
         }
     }
 
