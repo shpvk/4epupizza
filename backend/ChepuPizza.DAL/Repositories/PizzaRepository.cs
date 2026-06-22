@@ -20,7 +20,9 @@ namespace ChepuPizza.DAL.Repositories
                 .AsNoTracking()
                 .Include(p => p.PizzaIngredients)
                     .ThenInclude(pi => pi.Ingredient)
+                 .AsSplitQuery()
                 .ToListAsync();
+
 
             return pizzas;
         }

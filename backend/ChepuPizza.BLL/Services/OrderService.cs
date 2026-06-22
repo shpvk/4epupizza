@@ -102,17 +102,7 @@ namespace ChepuPizza.BLL.Services
                     PizzaName = orderItem.PizzaName,
                     Quantity = orderItem.Quantity,
                     UnitPrice = orderItem.UnitPrice,
-                    TotalPrice = orderItem.TotalPrice,
-
-                    Ingredients = orderItem.Ingredients.Select(ingredient => new IngredientResponse
-                    {
-                        Id = ingredient.Id,
-                        Name = ingredient.Name,
-                        Price = ingredient.Price,
-                        IsAvailable = ingredient.IsAvailable,
-                        ImageUrl = ingredient.ImageUrl,
-                        Category = ingredient.Category.ToString()
-                    }).ToList()
+                    TotalPrice = orderItem.TotalPrice
                 }).ToList()
             };
 

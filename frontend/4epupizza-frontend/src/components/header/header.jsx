@@ -12,7 +12,7 @@ function Header() {
         <header className="header">
             <div className="header_logo">
                 <div className="logo-wrapper">
-                    <Link to="/"><img src="/img/4epupizza.png" alt="Logo" /></Link>
+                    <Link to="/"><img src="https://zcncvckglgttnjwrwuuc.supabase.co/storage/v1/object/public/pizza-images/important/logo.png" alt="Logo" /></Link>
                 </div>
             </div>
             <div className="nav_bar">
@@ -41,7 +41,7 @@ function Header() {
                     <Link to="/login" className="btn--login">Увійти</Link>
                 )}
                 <Link to="/cart" className="btn--cart" id="header-cart-button">
-                    <img src="/img/Group 3.png" alt="Кошик" />
+                    <img src="https://zcncvckglgttnjwrwuuc.supabase.co/storage/v1/object/public/pizza-images/important/cart.png" alt="Кошик" />
                     {totalItems > 0 && (
                         <span className="cart-badge">{totalItems > 99 ? '99+' : totalItems}</span>
                     )}
