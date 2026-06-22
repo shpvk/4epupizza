@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Header from '../../components/header/header'
 import Footer from '../../components/footer/footer'
@@ -31,6 +32,24 @@ function Profile() {
   const { user, logout } = useAuth()
   const orders = getOrderHistory(user)
   const totalSpent = orders.reduce((sum, order) => sum + (Number(order.totalPrice) || 0), 0)
+  
+  const avatarKey = `avatar_${user?.username}`
+  const [avatar, setAvatar] = useState(() => localStorage.getItem(avatarKey))
+
+  const handleAvatarChange = (e) => {
+    const file = e.target.files[0]
+    if (file) {
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        const result = reader.result
+        setAvatar(result)
+        localStorage.setItem(avatarKey, result)
+        window.dispatchEvent(new Event('avatar-updated'))
+      }
+      reader.readAsDataURL(file)
+    }
+  }
+
   const favoriteItem = orders
     .flatMap((order) => order.items || [])
     .reduce((favorite, item) => {
@@ -47,9 +66,22 @@ function Profile() {
       <main className="profile" aria-labelledby="profile-title">
         <section className="profile-hero">
           <div className="profile-hero__identity">
-            <div className="profile-avatar" aria-hidden="true">
-              {getInitial(user?.username)}
-            </div>
+            <label htmlFor="avatar-upload" title="Змінити аватар" style={{ cursor: 'pointer' }}>
+              <div className="profile-avatar" aria-hidden="true" style={{ overflow: 'hidden' }}>
+                {avatar ? (
+                  <img src={avatar} alt="Avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                ) : (
+                  getInitial(user?.username)
+                )}
+              </div>
+            </label>
+            <input 
+              type="file" 
+              id="avatar-upload" 
+              accept="image/*" 
+              style={{ display: 'none' }} 
+              onChange={handleAvatarChange} 
+            />
             <div>
               <span className="profile-hero__eyebrow">Особистий кабінет</span>
               <h1 id="profile-title">{user?.username}</h1>

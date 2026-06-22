@@ -12,14 +12,14 @@ function Main() {
       <div className="main-cont">
         <div className="text-section">
           <h1>
-            The Fastest <br /> Pizza Delivery
+            Самая быстрая <br /> доставка пиццы
           </h1>
           <p>
-            We will deliver juicy pizza for your family in 30
-            <br /> minutes, if the courier is late -{" "}
-            <span className="freepizz">pizza is free!</span>
+            Мы доставим сочную пиццу для вашей семьи за 30
+            <br /> минут, если курьер опоздает -{" "}
+            <span className="freepizz">пицца бесплатно!</span>
           </p>
-          <p>Cooking process:</p>
+          <p>Процесс приготовления:</p>
 
           <div className="video-preview" onClick={() => setIsVideoOpen(true)}>
             <img src="https://zcncvckglgttnjwrwuuc.supabase.co/storage/v1/object/public/pizza-images/important/pizza-frame.png" className="preview-image" />

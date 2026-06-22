@@ -2,26 +2,32 @@ import "./Recomend.css";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Card from "../pizzacard/pizzacard";
-import { buildApiUrl } from "../../services/apiConfig";
+import { dummyPizzas } from "../../data/dummyPizzas";
 
 function Recomend() {
   const [pizzas, setPizzas] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState(null); // null означает "Все"
 
   useEffect(() => {
-    fetch(buildApiUrl("/api/pizzas"))
+    // Отправляем запрос на порт бэкенда (5286)
+    fetch("http://localhost:5286/api/pizzas")
       .then((res) => res.json())
       .then((data) => {
         setPizzas(data); // Сохраняем полученные из БД пиццы
+        setLoading(false); // Выключаем индикатор загрузки
       })
       .catch((err) => {
         console.error("Ошибка при загрузке пицц:", err);
+        setLoading(false);
       });
   }, []);
 
+  const displayPizzas = pizzas.length > 0 ? pizzas : dummyPizzas;
+
   const filteredPizzas = selectedCategory
-    ? pizzas.filter((pizza) => pizza.categoryId === selectedCategory)
-    : pizzas;
+    ? displayPizzas.filter((pizza) => pizza.categoryId === selectedCategory)
+    : displayPizzas;
 
   return (
     <main>
