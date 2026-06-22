@@ -72,26 +72,23 @@ function Footer() {
         </div>
       </div>
 
-                <div className="footer-socials">
-                    <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-                        <img src="https://zcncvckglgttnjwrwuuc.supabase.co/storage/v1/object/public/pizza-images/important/instagram.svg" alt="" />
-                    </a>
-                    <a href="https://x.com" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
-                        <img src="https://zcncvckglgttnjwrwuuc.supabase.co/storage/v1/object/public/pizza-images/important/x.svg" alt="" />
-                    </a>
-                    <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
-                        <img src="https://zcncvckglgttnjwrwuuc.supabase.co/storage/v1/object/public/pizza-images/important/facebook.svg" alt="" />
-                    </a>
-                </div>
-            </div>
-
-            <div className="under-footer">
-                <div className="under-footer-col">
-                    
-                </div>
-            </div>
-        </footer>
-    )
+      <div className="under-footer">
+        <div className="under-footer-cont">
+          <div className="footer-copy">
+            <p>© 2026 4epupizza</p>
+          </div>
+          <div className="footer-logos">
+            <img src="https://zcncvckglgttnjwrwuuc.supabase.co/storage/v1/object/public/pizza-images/important/GooglePay.png"></img>
+            <img src="https://zcncvckglgttnjwrwuuc.supabase.co/storage/v1/object/public/pizza-images/important/logo4epuha-grey.png"></img>
+            <img src="https://zcncvckglgttnjwrwuuc.supabase.co/storage/v1/object/public/pizza-images/important/ApplePay.png"></img>
+          </div>
+          <div className="footer-third">
+            <p>Пользовательское соглашение</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
 }
 
 export default Footer;

@@ -38,7 +38,7 @@ namespace ChepuPizza.BLL.Services
                     throw new ArgumentException("Quantity must be more than zero");
                 }
 
-                OrderItem orderItem = itemDto.PizzaId is > 0
+                OrderItem orderItem = itemDto.PizzaId.HasValue
                     ? await CreateMenuPizzaOrderItemAsync(itemDto)
                     : await CreateCustomPizzaOrderItemAsync(itemDto);
 
@@ -64,19 +64,23 @@ namespace ChepuPizza.BLL.Services
 
         private async Task<OrderItem> CreateMenuPizzaOrderItemAsync(OrderItemRequest itemDto)
         {
-            Pizza? pizza = await _pizzaRepository.GetByIdForOrderAsync(itemDto.PizzaId!.Value);
+            Pizza? pizza = await _pizzaRepository.GetByIdAsync(itemDto.PizzaId!.Value);
 
             if (pizza == null)
             {
                 throw new ArgumentException("Pizza not found");
             }
 
+            List<Ingredient> ingredients = pizza.PizzaIngredients
+                .Select(pizzaIngredient => pizzaIngredient.Ingredient)
+                .ToList();
+
             (OrderItem? orderItem, string? error) = OrderItem.Create(
                 pizza.Name,
                 pizza.Id,
                 itemDto.Quantity,
                 pizza.Price,
-                skipIngredientValidation: true);
+                ingredients);
 
             if (orderItem == null)
             {

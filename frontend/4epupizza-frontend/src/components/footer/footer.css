@@ -148,25 +148,75 @@
     object-fit: contain;
     display: block;
 }
-.under-footer
-{
-    width:100%;
+.under-footer {
+     width: 100%;
     height: auto;
     display: flex;
     flex-direction: column;
-     /* Добавляем саму полоску */
+    
+    /* Добавляем саму полоску */
     border-top: 1px solid rgba(255, 255, 255, 0.1); /* Полупрозрачная белая линия */
     
     /* Добавляем отступы */
     margin-top: 30px; /* Отступ от элементов выше (соцсетей) */
     padding-top: 20px; /* Отступ от самой линии до контента внутри under-footer */
 }
-.under-footer-col
+.under-footer-cont
 {
-    width:100%;
+    width: 70%;
+    margin: 0 auto;
     height: auto;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
+    align-items: center;
+}
+.footer-copy
+{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex: 1;
+}
+.footer-copy p 
+{
+    font-family: Muller;
+font-weight: 400;
+font-style: Regular;
+font-size: 17.88px;
+color: rgb(162, 162, 162);
+line-height: 110.00000000000001%;
+letter-spacing: 0%;
+
+}
+.footer-logos
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    gap: 16px;
+}
+.footer-logos img
+{
+    width: 60px;
+    height: 20px;
+}
+.footer-third
+{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex: 1;
+}
+.footer-third p
+{
+font-family: Muller;
+font-weight: 400;
+font-style: Regular;
+font-size: 17.88px;
+color: rgb(162, 162, 162);
+line-height: 110.00000000000001%;
+letter-spacing: 0%;
 }
 @media (max-width: 680px) {
     .footer {

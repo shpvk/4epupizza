@@ -8,8 +8,6 @@ namespace ChepuPizza.DAL.Interfaces
 
         Task<Pizza?> GetByIdAsync(int pizzaId);
 
-        Task<Pizza?> GetByIdForOrderAsync(int pizzaId);
-
         Task<Pizza> AddAsync(Pizza pizza);
     }
 }

@@ -15,9 +15,6 @@
             Address = address;
             Comment = comment;
             OrderItems = orderItems;
-            TotalPrice = orderItems.Sum(orderItem => orderItem.TotalPrice);
-            Status = OrderStatus.Created;
-            CreatedAt = DateTime.UtcNow;
         }
 
         public int Id { get; private set; }
@@ -101,8 +98,7 @@
             int? pizzaId,
             int quantity,
             decimal unitPrice,
-            List<Ingredient>? ingredients = null,
-            bool skipIngredientValidation = false)
+            List<Ingredient> ingredients)
         {
             if (string.IsNullOrWhiteSpace(pizzaName))
                 return (null, "Pizza name cannot be empty");
@@ -113,7 +109,7 @@
             if (unitPrice < 0)
                 return (null, "Unit price cannot be lower than zero");
 
-            if (!skipIngredientValidation && (ingredients == null || ingredients.Count == 0))
+            if (ingredients == null || ingredients.Count == 0)
                 return (null, "Order item must contain at least one ingredient");
 
             OrderItem orderItem = new OrderItem(

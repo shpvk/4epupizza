@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react'
+import { useMemo, useState } from 'react'
 import Header from '../header/header'
 import {
   BASE_PIZZA_PRICE,
@@ -97,7 +97,7 @@ function getIngredientIds(selectedIngredients) {
     return Array.from({ length: ingredient.count }, () => {
       return Number(ingredient.id)
     })
-  }).filter(Number.isFinite)
+  })
 }
 
 function PizzaConstructorPage() {
@@ -106,9 +106,7 @@ function PizzaConstructorPage() {
 
   const [selectedCounts, setSelectedCounts] = useState({})
   const [addedToCart, setAddedToCart] = useState(false)
-  const [isAddingToCart, setIsAddingToCart] = useState(false)
   const [constructorMessage, setConstructorMessage] = useState('')
-  const addToCartLockRef = useRef(false)
 
   const groupedIngredients = useMemo(() => {
     return groupIngredientsByCategory(ingredients)
@@ -167,27 +165,13 @@ function PizzaConstructorPage() {
   }
 
   function handleAddToCart() {
-    if (addToCartLockRef.current) {
-      return
-    }
-
     if (selectedTotal === 0) {
       setConstructorMessage('Оберіть хоча б один продукт для піци.')
       return
     }
 
-    addToCartLockRef.current = true
-    setIsAddingToCart(true)
-
     const ingredientNames = getIngredientNames(selectedIngredients)
     const ingredientIds = getIngredientIds(selectedIngredients)
-
-    if (ingredientIds.length === 0) {
-      setIsAddingToCart(false)
-      addToCartLockRef.current = false
-      setConstructorMessage('Не вдалося визначити інгредієнти. Оновіть сторінку та зберіть піцу ще раз.')
-      return
-    }
 
     let description = 'Класична основа'
 
@@ -208,12 +192,10 @@ function PizzaConstructorPage() {
 
     setSelectedCounts({})
     setAddedToCart(true)
-    setIsAddingToCart(false)
     setConstructorMessage('')
 
     setTimeout(() => {
       setAddedToCart(false)
-      addToCartLockRef.current = false
     }, 2500)
   }
 
@@ -364,7 +346,7 @@ function PizzaConstructorPage() {
               type="button"
               className="pizza-constructor__add-to-cart"
               onClick={handleAddToCart}
-              disabled={selectedTotal === 0 || isAddingToCart || addedToCart}
+              disabled={selectedTotal === 0}
               id="add-custom-pizza-to-cart"
             >
               Додати до кошика — {formatConstructorPrice(totalPrice)}
