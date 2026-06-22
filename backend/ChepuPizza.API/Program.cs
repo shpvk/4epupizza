@@ -1,8 +1,5 @@
-using ChepuPizza.BLL.Interfaces;
-using ChepuPizza.BLL.Services;
+using ChepuPizza.BLL;
 using ChepuPizza.DAL;
-using ChepuPizza.DAL.Interfaces;
-using ChepuPizza.DAL.Repositories;
 
 namespace ChepuPizza.API
 {
@@ -17,23 +14,7 @@ namespace ChepuPizza.API
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 
-            builder.Services.AddScoped<IPizzaService, PizzaService>();
-            builder.Services.AddScoped<IIngredientService, IngredientService>();
-
-            builder.Services.AddScoped<IPizzaRepository, PizzaRepository>();
-            builder.Services.AddScoped<IIngredientRepository, IngredientRepository>();
-
-            builder.Services.AddScoped<IPizzaBuilderService, PizzaBuilderService>();
-
-            builder.Services.AddScoped<IOrderService, OrderService>();
-            builder.Services.AddScoped<IOrderRepository, OrderRepository>();
-
-            builder.Services.AddScoped<IAuthService, AuthService>();
-            builder.Services.AddScoped<IUserRepository, UserRepository>();
-
-            builder.Services.AddScoped<IJwtService, JwtService>();
-
-
+            builder.Services.AddBusinessLogic();
             builder.Services.AddDatabase(builder.Configuration);
 
             builder.Services.AddEndpointsApiExplorer();
