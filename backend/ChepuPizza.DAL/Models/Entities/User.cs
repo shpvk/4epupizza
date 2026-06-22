@@ -19,6 +19,8 @@ namespace ChepuPizza.DAL.Models.Entities
 
         public string PasswordHash { get; private set; } = string.Empty;
 
+        public string Role {get; private set; } = string.Empty;
+
         public static (User? user, string? error) Create(string username, string passwordHash)
         {
             if (string.IsNullOrEmpty(username))
