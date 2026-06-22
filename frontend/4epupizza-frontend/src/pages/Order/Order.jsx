@@ -8,6 +8,7 @@ import { buildApiUrl } from '../../services/apiConfig'
 import { getAuthHeader } from '../../services/authApi'
 import { getCustomerDraft, saveCustomerDraft } from '../../services/orderCustomerDraft'
 import { saveOrderToHistory } from '../../services/orderHistory'
+import { getPizzaFallbackId } from '../../data/pizzaFallbackIds'
 import './Order.css'
 
 const ORDER_API_URL = buildApiUrl('/api/order')
@@ -19,11 +20,18 @@ function formatPrice(price) {
 }
 
 function getPizzaId(item) {
+  const itemId = String(item.id)
+
+  if (itemId.startsWith('custom-pizza-')) {
+    return 0
+  }
+
   if (item.pizzaId !== undefined) {
     return Number(item.pizzaId) || 0
   }
 
-  return Number(item.id) || 0
+  const idMatch = itemId.match(/^(\d+)/)
+  return idMatch ? Number(idMatch[1]) : getPizzaFallbackId(item.name)
 }
 
 function isCustomPizza(item) {
@@ -31,12 +39,20 @@ function isCustomPizza(item) {
 }
 
 function getIngredientIds(item) {
-  return (item.ingredientIds || []).map((id) => Number(id)).filter(Number.isFinite)
+  return (item.ingredientIds || [])
+    .map((id) => Number(id))
+    .filter((id) => Number.isInteger(id) && id > 0)
 }
 
 function getInvalidCustomPizza(items) {
   return items.find((item) => {
     return isCustomPizza(item) && getIngredientIds(item).length === 0
+  })
+}
+
+function getInvalidCatalogPizza(items) {
+  return items.find((item) => {
+    return !isCustomPizza(item) && getPizzaId(item) <= 0
   })
 }
 
@@ -168,6 +184,15 @@ function Order() {
       setStatus({
         type: 'error',
         message: `У піці "${invalidCustomPizza.name}" немає інгредієнтів. Видаліть її з кошика та зберіть у конструкторі ще раз.`,
+      })
+      return
+    }
+
+    const invalidCatalogPizza = getInvalidCatalogPizza(items)
+    if (invalidCatalogPizza) {
+      setStatus({
+        type: 'error',
+        message: `Не вдалося визначити id піци "${invalidCatalogPizza.name}". Видаліть її з кошика та додайте з каталогу ще раз.`,
       })
       return
     }
