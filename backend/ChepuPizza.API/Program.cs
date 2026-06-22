@@ -39,6 +39,19 @@ namespace ChepuPizza.API
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("Frontend", policy =>
+                {
+                    policy.WithOrigins(
+                        "https://chepupizza.vercel.app",
+                        "http://localhost:5173"
+                    )
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+                });
+            });
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -46,6 +59,8 @@ namespace ChepuPizza.API
             app.UseSwaggerUI();
 
             //app.MapGet("/", () => Results.Redirect("/swagger"));
+
+            app.UseCors("Frontend");
 
             app.UseHttpsRedirection();
 
