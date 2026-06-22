@@ -15,55 +15,131 @@ function formatConstructorPrice(price) {
   return `${Math.round(Number(price) || 0)} грн`
 }
 
+function getIngredientCategory(ingredient) {
+  if (ingredient.categoryKey) {
+    return ingredient.categoryKey
+  }
+
+  return ingredient.category
+}
+
+function getCategoryLabel(category) {
+  if (categoryLabels[category]) {
+    return categoryLabels[category]
+  }
+
+  return category
+}
+
+function getCategoryDescription(category) {
+  if (categoryDescriptions[category]) {
+    return categoryDescriptions[category]
+  }
+
+  return `Інгредієнти категорії ${category}`
+}
+
+function getPartClassName(count) {
+  if (count > 0) {
+    return 'pizza-constructor__part is-selected'
+  }
+
+  return 'pizza-constructor__part'
+}
+
 function groupIngredientsByCategory(ingredients) {
   return ingredients.reduce((groups, ingredient) => {
-    const key = ingredient.categoryKey || ingredient.category
+    const category = getIngredientCategory(ingredient)
 
-    return {
-      ...groups,
-      [key]: [...(groups[key] || []), ingredient],
+    if (!groups[category]) {
+      groups[category] = []
     }
+
+    groups[category].push(ingredient)
+
+    return groups
   }, {})
+}
+
+function getSelectedIngredients(ingredients, selectedCounts) {
+  return ingredients
+    .map((ingredient) => {
+      return {
+        ...ingredient,
+        count: selectedCounts[ingredient.id] || 0,
+      }
+    })
+    .filter((ingredient) => {
+      return ingredient.count > 0
+    })
+}
+
+function getIngredientsPrice(selectedIngredients) {
+  return selectedIngredients.reduce((sum, ingredient) => {
+    return sum + ingredient.price * ingredient.count
+  }, 0)
+}
+
+function getSelectedTotal(selectedIngredients) {
+  return selectedIngredients.reduce((sum, ingredient) => {
+    return sum + ingredient.count
+  }, 0)
+}
+
+function getIngredientNames(selectedIngredients) {
+  return selectedIngredients.map((ingredient) => {
+    return ingredient.label
+  })
+}
+
+function getIngredientIds(selectedIngredients) {
+  return selectedIngredients.flatMap((ingredient) => {
+    return Array.from({ length: ingredient.count }, () => {
+      return Number(ingredient.id)
+    })
+  })
 }
 
 function PizzaConstructorPage() {
   const { ingredients, isLoading, loadError } = useIngredients()
+  const { addItem } = useCart()
+
   const [selectedCounts, setSelectedCounts] = useState({})
   const [addedToCart, setAddedToCart] = useState(false)
   const [constructorMessage, setConstructorMessage] = useState('')
-  const { addItem } = useCart()
 
-  const groupedIngredients = useMemo(() => groupIngredientsByCategory(ingredients), [ingredients])
+  const groupedIngredients = useMemo(() => {
+    return groupIngredientsByCategory(ingredients)
+  }, [ingredients])
+
   const dynamicCategoryOrder = useMemo(() => {
-    const apiCategories = Object.keys(groupedIngredients).filter((category) => !categoryOrder.includes(category))
+    const apiCategories = Object.keys(groupedIngredients).filter((category) => {
+      return !categoryOrder.includes(category)
+    })
+
     return [...categoryOrder, ...apiCategories]
   }, [groupedIngredients])
 
-  const selectedIngredients = useMemo(
-    () =>
-      ingredients
-        .map((ingredient) => ({
-          ...ingredient,
-          count: selectedCounts[ingredient.id] || 0,
-        }))
-        .filter((ingredient) => ingredient.count > 0),
-    [ingredients, selectedCounts],
-  )
+  const selectedIngredients = useMemo(() => {
+    return getSelectedIngredients(ingredients, selectedCounts)
+  }, [ingredients, selectedCounts])
 
-  const ingredientsPrice = useMemo(
-    () => selectedIngredients.reduce((sum, ingredient) => sum + ingredient.price * ingredient.count, 0),
-    [selectedIngredients],
-  )
+  const ingredientsPrice = useMemo(() => {
+    return getIngredientsPrice(selectedIngredients)
+  }, [selectedIngredients])
 
   const totalPrice = BASE_PIZZA_PRICE + ingredientsPrice
-  const selectedTotal = selectedIngredients.reduce((sum, ingredient) => sum + ingredient.count, 0)
+  const selectedTotal = getSelectedTotal(selectedIngredients)
 
   function addIngredient(ingredientId) {
     setConstructorMessage('')
-    setSelectedCounts((current) => ({
-      ...current,
-      [ingredientId]: (current[ingredientId] || 0) + 1,
-    }))
+
+    setSelectedCounts((current) => {
+      return {
+        ...current,
+        [ingredientId]: (current[ingredientId] || 0) + 1,
+      }
+    })
   }
 
   function removeIngredient(ingredientId) {
@@ -94,25 +170,33 @@ function PizzaConstructorPage() {
       return
     }
 
-    const ingredientNames = selectedIngredients.map((i) => i.label)
-    const ingredientIds = selectedIngredients.flatMap((ingredient) =>
-      Array.from({ length: ingredient.count }, () => Number(ingredient.id)),
-    )
+    const ingredientNames = getIngredientNames(selectedIngredients)
+    const ingredientIds = getIngredientIds(selectedIngredients)
+
+    let description = 'Класична основа'
+
+    if (ingredientNames.length > 0) {
+      description = ingredientNames.join(', ')
+    }
 
     addItem({
       id: 'custom-pizza-' + Date.now(),
       name: 'Піца з конструктора',
-      description: ingredientNames.length > 0 ? ingredientNames.join(', ') : 'Класична основа',
+      description: description,
       price: totalPrice,
       quantity: 1,
       ingredients: ingredientNames,
-      ingredientIds,
+      ingredientIds: ingredientIds,
       imageUrl: READY_PIZZA_IMAGE_URL,
     })
+
     setSelectedCounts({})
     setAddedToCart(true)
     setConstructorMessage('')
-    setTimeout(() => setAddedToCart(false), 2500)
+
+    setTimeout(() => {
+      setAddedToCart(false)
+    }, 2500)
   }
 
   function handleImageError(event) {
@@ -122,6 +206,7 @@ function PizzaConstructorPage() {
   return (
     <div className="pizza-constructor-page">
       <Header />
+
       <section className="pizza-constructor" aria-labelledby="constructor-title">
         <div className="pizza-constructor__inner">
           <div className="pizza-constructor__content">
@@ -130,6 +215,7 @@ function PizzaConstructorPage() {
                 <span className="pizza-constructor__eyebrow">Конструктор піци</span>
                 <h1 id="constructor-title">Зберіть свою піцу</h1>
               </div>
+
               <button
                 className="pizza-constructor__clear"
                 type="button"
@@ -154,6 +240,7 @@ function PizzaConstructorPage() {
                     <h3>Основа</h3>
                     <p>Базова ціна піци без додаткових інгредієнтів</p>
                   </div>
+
                   <article className="pizza-constructor__base-option">
                     <span>Класична основа</span>
                     <strong>{formatConstructorPrice(BASE_PIZZA_PRICE)}</strong>
@@ -163,31 +250,35 @@ function PizzaConstructorPage() {
                 {dynamicCategoryOrder.map((category) => {
                   const parts = groupedIngredients[category]
 
-                  if (!parts?.length) {
+                  if (!parts || parts.length === 0) {
                     return null
                   }
 
                   return (
                     <div className="pizza-constructor__category" key={category}>
                       <div className="pizza-constructor__category-head">
-                        <h3>{categoryLabels[category] || category}</h3>
-                        <p>{categoryDescriptions[category] || `Інгредієнти категорії ${category}`}</p>
+                        <h3>{getCategoryLabel(category)}</h3>
+                        <p>{getCategoryDescription(category)}</p>
                       </div>
+
                       <div className="pizza-constructor__category-grid">
                         {parts.map((part) => {
                           const count = selectedCounts[part.id] || 0
 
                           return (
-                            <article
-                              className={count > 0 ? 'pizza-constructor__part is-selected' : 'pizza-constructor__part'}
-                              key={part.id}
-                            >
+                            <article className={getPartClassName(count)} key={part.id}>
                               <span className="pizza-constructor__part-image">
                                 <img src={part.imageUrl} alt="" onError={handleImageError} />
                               </span>
+
                               <span className="pizza-constructor__part-name">{part.label}</span>
+
                               <strong>{formatConstructorPrice(part.price)}</strong>
-                              <div className="pizza-constructor__counter" aria-label={`Кількість ${part.label}`}>
+
+                              <div
+                                className="pizza-constructor__counter"
+                                aria-label={`Кількість ${part.label}`}
+                              >
                                 <button
                                   type="button"
                                   onClick={() => removeIngredient(part.id)}
@@ -196,7 +287,9 @@ function PizzaConstructorPage() {
                                 >
                                   −
                                 </button>
+
                                 <span>{count}</span>
+
                                 <button
                                   type="button"
                                   onClick={() => addIngredient(part.id)}
@@ -222,6 +315,7 @@ function PizzaConstructorPage() {
                 <span>Основа</span>
                 <strong>{formatConstructorPrice(BASE_PIZZA_PRICE)}</strong>
               </div>
+
               <div>
                 <span>Разом</span>
                 <strong>{formatConstructorPrice(totalPrice)}</strong>
@@ -230,11 +324,13 @@ function PizzaConstructorPage() {
 
             <section className="pizza-constructor__composition">
               <h2>Склад</h2>
+
               <ul>
                 <li>
                   <span>Класична основа</span>
                   <strong>{formatConstructorPrice(BASE_PIZZA_PRICE)}</strong>
                 </li>
+
                 {selectedIngredients.map((ingredient) => (
                   <li key={ingredient.id}>
                     <span>{ingredient.label}</span>

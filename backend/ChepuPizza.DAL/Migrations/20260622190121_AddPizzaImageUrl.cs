@@ -5,15 +5,16 @@
 namespace ChepuPizza.DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class FixPizzaCheeseModel : Migration
+    public partial class AddPizzaImageUrl : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
-                name: "Name",
-                table: "Cheeses",
-                type: "text",
+                name: "ImageUrl",
+                table: "Pizzas",
+                type: "character varying(500)",
+                maxLength: 500,
                 nullable: false,
                 defaultValue: "");
         }
@@ -22,8 +23,8 @@ namespace ChepuPizza.DAL.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Name",
-                table: "Cheeses");
+                name: "ImageUrl",
+                table: "Pizzas");
         }
     }
 }

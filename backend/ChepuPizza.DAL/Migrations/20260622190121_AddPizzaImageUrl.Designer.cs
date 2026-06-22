@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ChepuPizza.DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260604094821_AddOrders")]
-    partial class AddOrders
+    [Migration("20260622190121_AddPizzaImageUrl")]
+    partial class AddPizzaImageUrl
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -49,15 +49,10 @@ namespace ChepuPizza.DAL.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
-                    b.Property<int?>("OrderItemId")
-                        .HasColumnType("integer");
-
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(10,2)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("OrderItemId");
 
                     b.ToTable("Ingredients", (string)null);
                 });
@@ -146,6 +141,11 @@ namespace ChepuPizza.DAL.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
                     b.Property<bool>("IsAvailable")
                         .HasColumnType("boolean");
 
@@ -153,6 +153,9 @@ namespace ChepuPizza.DAL.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
+
+                    b.Property<int>("OrderCount")
+                        .HasColumnType("integer");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(10,2)");
@@ -177,11 +180,30 @@ namespace ChepuPizza.DAL.Migrations
                     b.ToTable("PizzaIngredients", (string)null);
                 });
 
-            modelBuilder.Entity("ChepuPizza.DAL.Models.Entities.Ingredient", b =>
+            modelBuilder.Entity("ChepuPizza.DAL.Models.Entities.User", b =>
                 {
-                    b.HasOne("ChepuPizza.DAL.Models.Entities.OrderItem", null)
-                        .WithMany("Ingredients")
-                        .HasForeignKey("OrderItemId");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("ChepuPizza.DAL.Models.Entities.OrderItem", b =>
@@ -217,11 +239,6 @@ namespace ChepuPizza.DAL.Migrations
             modelBuilder.Entity("ChepuPizza.DAL.Models.Entities.Order", b =>
                 {
                     b.Navigation("OrderItems");
-                });
-
-            modelBuilder.Entity("ChepuPizza.DAL.Models.Entities.OrderItem", b =>
-                {
-                    b.Navigation("Ingredients");
                 });
 
             modelBuilder.Entity("ChepuPizza.DAL.Models.Entities.Pizza", b =>

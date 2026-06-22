@@ -7,10 +7,12 @@ namespace ChepuPizza.DAL.Models.Entities
             // For EF Core
         }
 
-        private Pizza(string name, decimal price)
+        private Pizza(string name, decimal price, string imageUrl, PizzaCategory category)
         {
             Name = name;
             Price = price;
+            ImageUrl = imageUrl;
+            Category = category;
         }
 
         public int OrderCount { get; private set; }
@@ -21,13 +23,19 @@ namespace ChepuPizza.DAL.Models.Entities
 
         public decimal Price { get; private set; }
 
+        public string ImageUrl { get; private set; } = string.Empty;
+
+        public PizzaCategory Category { get; private set; }
+
         public bool IsAvailable { get; private set; } = true;
         
         public List<PizzaIngredient> PizzaIngredients { get; private set; } = new();
 
         public static (Pizza? pizza, string? error) Create(
             string name,
-            decimal price)
+            decimal price,
+            string? imageUrl,
+            PizzaCategory category)
         {
             if (string.IsNullOrWhiteSpace(name))
             {
@@ -39,7 +47,7 @@ namespace ChepuPizza.DAL.Models.Entities
                 return (null, "Price cannot be lower than zero");
             }
 
-            Pizza pizza = new Pizza(name, price);
+            Pizza pizza = new Pizza(name, price, imageUrl ?? string.Empty, category);
 
             return (pizza, null);
         }
@@ -64,5 +72,13 @@ namespace ChepuPizza.DAL.Models.Entities
         public Pizza Pizza { get; set; } = null!;
         public int IngredientId { get; set; }
         public Ingredient Ingredient { get; set; } = null!;
+    }
+
+    public enum PizzaCategory
+    {
+        Veggie = 1,
+        Meat = 2,
+        Mushrooms = 3,
+        Seafood = 4
     }
 }

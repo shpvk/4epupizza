@@ -8,6 +8,8 @@
   --constructor-orange: #ff5d29;
   --constructor-gold: #fe9c1c;
   --constructor-green: #f6ddd4;
+  display: flex;
+  flex-direction: column;
   width: 100%;
   min-height: 100vh;
   background: radial-gradient(circle, #3a1a03 0%, #180a00 100%);

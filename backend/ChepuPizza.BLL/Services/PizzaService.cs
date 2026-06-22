@@ -1,8 +1,8 @@
 using ChepuPizza.BLL.DTO;
 using ChepuPizza.BLL.Interfaces;
+using ChepuPizza.BLL.Mappings;
 using ChepuPizza.DAL.Interfaces;
 using ChepuPizza.DAL.Models.Entities;
-using System.Runtime.CompilerServices;
 
 namespace ChepuPizza.BLL.Services
 {
@@ -18,31 +18,7 @@ namespace ChepuPizza.BLL.Services
         public async Task<List<PizzaResponse>> GetAllAsync()
         {
             List<Pizza> pizzas = await _pizzaRepository.GetAllAsync();
-            List<PizzaResponse> pizzasDto = new List<PizzaResponse>();
-
-            foreach(Pizza pizza in pizzas)
-            {
-                PizzaResponse pizzaDto = new PizzaResponse
-                {
-                    Id = pizza.Id,
-                    Name = pizza.Name,
-                    Price = pizza.Price,
-                    OrderCount = pizza.OrderCount,
-                    Category = pizza.Category,
-                    Ingredients = pizza.PizzaIngredients.Select(pizzaIngredient => new IngredientResponse
-                    {
-                        Id = pizzaIngredient.Ingredient.Id,
-                        Name = pizzaIngredient.Ingredient.Name,
-                        Price = pizzaIngredient.Ingredient.Price,
-                        IsAvailable = pizzaIngredient.Ingredient.IsAvailable,
-                        Category = pizzaIngredient.Ingredient.Category.ToString(),
-                        ImageUrl = pizzaIngredient.Ingredient.ImageUrl
-                    }).ToList()
-                };
-                pizzasDto.Add(pizzaDto);
-            }
-
-            return pizzasDto;
+            return pizzas.Select(pizza => pizza.ToResponse()).ToList();
         }
 
         public async Task<PizzaResponse> GetByIdAsync(int pizzaId)
@@ -54,24 +30,7 @@ namespace ChepuPizza.BLL.Services
                 throw new Exception("Pizza not found");
             }
 
-            PizzaResponse pizzaDto = new PizzaResponse
-            {
-                Id = pizza.Id,
-                Name = pizza.Name,
-                Price = pizza.Price,
-                OrderCount = pizza.OrderCount,
-                Category = pizza.Category,
-                Ingredients = pizza.PizzaIngredients.Select(pizzaIngredient => new IngredientResponse
-                {
-                    Id = pizzaIngredient.Ingredient.Id,
-                    Name = pizzaIngredient.Ingredient.Name,
-                    Price = pizzaIngredient.Ingredient.Price,
-                    IsAvailable = pizzaIngredient.Ingredient.IsAvailable,
-                    Category = pizzaIngredient.Ingredient.Category.ToString(),
-                    ImageUrl = pizzaIngredient.Ingredient.ImageUrl
-                }).ToList()
-            };
-            return pizzaDto;
+            return pizza.ToResponse();
         }
 
         public async Task<PizzaResponse> CreateAsync(PizzaRequest pizzaRequest)
@@ -81,31 +40,34 @@ namespace ChepuPizza.BLL.Services
                 throw new ArgumentException("Pizza must have at least one ingredient");
             }
 
-            (Pizza? pizza, string? error) = Pizza.Create(pizzaRequest.Name, pizzaRequest.Price);
-            if(error != null)
+            if (!Enum.TryParse(pizzaRequest.Category, ignoreCase: true, out PizzaCategory category))
+            {
+                throw new ArgumentException("Invalid pizza category");
+            }
+
+            (Pizza? pizza, string? error) = Pizza.Create(
+                pizzaRequest.Name,
+                pizzaRequest.Price,
+                pizzaRequest.ImageUrl,
+                category);
+
+            if (error != null)
             {
                 throw new Exception(error);
             }
-            if(pizza == null)
+
+            if (pizza == null)
             {
                 throw new Exception("Pizza creation failed");
             }
 
-
-
-            foreach(int ingredientId in pizzaRequest.IngredientIds)
+            foreach (int ingredientId in pizzaRequest.IngredientIds.Distinct())
             {
                 pizza.AddIngredientById(ingredientId);
             }
 
-
             Pizza responsePizza = await _pizzaRepository.AddAsync(pizza);
-            PizzaResponse pizzaDto = new PizzaResponse();
-            pizzaDto.Id = responsePizza.Id;
-            pizzaDto.Name = responsePizza.Name;
-            pizzaDto.Price = responsePizza.Price;
-
-            return pizzaDto;
+            return responsePizza.ToResponse();
         }
     }
 }

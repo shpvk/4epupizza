@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ChepuPizza.DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260619055228_Auth")]
-    partial class Auth
+    [Migration("20260622153606_AddUserRole")]
+    partial class AddUserRole
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -49,15 +49,10 @@ namespace ChepuPizza.DAL.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
-                    b.Property<int?>("OrderItemId")
-                        .HasColumnType("integer");
-
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(10,2)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("OrderItemId");
 
                     b.ToTable("Ingredients", (string)null);
                 });
@@ -154,6 +149,9 @@ namespace ChepuPizza.DAL.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
+                    b.Property<int>("OrderCount")
+                        .HasColumnType("integer");
+
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(10,2)");
 
@@ -189,6 +187,10 @@ namespace ChepuPizza.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -197,13 +199,6 @@ namespace ChepuPizza.DAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users", (string)null);
-                });
-
-            modelBuilder.Entity("ChepuPizza.DAL.Models.Entities.Ingredient", b =>
-                {
-                    b.HasOne("ChepuPizza.DAL.Models.Entities.OrderItem", null)
-                        .WithMany("Ingredients")
-                        .HasForeignKey("OrderItemId");
                 });
 
             modelBuilder.Entity("ChepuPizza.DAL.Models.Entities.OrderItem", b =>
@@ -239,11 +234,6 @@ namespace ChepuPizza.DAL.Migrations
             modelBuilder.Entity("ChepuPizza.DAL.Models.Entities.Order", b =>
                 {
                     b.Navigation("OrderItems");
-                });
-
-            modelBuilder.Entity("ChepuPizza.DAL.Models.Entities.OrderItem", b =>
-                {
-                    b.Navigation("Ingredients");
                 });
 
             modelBuilder.Entity("ChepuPizza.DAL.Models.Entities.Pizza", b =>
