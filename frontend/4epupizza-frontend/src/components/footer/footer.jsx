@@ -39,6 +39,12 @@ function Footer() {
                     </a>
                 </div>
             </div>
+
+            <div className="under-footer">
+                <div className="under-footer-col">
+                    
+                </div>
+            </div>
         </footer>
     )
 }
