@@ -7,10 +7,10 @@ import { dummyPizzas } from "../../data/dummyPizzas";
 
 const categories = [
   { id: null, name: "Все" },
-  { id: 1, name: "Мясо" },
-  { id: 2, name: "Вегетарианские" },
-  { id: 3, name: "Морепродукты" },
-  { id: 4, name: "Грибные" },
+  { id: "Meat", name: "Мясо" },
+  { id: "Veggie", name: "Вегетарианские" },
+  { id: "Seafood", name: "Морепродукты" },
+  { id: "Mushrooms", name: "Грибные" },
 ];
 
 function Catalog() {
@@ -35,7 +35,7 @@ function Catalog() {
   const displayPizzas = pizzas.length > 0 ? pizzas : dummyPizzas;
 
   let filteredPizzas = selectedCategory
-    ? displayPizzas.filter((pizza) => pizza.categoryId === selectedCategory)
+    ? displayPizzas.filter((pizza) => pizza.category === selectedCategory)
     : [...displayPizzas];
 
   if (sortOrder === "price-asc") {
