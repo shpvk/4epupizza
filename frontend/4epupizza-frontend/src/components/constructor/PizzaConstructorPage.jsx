@@ -97,7 +97,7 @@ function getIngredientIds(selectedIngredients) {
     return Array.from({ length: ingredient.count }, () => {
       return Number(ingredient.id)
     })
-  })
+  }).filter(Number.isFinite)
 }
 
 function PizzaConstructorPage() {
@@ -181,6 +181,13 @@ function PizzaConstructorPage() {
 
     const ingredientNames = getIngredientNames(selectedIngredients)
     const ingredientIds = getIngredientIds(selectedIngredients)
+
+    if (ingredientIds.length === 0) {
+      setIsAddingToCart(false)
+      addToCartLockRef.current = false
+      setConstructorMessage('Не вдалося визначити інгредієнти. Оновіть сторінку та зберіть піцу ще раз.')
+      return
+    }
 
     let description = 'Класична основа'
 
