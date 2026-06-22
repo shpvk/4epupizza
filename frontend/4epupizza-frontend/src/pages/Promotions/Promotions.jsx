@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
-import Header from '../components/header/header'
-import Footer from '../components/footer/footer'
-import { promotions } from '../data/promotions'
+import Header from '../../components/header/header'
+import Footer from '../../components/footer/footer'
+import { promotions } from '../../data/promotions'
 import './Promotions.css'
 
 function Promotions() {
@@ -14,8 +14,8 @@ function Promotions() {
             <span className="promotions__eyebrow">Промокоди 4epupizza</span>
             <h1 id="promotions-title">Акції для смачних приводів</h1>
             <p>
-              Обирайте промокод, додавайте піцу в замовлення та отримуйте знижку на день народження,
-              самовивіз, вечір з друзями або сімейну неділю.
+              Обирайте промокод, додавайте піцу в замовлення та отримуйте знижку
+              на день народження, самовивіз або студентський сет.
             </p>
           </div>
           <Link to="/constructor" className="promotions__cta">

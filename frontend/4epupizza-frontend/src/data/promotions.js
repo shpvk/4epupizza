@@ -18,16 +18,6 @@ export const promotions = [
     value: 10,
   },
   {
-    title: 'Вечір з друзями',
-    discount: '-15%',
-    code: 'FRIENDS15',
-    description: 'Для великих компаній: знижка на замовлення від трьох піц у кошику.',
-    accent: 'Компанія',
-    type: 'percent',
-    value: 15,
-    minItems: 3,
-  },
-  {
     title: 'Студентський сет',
     discount: '-12%',
     code: 'STUDENT12',
@@ -35,24 +25,6 @@ export const promotions = [
     accent: 'Навчання',
     type: 'percent',
     value: 12,
-  },
-  {
-    title: 'Сімейна неділя',
-    discount: '2+1',
-    code: 'FAMILY3',
-    description: 'Кожної неділі третя піца у подарунок для сімейних замовлень.',
-    accent: 'Вихідні',
-    type: 'cheapest-free',
-    minItems: 3,
-  },
-  {
-    title: 'Гаряча новинка',
-    discount: '-18%',
-    code: 'NEW18',
-    description: 'Спробуйте нову піцу місяця зі спеціальною ціною до кінця тижня.',
-    accent: 'Новинка',
-    type: 'percent',
-    value: 18,
   },
 ]
 
