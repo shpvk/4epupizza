@@ -47,6 +47,15 @@
             Order order = new Order(customerName, phone, address, comment, orderItems);
             return (order, null);
         }
+
+        public void Accept()
+        {
+            if (Status != OrderStatus.Created)
+            {
+                throw new InvalidOperationException("Only created orders can be accepted");
+            }
+            Status = OrderStatus.Accepted;
+        }
     }
     public class OrderItem
     {
