@@ -1,4 +1,4 @@
-﻿using ChepuPizza.BLL.DTO;
+using ChepuPizza.BLL.DTO;
 using ChepuPizza.BLL.Interfaces;
 using ChepuPizza.DAL.Interfaces;
 using ChepuPizza.DAL.Models.Entities;
@@ -28,6 +28,7 @@ namespace ChepuPizza.BLL.Services
                     Name = pizza.Name,
                     Price = pizza.Price,
                     OrderCount = pizza.OrderCount,
+                    Category = pizza.Category,
                     Ingredients = pizza.PizzaIngredients.Select(pizzaIngredient => new IngredientResponse
                     {
                         Id = pizzaIngredient.Ingredient.Id,
@@ -59,6 +60,7 @@ namespace ChepuPizza.BLL.Services
                 Name = pizza.Name,
                 Price = pizza.Price,
                 OrderCount = pizza.OrderCount,
+                Category = pizza.Category,
                 Ingredients = pizza.PizzaIngredients.Select(pizzaIngredient => new IngredientResponse
                 {
                     Id = pizzaIngredient.Ingredient.Id,

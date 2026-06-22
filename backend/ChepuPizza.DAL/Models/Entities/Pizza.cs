@@ -1,4 +1,4 @@
-﻿namespace ChepuPizza.DAL.Models.Entities
+namespace ChepuPizza.DAL.Models.Entities
 {
     public class Pizza
     {
@@ -22,7 +22,7 @@
         public decimal Price { get; private set; }
 
         public bool IsAvailable { get; private set; } = true;
-
+        
         public List<PizzaIngredient> PizzaIngredients { get; private set; } = new();
 
         public static (Pizza? pizza, string? error) Create(
