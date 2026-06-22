@@ -35,6 +35,7 @@
 .header_logo
 {
   width: 200px; 
+  height: 48px;
   display: flex;
   align-items: center;
 }
@@ -46,8 +47,10 @@
 .header_logo img
 {
   width: 100%;
-  height: auto;
+  height: 100%;
   display: block;
+  object-fit: contain;
+  object-position: left center;
 }
 
 .nav_bar
@@ -168,14 +171,18 @@
 .btn--cart
 {
   position: relative;
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
   background: linear-gradient(261.69deg, #FF5D29 12.12%, #FE9C1C 86.72%);
   border: none;
   cursor: pointer;
-  padding: 5px;
+  padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
+  overflow: hidden;
   text-decoration: none;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
@@ -186,7 +193,9 @@
 .btn--cart img
 {
   display: block;
-  max-height: 100%;
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
 }
 .cart-badge {
   position: absolute;
@@ -233,6 +242,7 @@
   }
   .header_logo {
     width: 150px;
+    height: 40px;
   }
   .nav_bar {
     order: 3;
@@ -251,6 +261,7 @@
 {
   .header_logo {
     width: 120px;
+    height: 34px;
   }
   .nav_bar ul {
     flex-wrap: wrap;

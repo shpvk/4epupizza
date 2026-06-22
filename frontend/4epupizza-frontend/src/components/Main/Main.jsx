@@ -22,8 +22,8 @@ function Main() {
           <p>Cooking process:</p>
 
           <div className="video-preview" onClick={() => setIsVideoOpen(true)}>
-            <img src="/img/pizza-frame.png" className="preview-image" />
-            <img src="/img/Ellipse2.png" className="play-button" />
+            <img src="https://zcncvckglgttnjwrwuuc.supabase.co/storage/v1/object/public/pizza-images/important/pizza-frame.png" className="preview-image" />
+            <img src="https://zcncvckglgttnjwrwuuc.supabase.co/storage/v1/object/public/pizza-images/important/Ellipse2.png" className="play-button" />
           </div>
           <div>
             <Link to="/catalog" className="catalog-button">
@@ -32,7 +32,7 @@ function Main() {
           </div>
         </div>
         <div className="photo-section">
-          <img src="./img/stepizza.jpeg" />
+          <img src="https://zcncvckglgttnjwrwuuc.supabase.co/storage/v1/object/public/pizza-images/important/stepizza.jpeg" />
         </div>
       </div>
 
@@ -41,7 +41,7 @@ function Main() {
           <div className="video-content" onClick={(e) => e.stopPropagation()}>
             <div className="close-button">
               <button onClick={() => setIsVideoOpen(false)}>
-                <img src="/img/close.png" alt="Close" />
+                <img src="https://zcncvckglgttnjwrwuuc.supabase.co/storage/v1/object/public/pizza-images/important/cart.png" alt="Close" />
               </button>
             </div>
 

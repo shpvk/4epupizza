@@ -7,7 +7,7 @@ function Footer() {
             <div className="footer-top">
                 <div className="footer-inner">
                     <div className="footer-logo">
-                        <img src="/img/4epupizza.png" alt="4epupizza" />
+                        <img src="https://zcncvckglgttnjwrwuuc.supabase.co/storage/v1/object/public/pizza-images/important/logo.png" alt="4epupizza" />
                     </div>
 
                     <div className="footer-links">
@@ -49,13 +49,13 @@ function Footer() {
 
                 <div className="footer-socials">
                     <a href="#" aria-label="Instagram">
-                        <img src="/img/instagram.svg" alt="" />
+                        <img src="https://zcncvckglgttnjwrwuuc.supabase.co/storage/v1/object/public/pizza-images/important/instagram.svg" alt="" />
                     </a>
                     <a href="#" aria-label="Twitter">
-                        <img src="/img/x.svg" alt="" />
+                        <img src="https://zcncvckglgttnjwrwuuc.supabase.co/storage/v1/object/public/pizza-images/important/x.svg" alt="" />
                     </a>
                     <a href="#" aria-label="Facebook">
-                        <img src="/img/facebook.svg" alt="" />
+                        <img src="https://zcncvckglgttnjwrwuuc.supabase.co/storage/v1/object/public/pizza-images/important/facebook.svg" alt="" />
                     </a>
                 </div>
             </div>
