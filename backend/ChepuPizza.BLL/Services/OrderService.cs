@@ -1,5 +1,6 @@
-﻿using ChepuPizza.BLL.DTO;
+using ChepuPizza.BLL.DTO;
 using ChepuPizza.BLL.Interfaces;
+using ChepuPizza.BLL.Mappings;
 using ChepuPizza.DAL.Interfaces;
 using ChepuPizza.DAL.Models.Entities;
 
@@ -11,7 +12,9 @@ namespace ChepuPizza.BLL.Services
         private readonly IPizzaRepository _pizzaRepository;
         private readonly IIngredientRepository _ingredientRepository;
 
-        public OrderService(IOrderRepository orderRepository, IPizzaRepository pizzaRepository,
+        public OrderService(
+            IOrderRepository orderRepository,
+            IPizzaRepository pizzaRepository,
             IIngredientRepository ingredientRepository)
         {
             _orderRepository = orderRepository;
@@ -22,59 +25,27 @@ namespace ChepuPizza.BLL.Services
         public async Task<OrderResponse> CreateAsync(OrderRequest requestDto)
         {
             if (requestDto.Items == null || requestDto.Items.Count == 0)
+            {
                 throw new ArgumentException("Order must contain at least one item");
+            }
 
             List<OrderItem> orderItems = new();
 
             foreach (OrderItemRequest itemDto in requestDto.Items)
             {
-                if(itemDto.Quantity <= 0)
+                if (itemDto.Quantity <= 0)
                 {
-                    throw new Exception("Quantity must be more than zero");
+                    throw new ArgumentException("Quantity must be more than zero");
                 }
 
-                if(itemDto.PizzaId != null) // Generic pizza
-                {
-                    Pizza? pizza = await _pizzaRepository.GetByIdAsync(itemDto.PizzaId.Value);
-                    List<Ingredient> ingredients = pizza.PizzaIngredients
-                        .Select(pi => pi.Ingredient)
-                        .ToList();
+                OrderItem orderItem = itemDto.PizzaId.HasValue
+                    ? await CreateMenuPizzaOrderItemAsync(itemDto)
+                    : await CreateCustomPizzaOrderItemAsync(itemDto);
 
-                    (OrderItem? orderItem, string? error) = OrderItem.Create(pizza.Name, pizza.Id, itemDto.Quantity,
-                        pizza.Price, ingredients);
-
-                    if(orderItem == null)
-                    {
-                        throw new Exception(error);
-                    }
-
-                    pizza.IncreaseOrderCount(itemDto.Quantity);
-
-                    orderItems.Add(orderItem);
-                }
-                if(itemDto.PizzaId == null) // Custom pizza
-                {
-                    List<int> ingredientIds = itemDto.IngredientIds;
-                    List<Ingredient> ingredients = await _ingredientRepository.GetByIdsAsync(ingredientIds);
-
-                    decimal unitPrice = 0;
-                    foreach (Ingredient ingredient in ingredients)
-                    {
-                        unitPrice += ingredient.Price;
-                        (OrderItem? orderItem, string? error) = OrderItem.Create(
-                            "Custom Pizza",
-                            null,
-                            itemDto.Quantity,
-                            unitPrice,
-                            ingredients
-                        );
-                        if (orderItem != null)
-                            orderItems.Add(orderItem);
-                    }
-                }
+                orderItems.Add(orderItem);
             }
 
-            var result = Order.Create(
+            (Order? order, string? error) = Order.Create(
                 requestDto.CustomerName,
                 requestDto.Phone,
                 requestDto.Address,
@@ -82,34 +53,73 @@ namespace ChepuPizza.BLL.Services
                 orderItems
             );
 
-            if (result.error != null)
-                throw new ArgumentException(result.error);
-
-            Order order = result.order!;
-
-            await _orderRepository.CreateAsync(order);
-
-            OrderResponse orderDto = new OrderResponse
+            if (error != null)
             {
-                Id = order.Id,
-                CustomerName = order.CustomerName,
-                Phone = order.Phone,
-                Address = order.Address,
-                TotalPrice = order.TotalPrice,
-                Status = order.Status.ToString(),
-                CreatedAt = order.CreatedAt,
+                throw new ArgumentException(error);
+            }
 
-                Items = order.OrderItems.Select(orderItem => new OrderItemResponse
-                {
-                    Id = orderItem.Id,
-                    PizzaName = orderItem.PizzaName,
-                    Quantity = orderItem.Quantity,
-                    UnitPrice = orderItem.UnitPrice,
-                    TotalPrice = orderItem.TotalPrice
-                }).ToList()
-            };
+            await _orderRepository.CreateAsync(order!);
+            return order!.ToResponse();
+        }
 
-            return orderDto;
+        private async Task<OrderItem> CreateMenuPizzaOrderItemAsync(OrderItemRequest itemDto)
+        {
+            Pizza? pizza = await _pizzaRepository.GetByIdAsync(itemDto.PizzaId!.Value);
+
+            if (pizza == null)
+            {
+                throw new ArgumentException("Pizza not found");
+            }
+
+            List<Ingredient> ingredients = pizza.PizzaIngredients
+                .Select(pizzaIngredient => pizzaIngredient.Ingredient)
+                .ToList();
+
+            (OrderItem? orderItem, string? error) = OrderItem.Create(
+                pizza.Name,
+                pizza.Id,
+                itemDto.Quantity,
+                pizza.Price,
+                ingredients);
+
+            if (orderItem == null)
+            {
+                throw new Exception(error);
+            }
+
+            pizza.IncreaseOrderCount(itemDto.Quantity);
+            return orderItem;
+        }
+
+        private async Task<OrderItem> CreateCustomPizzaOrderItemAsync(OrderItemRequest itemDto)
+        {
+            List<int> ingredientIds = itemDto.IngredientIds.Distinct().ToList();
+
+            if (ingredientIds.Count == 0)
+            {
+                throw new ArgumentException("Custom pizza must contain at least one ingredient");
+            }
+
+            List<Ingredient> ingredients = await _ingredientRepository.GetByIdsAsync(ingredientIds);
+
+            if (ingredients.Count != ingredientIds.Count)
+            {
+                throw new ArgumentException("Some ingredients were not found");
+            }
+
+            (OrderItem? orderItem, string? error) = OrderItem.Create(
+                "Custom Pizza",
+                null,
+                itemDto.Quantity,
+                ingredients.Sum(ingredient => ingredient.Price),
+                ingredients);
+
+            if (orderItem == null)
+            {
+                throw new Exception(error);
+            }
+
+            return orderItem;
         }
     }
 }
