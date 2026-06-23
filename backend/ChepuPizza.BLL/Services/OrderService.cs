@@ -109,7 +109,7 @@ namespace ChepuPizza.BLL.Services
 
                 if (customOrderItem == null)
                 {
-                    throw new Exception(customError);
+                    throw new ArgumentException(customError);
                 }
 
                 return customOrderItem;
@@ -124,7 +124,7 @@ namespace ChepuPizza.BLL.Services
 
             if (orderItem == null)
             {
-                throw new Exception(error);
+                throw new ArgumentException(error);
             }
 
             pizza.IncreaseOrderCount(itemDto.Quantity);
@@ -159,7 +159,7 @@ namespace ChepuPizza.BLL.Services
 
             if (orderItem == null)
             {
-                throw new Exception(error);
+                throw new ArgumentException(error);
             }
 
             return orderItem;

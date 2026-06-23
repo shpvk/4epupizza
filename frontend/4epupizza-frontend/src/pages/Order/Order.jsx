@@ -5,7 +5,6 @@ import Footer from '../../components/footer/footer'
 import { useAuth } from '../../context/useAuth'
 import { useCart } from '../../context/CartContext'
 import { buildApiUrl } from '../../services/apiConfig'
-import { getAuthHeader } from '../../services/authApi'
 import { getCustomerDraft, saveCustomerDraft } from '../../services/orderCustomerDraft'
 import { saveOrderToHistory } from '../../services/orderHistory'
 import './Order.css'
@@ -17,30 +16,81 @@ function formatPrice(price) {
 }
 
 function getPizzaId(item) {
-  if (item.pizzaId !== undefined) {
-    return Number(item.pizzaId) || 0
+  const storedPizzaId = Number(item.pizzaId)
+
+  if (Number.isFinite(storedPizzaId) && storedPizzaId > 0) {
+    return storedPizzaId
   }
 
-  return Number(item.id) || 0
+  const idMatch = String(item.id).match(/^\d+/)
+
+  return idMatch ? Number(idMatch[0]) : null
+}
+
+function isLocalPizza(item) {
+  return !String(item.id).startsWith('custom-pizza-') && !getPizzaId(item)
+}
+
+function getIngredientIds(item) {
+  const ingredientIds = (item.ingredientIds || [])
+    .map((id) => Number(id))
+    .filter((id) => Number.isFinite(id) && id > 0)
+
+  Object.entries(item.extraIngredients || {}).forEach(([id, count]) => {
+    const ingredientId = Number(id)
+    const ingredientCount = Number(count) || 0
+
+    if (!Number.isFinite(ingredientId) || ingredientId <= 0 || ingredientCount <= 0) {
+      return
+    }
+
+    for (let index = 0; index < ingredientCount; index += 1) {
+      ingredientIds.push(ingredientId)
+    }
+  })
+
+  return ingredientIds
 }
 
 function buildOrderItems(items) {
   return items.map((item) => {
-    const ingredientIds = (item.ingredientIds || []).map((id) => Number(id)).filter(Number.isFinite)
+    const ingredientIds = getIngredientIds(item)
+    const quantity = Number(item.quantity) || 1
 
     if (String(item.id).startsWith('custom-pizza-')) {
       return {
+        pizzaId: null,
         ingredientIds,
-        quantity: item.quantity,
+        quantity,
       }
     }
 
-    return {
+    const orderItem = {
       pizzaId: getPizzaId(item),
-      ingredientIds,
-      quantity: item.quantity,
+      quantity,
     }
+
+    if (ingredientIds.length > 0) {
+      orderItem.ingredientIds = ingredientIds
+    }
+
+    return orderItem
   })
+}
+
+async function getOrderErrorMessage(response) {
+  const text = await response.text()
+
+  if (!text) {
+    return 'РќРµ РІРґР°Р»РѕСЃСЏ РѕС„РѕСЂРјРёС‚Рё Р·Р°РјРѕРІР»РµРЅРЅСЏ. РџРµСЂРµРІС–СЂС‚Рµ РґР°РЅС– С‚Р° СЃРїСЂРѕР±СѓР№С‚Рµ С‰Рµ СЂР°Р·.'
+  }
+
+  try {
+    const data = JSON.parse(text)
+    return data?.message || data?.title || text
+  } catch {
+    return text
+  }
 }
 
 function Order() {
@@ -72,6 +122,13 @@ function Order() {
       return
     }
 
+    const localPizza = items.find(isLocalPizza)
+
+    if (localPizza) {
+      setStatus({ type: 'error', message: `Нельзя оформить заказ: "${localPizza.name}" локальная пицца без id на backend.` })
+      return
+    }
+
     setIsSubmitting(true)
     setStatus({ type: '', message: '' })
 
@@ -81,19 +138,18 @@ function Order() {
         headers: {
           'Content-Type': 'application/json',
           accept: 'application/json',
-          ...getAuthHeader(),
         },
         body: JSON.stringify({
           customerName: form.customerName.trim(),
           phone: form.phone.trim(),
           address: form.address.trim(),
-          comment: form.comment.trim(),
+          comment: form.comment.trim() || null,
           items: orderItems,
         }),
       })
 
       if (!response.ok) {
-        throw new Error('Order request failed')
+        throw new Error(await getOrderErrorMessage(response))
       }
 
       saveCustomerDraft(user, form)
@@ -119,7 +175,12 @@ function Order() {
       clearCart()
       setStatus({ type: 'success', message: 'Замовлення прийнято. Дякуємо!' })
       setTimeout(() => navigate('/profile'), 1500)
-    } catch {
+    } catch (error) {
+      if (error.message) {
+        setStatus({ type: 'error', message: error.message })
+        return
+      }
+
       setStatus({
         type: 'error',
         message: 'Не вдалося оформити замовлення. Перевірте дані та спробуйте ще раз.',

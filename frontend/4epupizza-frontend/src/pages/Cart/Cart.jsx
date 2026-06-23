@@ -11,6 +11,22 @@ function formatPrice(price) {
   return `${Math.round(Number(price) || 0)} грн`
 }
 
+function getPizzaId(item) {
+  const storedPizzaId = Number(item.pizzaId)
+
+  if (Number.isFinite(storedPizzaId) && storedPizzaId > 0) {
+    return storedPizzaId
+  }
+
+  const idMatch = String(item.id).match(/^\d+/)
+
+  return idMatch ? Number(idMatch[0]) : null
+}
+
+function isLocalPizza(item) {
+  return !String(item.id).startsWith('custom-pizza-') && !getPizzaId(item)
+}
+
 function EmptyCart() {
   return (
     <div className="cart-empty">
@@ -109,6 +125,7 @@ function Cart() {
   const [promoCode, setPromoCode] = useState('')
   const [activePromotion, setActivePromotion] = useState(null)
   const [promoMessage, setPromoMessage] = useState('')
+  const [checkoutMessage, setCheckoutMessage] = useState('')
 
   const promotionDiscount = useMemo(
     () => calculatePromotionDiscount(activePromotion, items, totalPrice),
@@ -140,6 +157,18 @@ function Cart() {
     setActivePromotion(null)
     setPromoCode('')
     setPromoMessage('')
+  }
+
+  function handleCheckout(event) {
+    const localPizza = items.find(isLocalPizza)
+
+    if (!localPizza) {
+      setCheckoutMessage('')
+      return
+    }
+
+    event.preventDefault()
+    setCheckoutMessage(`Нельзя оформить заказ: "${localPizza.name}" локальная пицца без id на backend.`)
   }
 
   return (
@@ -222,9 +251,16 @@ function Cart() {
                   to="/order"
                   className="cart-summary__checkout"
                   id="checkout-button"
+                  onClick={handleCheckout}
                 >
                   Оформити замовлення
                 </Link>
+
+                {checkoutMessage && (
+                  <p className="cart-promo__message">
+                    {checkoutMessage}
+                  </p>
+                )}
 
                 <Link to="/" className="cart-summary__continue">
                   Продовжити покупки
