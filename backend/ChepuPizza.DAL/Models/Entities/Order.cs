@@ -15,6 +15,9 @@
             Address = address;
             Comment = comment;
             OrderItems = orderItems;
+            TotalPrice = orderItems.Sum(orderItem => orderItem.TotalPrice);
+            Status = OrderStatus.Created;
+            CreatedAt = DateTime.UtcNow;
         }
 
         public int Id { get; private set; }
@@ -68,13 +71,15 @@
             string pizzaName,
             int? pizzaId,
             int quantity,
-            decimal unitPrice)
+            decimal unitPrice,
+            List<Ingredient> ingredients)
         {
             PizzaName = pizzaName;
             PizzaId = pizzaId;
             Quantity = quantity;
             UnitPrice = unitPrice;
             TotalPrice = unitPrice * quantity;
+            Ingredients = ingredients;
         }
 
         public int Id { get; private set; }
@@ -91,6 +96,9 @@
         public decimal UnitPrice { get; private set; }
 
         public decimal TotalPrice { get; private set; }
+
+        [System.ComponentModel.DataAnnotations.Schema.NotMapped]
+        public List<Ingredient> Ingredients { get; private set; } = new();
 
 
         public static (OrderItem? orderItem, string? error) Create(
@@ -116,7 +124,8 @@
                 pizzaName,
                 pizzaId,
                 quantity,
-                unitPrice);
+                unitPrice,
+                ingredients);
 
             return (orderItem, null);
         }
