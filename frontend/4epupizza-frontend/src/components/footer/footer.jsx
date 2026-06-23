@@ -26,6 +26,7 @@ function Footer() {
                 <div className="footer-phone">
                     <a href="tel:+380673152724">+380 67 315 27 24</a>
                 </div>
+            </div>
 
       <div className="under-footer">
         <div className="under-footer-cont">
