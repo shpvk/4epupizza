@@ -117,7 +117,7 @@
             if (unitPrice < 0)
                 return (null, "Unit price cannot be lower than zero");
 
-            if (ingredients == null || ingredients.Count == 0)
+            if (!pizzaId.HasValue && (ingredients == null || ingredients.Count == 0))
                 return (null, "Order item must contain at least one ingredient");
 
             OrderItem orderItem = new OrderItem(

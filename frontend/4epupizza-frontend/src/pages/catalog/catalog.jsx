@@ -3,7 +3,7 @@ import "./catalog.css";
 import Header from "../../components/header/header";
 import Footer from "../../components/footer/footer";
 import Card from "../../components/pizzacard/pizzacard";
-import { dummyPizzas } from "../../data/dummyPizzas";
+import { buildApiUrl } from "../../services/apiConfig";
 
 const categories = [
   { id: null, name: "Все" },
@@ -13,30 +13,77 @@ const categories = [
   { id: "Mushrooms", name: "Грибные" },
 ];
 
+let cachedPizzas = null;
+let pizzasRequest = null;
+
+function normalizePizzas(data) {
+  if (Array.isArray(data)) {
+    return data;
+  }
+
+  if (Array.isArray(data?.value)) {
+    return data.value;
+  }
+
+  return [];
+}
+
 function Catalog() {
-  const [pizzas, setPizzas] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [pizzas, setPizzas] = useState(cachedPizzas || []);
+  const [loading, setLoading] = useState(!cachedPizzas);
+  const [loadError, setLoadError] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [sortOrder, setSortOrder] = useState("default"); // default, price-asc, price-desc
 
   useEffect(() => {
-    fetch("https://fourepupizza.onrender.com/api/pizzas")
+    let isMounted = true;
+
+    if (cachedPizzas) {
+      setPizzas(cachedPizzas);
+      setLoadError("");
+      setLoading(false);
+      return;
+    }
+
+    if (!pizzasRequest) {
+      pizzasRequest = fetch(buildApiUrl("/api/pizzas"))
       .then((res) => res.json())
       .then((data) => {
-        setPizzas(data);
-        setLoading(false);
+        const normalizedPizzas = normalizePizzas(data);
+        cachedPizzas = normalizedPizzas;
+        return normalizedPizzas;
       })
       .catch((err) => {
         console.error("Ошибка при загрузке пицц:", err);
-        setLoading(false);
+        pizzasRequest = null;
+        throw err;
       });
+    }
+
+    pizzasRequest
+      .then((data) => {
+        if (isMounted) {
+          setPizzas(data);
+          setLoadError("");
+          setLoading(false);
+        }
+      })
+      .catch(() => {
+        if (isMounted) {
+          setPizzas([]);
+          setLoadError("Не вдалося завантажити піци з API.");
+          setLoading(false);
+        }
+      });
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
-  const displayPizzas = pizzas.length > 0 ? pizzas : dummyPizzas;
-
   let filteredPizzas = selectedCategory
-    ? displayPizzas.filter((pizza) => pizza.category === selectedCategory)
-    : [...displayPizzas];
+    ? pizzas.filter((pizza) => pizza.category === selectedCategory)
+    : [...pizzas];
 
   if (sortOrder === "price-asc") {
     filteredPizzas.sort((a, b) => a.price - b.price);
@@ -86,6 +133,8 @@ function Catalog() {
 
               {loading ? (
                 <div className="catalog-loading">Загрузка...</div>
+              ) : loadError ? (
+                <div className="catalog-empty">{loadError}</div>
               ) : (
                 <div className="catalog-grid">
                   {filteredPizzas.length > 0 ? (

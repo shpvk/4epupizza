@@ -32,6 +32,7 @@ function PizzaCard({ pizza }) {
   }
 
   const handleOrder = () => {
+    const pizzaId = Number(pizza.id);
     const extrasId = Object.entries(extraIngredients)
       .filter(([id, count]) => count > 0)
       .map(([id, count]) => `${id}x${count}`)
@@ -49,6 +50,7 @@ function PizzaCard({ pizza }) {
 
     addItem({
       id: `${pizza.id || pizza.name}-${selectedSize}${extrasId ? `-${extrasId}` : ""}`,
+      pizzaId: Number.isFinite(pizzaId) ? pizzaId : null,
       name: pizza.name,
       description: finalDescription,
       price: currentPrice,
