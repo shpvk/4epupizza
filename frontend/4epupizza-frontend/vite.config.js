@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-const useLocalApi = false
+const useLocalApi = true
 const localApiBaseUrl = 'https://localhost:7067'
 const deployedApiBaseUrl = 'https://fourepupizza.onrender.com'
 

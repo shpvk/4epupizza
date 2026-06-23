@@ -1,4 +1,4 @@
-const USE_LOCAL_API = false
+const USE_LOCAL_API = true
 const LOCAL_API_BASE_URL = 'https://localhost:7067'
 const DEPLOYED_API_BASE_URL = 'https://fourepupizza.onrender.com'
 const DEFAULT_API_BASE_URL = USE_LOCAL_API ? LOCAL_API_BASE_URL : DEPLOYED_API_BASE_URL
