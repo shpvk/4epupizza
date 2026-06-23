@@ -20,8 +20,15 @@ namespace ChepuPizza.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(OrderRequest orderRequest)
         {
-            var createdOrder = await _orderService.CreateAsync(orderRequest);
-            return Ok(createdOrder);
+            try
+            {
+                var createdOrder = await _orderService.CreateAsync(orderRequest);
+                return Ok(createdOrder);
+            }
+            catch (ArgumentException exception)
+            {
+                return BadRequest(exception.Message);
+            }
         }
     }
 }

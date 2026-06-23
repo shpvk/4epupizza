@@ -17,7 +17,7 @@
     {
         public int? PizzaId { get; set; }
 
-        public List<int> IngredientIds { get; set; } = new();
+        public List<int>? IngredientIds { get; set; }
 
         public int Quantity { get; set; }
     }

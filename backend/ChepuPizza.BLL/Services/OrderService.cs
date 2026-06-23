@@ -75,6 +75,46 @@ namespace ChepuPizza.BLL.Services
                 .Select(pizzaIngredient => pizzaIngredient.Ingredient)
                 .ToList();
 
+            List<int> additionalIngredientIds = itemDto.IngredientIds?
+                .Where(ingredientId => ingredientId > 0)
+                .ToList() ?? new();
+
+            if (additionalIngredientIds.Count > 0)
+            {
+                List<int> uniqueAdditionalIngredientIds = additionalIngredientIds.Distinct().ToList();
+                List<Ingredient> availableAdditionalIngredients = await _ingredientRepository.GetByIdsAsync(uniqueAdditionalIngredientIds);
+
+                if (availableAdditionalIngredients.Count != uniqueAdditionalIngredientIds.Count)
+                {
+                    throw new ArgumentException("Some ingredients were not found");
+                }
+
+                Dictionary<int, Ingredient> ingredientsById = availableAdditionalIngredients
+                    .ToDictionary(ingredient => ingredient.Id);
+
+                List<Ingredient> addedIngredients = additionalIngredientIds
+                    .Select(ingredientId => ingredientsById[ingredientId])
+                    .ToList();
+
+                List<Ingredient> customIngredients = ingredients
+                    .Concat(addedIngredients)
+                    .ToList();
+
+                (OrderItem? customOrderItem, string? customError) = OrderItem.Create(
+                    $"Custom {pizza.Name}",
+                    null,
+                    itemDto.Quantity,
+                    pizza.Price + addedIngredients.Sum(ingredient => ingredient.Price),
+                    customIngredients);
+
+                if (customOrderItem == null)
+                {
+                    throw new Exception(customError);
+                }
+
+                return customOrderItem;
+            }
+
             (OrderItem? orderItem, string? error) = OrderItem.Create(
                 pizza.Name,
                 pizza.Id,
@@ -93,7 +133,10 @@ namespace ChepuPizza.BLL.Services
 
         private async Task<OrderItem> CreateCustomPizzaOrderItemAsync(OrderItemRequest itemDto)
         {
-            List<int> ingredientIds = itemDto.IngredientIds.Distinct().ToList();
+            List<int> ingredientIds = itemDto.IngredientIds?
+                .Where(ingredientId => ingredientId > 0)
+                .Distinct()
+                .ToList() ?? new();
 
             if (ingredientIds.Count == 0)
             {
